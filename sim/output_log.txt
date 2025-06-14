@@ -1,0 +1,89 @@
+Version 5.22
+Size of reals used in simulation: 10 bytes
+Timestamp at start: 14/06/2025 1:59:53
+Reading in of parameters:
+Read parameters for layer 1 from L1_parameters.txt
+Read parameters for layer 2 from L2_parameters.txt
+Read parameters for layer 3 from L3_parameters.txt
+Read simulation setup from simulation_setup.txt
+
+The following voltages will be simulated:
+  i       V    UpdateIons   Store
+  1    -0.050     TRUE      TRUE
+  2    -0.030     TRUE      TRUE
+  3    -0.010     TRUE      TRUE
+  4     0.010     TRUE      TRUE
+  5     0.030     TRUE      TRUE
+  6     0.050     TRUE      TRUE
+  7     0.070     TRUE      TRUE
+  8     0.090     TRUE      TRUE
+  9     0.110     TRUE      TRUE
+ 10     0.130     TRUE      TRUE
+ 11     0.150     TRUE      TRUE
+ 12     0.170     TRUE      TRUE
+ 13     0.190     TRUE      TRUE
+ 14     0.210     TRUE      TRUE
+ 15     0.230     TRUE      TRUE
+ 16     0.250     TRUE      TRUE
+ 17     0.270     TRUE      TRUE
+ 18     0.290     TRUE      TRUE
+ 19     0.310     TRUE      TRUE
+ 20     0.330     TRUE      TRUE
+ 21     0.350     TRUE      TRUE
+ 22     0.370     TRUE      TRUE
+ 23     0.390     TRUE      TRUE
+ 24     0.410     TRUE      TRUE
+ 25     0.430     TRUE      TRUE
+ 26     0.450     TRUE      TRUE
+ 27     0.470     TRUE      TRUE
+ 28     0.490     TRUE      TRUE
+ 29     0.510     TRUE      TRUE
+ 30     0.530     TRUE      TRUE
+ 31     0.550     TRUE      TRUE
+ 32     0.570     TRUE      TRUE
+ 33     0.590     TRUE      TRUE
+ 34     0.610     TRUE      TRUE
+ 35     0.630     TRUE      TRUE
+ 36     0.650     TRUE      TRUE
+ 37     0.670     TRUE      TRUE
+ 38     0.690     TRUE      TRUE
+ 39     0.710     TRUE      TRUE
+ 40     0.730     TRUE      TRUE
+ 41     0.750     TRUE      TRUE
+ 42     0.770     TRUE      TRUE
+ 43     0.790     TRUE      TRUE
+ 44     0.810     TRUE      TRUE
+ 45     0.830     TRUE      TRUE
+ 46     0.850     TRUE      TRUE
+ 47     0.870     TRUE      TRUE
+ 48     0.890     TRUE      TRUE
+ 49     0.910     TRUE      TRUE
+ 50     0.930     TRUE      TRUE
+ 51     0.950     TRUE      TRUE
+ 52     0.970     TRUE      TRUE
+ 53     0.990     TRUE      TRUE
+ 54     1.010     TRUE      TRUE
+ 55     1.030     TRUE      TRUE
+ 56     1.050     TRUE      TRUE
+ 57     1.070     TRUE      TRUE
+ 58     1.090     TRUE      TRUE
+ 59     1.110     TRUE      TRUE
+ 60     1.130     TRUE      TRUE
+ 61     1.150     TRUE      TRUE
+ 62     1.170     TRUE      TRUE
+ 63     1.190     TRUE      TRUE
+ 64     1.210     TRUE      TRUE
+ 65     1.230     TRUE      TRUE
+ 66     1.250     TRUE      TRUE
+
+
+Files used to calculate the generation profile:
+- ../Data/nk_ITO.txt
+- ../Data/nk_PCBM.txt
+- ../Data/nk_MAPI.txt
+- ../Data/nk_PEDOT.txt
+- ../Data/nk_Au.txt
+- ../Data/AM15G.txt
+
+Timestamp at end: 14/06/2025 1:59:58
+Total run time:  4.460 seconds.
