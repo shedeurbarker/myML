@@ -30,10 +30,10 @@ def create_3d_layer_visualization():
         'PCBM': '#4169E1',  # Royal Blue
         'Au': '#FFD700'  # Gold
     }
-    # Panel size (larger for clarity)
-    panel_x = 18
-    panel_y = 8
-    fig = plt.figure(figsize=(16, 8))
+    # Make the panel and figure much larger
+    panel_x = 36
+    panel_y = 16
+    fig = plt.figure(figsize=(28, 14))
     ax = fig.add_subplot(111, projection='3d')
     z_pos = 0
     label_positions = []
@@ -52,37 +52,37 @@ def create_3d_layer_visualization():
             [ [x[1],y[1],z[1]], [x[2],y[2],z[2]], [x[6],y[6],z[6]], [x[5],y[5],z[5]] ], # right
             [ [x[4],y[4],z[4]], [x[7],y[7],z[7]], [x[3],y[3],z[3]], [x[0],y[0],z[0]] ]  # left
         ]
-        box = Poly3DCollection(verts, facecolors=colors[layer], edgecolors='k', linewidths=1, alpha=0.85)
+        box = Poly3DCollection(verts, facecolors=colors[layer], edgecolors='k', linewidths=2, alpha=0.90)
         ax.add_collection3d(box)
         # Store label position (center of layer)
         label_positions.append((panel_x, panel_y/2, z_pos+dz/2, layer, dz, descriptions[layer]))
         z_pos += dz
     # Draw labels and lines outside the box, staggered vertically
-    label_y_base = panel_y + 2.5
-    label_y_step = 1.2
+    label_y_base = panel_y + 5
+    label_y_step = 2.5
     for i, (lx, ly, lz, layer, dz, desc) in enumerate(label_positions):
         label_y = label_y_base + i * label_y_step
         # Draw a short line from the right face to the label
-        ax.plot([panel_x, panel_x+1.2], [ly, label_y], [lz, lz], color='black', lw=1)
+        ax.plot([panel_x, panel_x+2.5], [ly, label_y], [lz, lz], color='black', lw=2)
         # Combine name, description, and thickness in one label
         label_text = f"{layer} ({desc} – {dz} nm)"
-        ax.text(panel_x+1.5, label_y, lz, label_text, fontsize=11, va='center', ha='left', fontweight='bold', color='black')
+        ax.text(panel_x+3, label_y, lz, label_text, fontsize=22, va='center', ha='left', fontweight='bold', color='black')
     # Set limits and view
-    ax.set_xlim(0, panel_x+16)
-    ax.set_ylim(0, panel_y+10)
-    ax.set_zlim(0, z_pos+100)
+    ax.set_xlim(0, panel_x+30)
+    ax.set_ylim(0, panel_y+20)
+    ax.set_zlim(0, z_pos+200)
     ax.view_init(elev=18, azim=-35)
     ax.set_axis_off()
     plt.subplots_adjust(right=0.85)
     # Add title
-    plt.title('Perovskite Solar Cell Layer Structure (n-i-p, 3D View)', pad=20, fontsize=15, fontweight='bold')
+    plt.title('Perovskite Solar Cell Layer Structure (n-i-p, 3D View)', pad=40, fontsize=28, fontweight='bold')
     # Add work function information
     work_function_text = (
         "Work Functions:\n"
         "ITO (Anode): 4.05 eV\n"
         "Au (Cathode): 5.2 eV"
     )
-    plt.figtext(0.02, 0.02, work_function_text, fontsize=10)
+    plt.figtext(0.02, 0.02, work_function_text, fontsize=18)
     # Save and show
     plt.savefig('perovskite_layers_3d.png', dpi=300)
     plt.show()
