@@ -6,25 +6,34 @@ def create_3d_layer_visualization():
     # Real thicknesses (nm)
     real_thicknesses = {
         'Glass': 80,           # Visual only, not physical
-        'ITO (Anode)': 50,    # L_TCO = 50E-9 m
-        'PEDOT (HTL)': 40,    # L = 40E-9 m
-        'MAPI (Active)': 500, # L = 500E-9 m
-        'PCBM (ETL)': 25,     # L = 25E-9 m
-        'Au (Cathode)': 101   # L_BE = 101E-9 m
+        'ITO': 50,    # L_TCO = 50E-9 m
+        'PEDOT': 40,    # L = 40E-9 m
+        'MAPI': 500, # L = 500E-9 m
+        'PCBM': 25,     # L = 25E-9 m
+        'Au': 101   # L_BE = 101E-9 m
+    }
+    # Descriptions for each layer
+    descriptions = {
+        'Glass': 'Substrate',
+        'ITO': 'Top Electrode',
+        'PEDOT': 'HTL',
+        'MAPI': 'Active Layer',
+        'PCBM': 'ETL',
+        'Au': 'Cathode'
     }
     # Colors for each layer
     colors = {
         'Glass': '#C0C0C0',  # Silver
-        'ITO (Anode)': '#87CEEB',  # Sky Blue
-        'PEDOT (HTL)': '#FF4500',  # Orange Red
-        'MAPI (Active)': '#32CD32',  # Lime Green
-        'PCBM (ETL)': '#4169E1',  # Royal Blue
-        'Au (Cathode)': '#FFD700'  # Gold
+        'ITO': '#87CEEB',  # Sky Blue
+        'PEDOT': '#FF4500',  # Orange Red
+        'MAPI': '#32CD32',  # Lime Green
+        'PCBM': '#4169E1',  # Royal Blue
+        'Au': '#FFD700'  # Gold
     }
     # Panel size (larger for clarity)
     panel_x = 18
     panel_y = 8
-    fig = plt.figure(figsize=(12, 8))
+    fig = plt.figure(figsize=(16, 8))
     ax = fig.add_subplot(111, projection='3d')
     z_pos = 0
     label_positions = []
@@ -45,22 +54,26 @@ def create_3d_layer_visualization():
         ]
         box = Poly3DCollection(verts, facecolors=colors[layer], edgecolors='k', linewidths=1, alpha=0.85)
         ax.add_collection3d(box)
-        # Store label position (right side, center of layer)
-        label_positions.append((panel_x, panel_y/2, z_pos+dz/2, layer, dz))
+        # Store label position (center of layer)
+        label_positions.append((panel_x, panel_y/2, z_pos+dz/2, layer, dz, descriptions[layer]))
         z_pos += dz
-    # Draw labels and lines outside the box
-    for i, (lx, ly, lz, layer, dz) in enumerate(label_positions):
-        label_y = panel_y + 2
-        # Draw a line from the box to the label
-        ax.plot([lx, lx+2], [ly, label_y], [lz, lz], color='black', lw=1)
-        # Add the label
-        ax.text(lx+2.2, label_y, lz, f"{layer}\n{dz} nm", fontsize=11, va='center', ha='left', fontweight='bold', color='black')
+    # Draw labels and lines outside the box, staggered vertically
+    label_y_base = panel_y + 2.5
+    label_y_step = 1.2
+    for i, (lx, ly, lz, layer, dz, desc) in enumerate(label_positions):
+        label_y = label_y_base + i * label_y_step
+        # Draw a short line from the right face to the label
+        ax.plot([panel_x, panel_x+1.2], [ly, label_y], [lz, lz], color='black', lw=1)
+        # Combine name, description, and thickness in one label
+        label_text = f"{layer} ({desc} – {dz} nm)"
+        ax.text(panel_x+1.5, label_y, lz, label_text, fontsize=11, va='center', ha='left', fontweight='bold', color='black')
     # Set limits and view
-    ax.set_xlim(0, panel_x+8)
-    ax.set_ylim(0, panel_y+8)
+    ax.set_xlim(0, panel_x+16)
+    ax.set_ylim(0, panel_y+10)
     ax.set_zlim(0, z_pos+100)
     ax.view_init(elev=18, azim=-35)
     ax.set_axis_off()
+    plt.subplots_adjust(right=0.85)
     # Add title
     plt.title('Perovskite Solar Cell Layer Structure (n-i-p, 3D View)', pad=20, fontsize=15, fontweight='bold')
     # Add work function information
@@ -71,7 +84,7 @@ def create_3d_layer_visualization():
     )
     plt.figtext(0.02, 0.02, work_function_text, fontsize=10)
     # Save and show
-    plt.savefig('perovskite_layers_3d.png', dpi=300, bbox_inches='tight')
+    plt.savefig('perovskite_layers_3d.png', dpi=300)
     plt.show()
 
 if __name__ == "__main__":
