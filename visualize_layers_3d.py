@@ -31,9 +31,9 @@ def create_3d_layer_visualization():
         'Au': '#FFD700'  # Gold
     }
     # Make the panel and figure much larger
-    panel_x = 36
-    panel_y = 16
-    fig = plt.figure(figsize=(28, 14))
+    panel_x = 18
+    panel_y = 8
+    fig = plt.figure(figsize=(36, 16))
     ax = fig.add_subplot(111, projection='3d')
     z_pos = 0
     label_positions = []
@@ -66,16 +66,16 @@ def create_3d_layer_visualization():
         ax.plot([panel_x, panel_x+2.5], [ly, label_y], [lz, lz], color='black', lw=2)
         # Combine name, description, and thickness in one label
         label_text = f"{layer} ({desc} – {dz} nm)"
-        ax.text(panel_x+3, label_y, lz, label_text, fontsize=22, va='center', ha='left', fontweight='bold', color='black')
+        ax.text(panel_x+3, label_y, lz, label_text, fontsize=14, va='center', ha='left', fontweight='normal', color='black')
     # Set limits and view
     ax.set_xlim(0, panel_x+30)
     ax.set_ylim(0, panel_y+20)
-    ax.set_zlim(0, z_pos+200)
+    ax.set_zlim(0, z_pos+100)
     ax.view_init(elev=18, azim=-35)
     ax.set_axis_off()
     plt.subplots_adjust(right=0.85)
     # Add title
-    plt.title('Perovskite Solar Cell Layer Structure (n-i-p, 3D View)', pad=40, fontsize=28, fontweight='bold')
+    plt.title('Perovskite Solar Cell Layer Structure (n-i-p, 3D View)', pad=10, fontsize=18, fontweight='bold')
     # Add work function information
     work_function_text = (
         "Work Functions:\n"
