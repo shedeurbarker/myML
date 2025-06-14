@@ -1,6 +1,6 @@
 Version 5.22
 Size of reals used in simulation: 10 bytes
-Timestamp at start: 14/06/2025 1:59:53
+Timestamp at start: 14/06/2025 3:06:22
 Reading in of parameters:
 Read parameters for layer 1 from L1_parameters.txt
 Read parameters for layer 2 from L2_parameters.txt
@@ -85,5 +85,5 @@ Files used to calculate the generation profile:
 - ../Data/nk_Au.txt
 - ../Data/AM15G.txt
 
-Timestamp at end: 14/06/2025 1:59:58
-Total run time:  4.460 seconds.
+Timestamp at end: 14/06/2025 3:06:27
+Total run time:  4.248 seconds.

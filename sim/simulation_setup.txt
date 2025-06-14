@@ -39,8 +39,8 @@ lambda_max = 8E-7                 * m, upper bound wavelength
 NP = 300                          * integer, number of grid points, must be at least 5 per layer.
 tolPois = 1E-6                    * V, abs. tolerance of iterative Poisson solver
 maxDelV = 10                      * maximum change (in Vt) of the potential per loop
-maxItPois = 2000                  * max. number it. Poisson loop
-maxItSS = 2000                    * max. number it. main loop
+maxItPois = 3000                  * max. number it. Poisson loop
+maxItSS = 3000                    * max. number it. main loop
 currDiffInt = 2                   * Calc. current from differential (1) or integral (2) expression
 tolDens = 1E-6                    * relative tolerance of density solver
 couplePC = 4                      * >= 0, coupling between Poisson equation and continuity equations
