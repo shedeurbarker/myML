@@ -18,7 +18,7 @@ logging.basicConfig(
 )
 
 # Constants
-SIM_DIR = Path('sim/simulations')
+SIM_DIR = Path('results/generate')
 var_file = SIM_DIR / 'combined_output.csv'
 out_padded = 'results/extract/interface_data.csv'
 

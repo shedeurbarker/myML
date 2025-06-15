@@ -31,12 +31,12 @@ def run_script(script_name, description):
 def main():
     # List of scripts to run in sequence
     scripts = [
-        ('sim/generate_simulations.py', 'Generate and run simulations'),
+        #('sim/generate_simulations.py', 'Generate and run simulations'),
         ('scripts/extract_interface_data.py', 'Extract interface data from simulation results'),
         ('scripts/prepare_ml_data.py', 'Prepare data for machine learning'),
         ('scripts/train_ml_models.py', 'Train machine learning models'),
-        ('scripts/visualize_model_comparison.py', 'Visualize model comparison results'),
-        ('scripts/predict.py', 'Make predictions using trained models')
+        ('scripts/predict.py', 'Make predictions using trained models'),
+        ('scripts/visualize_model_comparison.py', 'Visualize model comparison results')
     ]
     
     # Run each script in sequence
