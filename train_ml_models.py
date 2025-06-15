@@ -11,10 +11,12 @@ import os
 import logging
 from datetime import datetime
 
+
 # Set up logging
-log_dir = 'logs'
+log_dir = 'results/train_ml_models/logs'
 os.makedirs(log_dir, exist_ok=True)
-log_file = os.path.join(log_dir, f'ml_training_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log')
+#_{datetime.now().strftime("%Y%m%d_%H%M%S")}
+log_file = os.path.join(log_dir, f'ml_training.log')
 
 logging.basicConfig(
     level=logging.INFO,
@@ -26,19 +28,18 @@ logging.basicConfig(
 )
 
 # Create a directory for saving models and results
-os.makedirs('models', exist_ok=True)
-os.makedirs('results', exist_ok=True)
+os.makedirs('results/train_ml_models/models', exist_ok=True)
 
 # Load the prepared data
 logging.info("Loading prepared data...")
-X_train = np.load('X_train.npy')
-X_test = np.load('X_test.npy')
-y_train = np.load('y_train.npy')
-y_test = np.load('y_test.npy')
+X_train = np.load('results/prepare_ml_data/X_train.npy')
+X_test = np.load('results/prepare_ml_data/X_test.npy')
+y_train = np.load('results/prepare_ml_data/y_train.npy')
+y_test = np.load('results/prepare_ml_data/y_test.npy')
 
 # Load the original data to get feature names
 logging.info("Loading original data to get feature names...")
-original_data = pd.read_csv('interface_data_padded.csv')
+original_data = pd.read_csv('results/extract/interface_data.csv')
 
 # Get feature names (excluding target variables and other non-feature columns)
 # Use the same exclusion list as in prepare_ml_data.py
@@ -84,7 +85,7 @@ def evaluate_model(y_true, y_pred, target_name, model_name):
     plt.ylabel(f'Predicted {target_name}')
     plt.title(f'{model_name} - {target_name}: True vs Predicted')
     plt.tight_layout()
-    plt.savefig(f'results/{model_name}_{target_name}_scatter.png')
+    plt.savefig(f'results/train_ml_models/{model_name}_{target_name}_scatter.png')
     
     # Create residual plot
     residuals = y_true - y_pred
@@ -95,7 +96,7 @@ def evaluate_model(y_true, y_pred, target_name, model_name):
     plt.ylabel('Residuals')
     plt.title(f'{model_name} - {target_name}: Residual Plot')
     plt.tight_layout()
-    plt.savefig(f'results/{model_name}_{target_name}_residuals.png')
+    plt.savefig(f'results/train_ml_models/{model_name}_{target_name}_residuals.png')
     
     return {'rmse': rmse, 'mae': mae, 'r2': r2}
 
@@ -112,7 +113,7 @@ def train_and_evaluate_model(model, model_name, X_train, X_test, y_train, y_test
     metrics = evaluate_model(y_test[:, target_idx], y_pred, target_names[target_idx], model_name)
     
     # Save the model
-    model_path = f'models/{model_name}_{target_names[target_idx]}.joblib'
+    model_path = f'results/train_ml_models/models/{model_name}_{target_names[target_idx]}.joblib'
     joblib.dump(model, model_path)
     logging.info(f"Model saved to {model_path}")
     
@@ -164,12 +165,12 @@ for target_name in target_names:
     plt.ylabel('Error')
     plt.xticks(rotation=45)
     plt.tight_layout()
-    plt.savefig(f'results/{target_name}_model_comparison.png')
-    logging.info(f"Comparison plot saved to results/{target_name}_model_comparison.png")
+    plt.savefig(f'results/train_ml_models/{target_name}_model_comparison.png')
+    logging.info(f"Comparison plot saved to results/train_ml_models/{target_name}_model_comparison.png")
 
 # Feature importance for Random Forest models
 for target_idx, target_name in enumerate(target_names):
-    rf_model = joblib.load(f'models/RandomForest_{target_name}.joblib')
+    rf_model = joblib.load(f'results/train_ml_models/models/RandomForest_{target_name}.joblib')
     
     # Get feature importance
     importance = rf_model.feature_importances_
@@ -189,18 +190,18 @@ for target_idx, target_name in enumerate(target_names):
     
     # Plot top 40 features
     plt.figure(figsize=(15, 10))  # Increased figure size to accommodate more features
-    sns.barplot(x='Importance', y='Feature', data=feature_importance.head(40))
-    plt.title(f'Top 40 Features for {target_name} (Random Forest)')
+    sns.barplot(x='Importance', y='Feature', data=feature_importance.head(20))
+    plt.title(f'Top 20 Features for {target_name} (Random Forest)')
     plt.tight_layout()
-    plt.savefig(f'results/{target_name}_feature_importance.png')
-    logging.info(f"Feature importance plot saved to results/{target_name}_feature_importance.png")
+    plt.savefig(f'results/train_ml_models/{target_name}_feature_importance.png')
+    logging.info(f"Feature importance plot saved to results/train_ml_models/{target_name}_feature_importance.png")
     
     # Save feature importance to CSV
-    csv_path = f'results/{target_name}_feature_importance.csv'
+    csv_path = f'results/train_ml_models/{target_name}_feature_importance.csv'
     feature_importance.to_csv(csv_path, index=False)
     logging.info(f"Feature importance data saved to {csv_path}")
 
 logging.info("\nTraining and evaluation complete!")
 logging.info("Models saved in the 'models' directory")
-logging.info("Results and visualizations saved in the 'results' directory")
+logging.info("Results and visualizations saved in the 'results/train_ml_models' directory")
 logging.info(f"Log file saved to {log_file}") 

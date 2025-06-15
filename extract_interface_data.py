@@ -9,7 +9,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('interface_extraction.log'),
+        logging.FileHandler('results/extract/interface_data.log'),
         logging.StreamHandler()
     ]
 )
@@ -17,7 +17,7 @@ logging.basicConfig(
 # Constants
 SIM_DIR = Path('sim')
 var_file = SIM_DIR / 'output_Var.dat'
-out_padded = 'interface_data_padded.csv'
+out_padded = 'results/extract/interface_data.csv'
 
 layer_files = {
     1: SIM_DIR / 'L1_parameters.txt',

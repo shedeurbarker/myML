@@ -8,9 +8,9 @@ from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 import matplotlib.pyplot as plt
 
 # Set up logging
-log_dir = 'logs'
+log_dir = 'results/predict'
 os.makedirs(log_dir, exist_ok=True)
-log_file = os.path.join(log_dir, f'predictions_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log')
+log_file = os.path.join(log_dir, f'predictions.log')
 
 logging.basicConfig(
     level=logging.INFO,
@@ -26,10 +26,10 @@ def ensure_predict_results_dir():
 
 def load_model_and_features(target_name, model_type):
     """Load the trained model and get the required feature names."""
-    model_path = f'models/{model_type}_{target_name}.joblib'
+    model_path = f'results/train_ml_models/models/{model_type}_{target_name}.joblib'
     model = joblib.load(model_path)
     logging.info(f"Loaded model from {model_path}")
-    original_data = pd.read_csv('interface_data_padded.csv')
+    original_data = pd.read_csv('results/extract/interface_data.csv')
     non_feature_cols = ['lid', 'x', 'y', 'z', 'IntSRHn', 'IntSRHp', 'BulkSRHn', 'BulkSRHp']
     feature_names = [col for col in original_data.columns if col not in non_feature_cols]
     return model, feature_names
@@ -64,9 +64,9 @@ def make_predictions_all_models(input_data, target_name='IntSRHn'):
 def validate_predictions_all_models():
     ensure_predict_results_dir()
     """Validate all models' predictions against test data and compare accuracy."""
-    X_test = np.load('X_test.npy')
-    y_test = np.load('y_test.npy')
-    original_data = pd.read_csv('interface_data_padded.csv')
+    X_test = np.load('results/prepare_ml_data/X_test.npy')
+    y_test = np.load('results/prepare_ml_data/y_test.npy')
+    original_data = pd.read_csv('results/extract/interface_data.csv')
     non_feature_cols = ['lid', 'x', 'y', 'z', 'IntSRHn', 'IntSRHp', 'BulkSRHn', 'BulkSRHp']
     feature_names = [col for col in original_data.columns if col not in non_feature_cols]
     test_data = pd.DataFrame(X_test, columns=feature_names)
@@ -83,12 +83,34 @@ def validate_predictions_all_models():
             model, feature_names = load_model_and_features(target_name, model_type)
             X = prepare_input_data(test_data, feature_names)
             predicted = model.predict(X)
+            
+            # Calculate basic metrics
             rmse = np.sqrt(mean_squared_error(actual, predicted))
             mae = mean_absolute_error(actual, predicted)
             r2 = r2_score(actual, predicted)
-            log_ratio = np.abs(np.log10(np.abs(predicted) / np.abs(actual)))
-            accuracies = np.maximum(0, 100 - (log_ratio * 10))
-            accuracies = np.nan_to_num(accuracies, nan=0, posinf=0, neginf=0)
+            
+            # Calculate accuracy using a more robust method
+            # Handle zero values and very small numbers
+            epsilon = 1e-30  # Small number to avoid division by zero
+            actual_abs = np.abs(actual)
+            predicted_abs = np.abs(predicted)
+            
+            # Calculate relative error
+            relative_error = np.abs(predicted_abs - actual_abs) / (actual_abs + epsilon)
+            
+            # Convert to accuracy percentage (100% - relative error)
+            accuracies = np.maximum(0, 100 * (1 - relative_error))
+            
+            # Handle special cases
+            # If both predicted and actual are very small (close to zero), consider it accurate
+            both_small = (actual_abs < epsilon) & (predicted_abs < epsilon)
+            accuracies[both_small] = 100.0
+            
+            # If actual is very small but predicted is not (or vice versa), consider it inaccurate
+            one_small = (actual_abs < epsilon) | (predicted_abs < epsilon)
+            accuracies[one_small & ~both_small] = 0.0
+            
+            # Calculate statistics
             mean_accuracy = np.mean(accuracies)
             median_accuracy = np.median(accuracies)
             accuracy_std = np.std(accuracies)

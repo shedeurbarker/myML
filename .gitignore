@@ -16,9 +16,14 @@ lib64/
 parts/
 sdist/
 var/
+wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# Virtual Environment
+venv/
+ENV/
 
 # IDE
 .idea/
@@ -33,4 +38,21 @@ Thumbs.db
 # Project specific
 *.dat
 *.log
-output_*/ 
+output_*/
+
+# Generated data files
+*.npy
+*.csv
+*.txt
+!requirements.txt
+!README.md
+
+# Results directory (but keep the directory structure)
+results/*
+!results/.gitkeep
+
+# Logs
+*.log
+
+# Backup files
+helper_files/backups/ 
