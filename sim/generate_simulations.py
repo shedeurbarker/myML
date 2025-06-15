@@ -8,10 +8,16 @@ import subprocess
 import json
 
 # Configure logging
+results_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'results', 'generate')
+os.makedirs(results_dir, exist_ok=True)  # Ensure the results/generate directory exists
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
+    handlers=[
+        logging.FileHandler(os.path.join(results_dir, 'simulation.log')),
+        logging.StreamHandler()
+    ]
 )
 
 # Maximum number of parameter combinations to generate
@@ -81,7 +87,7 @@ def generate_parameter_values(params):
         for values in layer_params[layer]['values']:
             layer_total *= len(values)
         total_possible *= layer_total
-        logging.info(f"Layer {layer} total combinations: {layer_total}")
+        logging.info(f"Layer {layer} total combinations: {layer_total}")    
     
     logging.info(f"Total possible combinations: {total_possible}")
     
@@ -112,7 +118,18 @@ def update_layer_file(layer_file, param_values, layer_num):
 
 def create_simulation_directory(sim_id, param_values):
     """Create a directory for a simulation and copy necessary files."""
-    sim_dir = os.path.join(os.path.dirname(__file__), 'simulations', f'sim_{sim_id:04d}')
+    base_dir = os.path.join(os.path.dirname(__file__), 'simulations')
+    os.makedirs(base_dir, exist_ok=True)
+    
+    # Find the next available simulation number
+    existing = [d for d in os.listdir(base_dir) if d.startswith('sim_') and d[4:8].isdigit()]
+    if existing:
+        max_index = max(int(d[4:8]) for d in existing)
+        next_index = max_index + 1
+    else:
+        next_index = 1
+    
+    sim_dir = os.path.join(base_dir, f'sim_{next_index:04d}')
     os.makedirs(sim_dir, exist_ok=True)
     data_dir = os.path.join(sim_dir, 'Data')
     os.makedirs(data_dir, exist_ok=True)
@@ -245,19 +262,23 @@ def extract_and_combine_data(sim_path, combined_csv_path, is_first_simulation):
     try:
         with open(var_file, 'r') as f:
             lines = f.readlines()
-            
+
         if not lines:
             logging.warning(f"Empty output_Var.dat in {sim_path}")
             return
 
-        # Extract data (skip header for non-first simulations)
-        data_lines = lines[1:] if not is_first_simulation else lines
+        file_exists = os.path.exists(combined_csv_path)
+        # Only write header if file does not exist, always skip header when appending
+        if file_exists:
+            data_lines = lines[1:]
+            mode = 'a'
+        else:
+            data_lines = lines
+            mode = 'w'
 
-        # Write to combined CSV
-        mode = 'w' if is_first_simulation else 'a'
         with open(combined_csv_path, mode) as f:
             f.writelines(data_lines)
-            
+
         logging.info(f"Successfully combined data from {sim_path}")
     except Exception as e:
         logging.error(f"Error combining data from {sim_path}: {str(e)}")
@@ -268,8 +289,32 @@ def main():
     sim_dir = os.path.join(os.path.dirname(__file__), 'simulations')
     os.makedirs(sim_dir, exist_ok=True)
     
-    # Create combined CSV file path
-    combined_csv_path = os.path.join(sim_dir, 'combined_output.csv')
+    # Create results/generate directory
+    results_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'results', 'generate')
+    os.makedirs(results_dir, exist_ok=True)
+    
+    # Create combined CSV file path in results/generate
+    combined_csv_path = os.path.join(results_dir, 'combined_output.csv')
+    
+    # Handle existing combined_output.csv
+    # if os.path.exists(combined_csv_path):
+    #     print("\ncombined_output.csv already exists. Choose an option:")
+    #     print("1. Append to existing file")
+    #     print("2. Create new file with timestamp")
+    #     print("3. Overwrite existing file")
+    #     choice = input("Enter your choice (1-3): ").strip()
+        
+    #     if choice == "2":
+    #         # Create new file with timestamp
+    #         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    #         combined_csv_path = os.path.join(results_dir, f'combined_output_{timestamp}.csv')
+    #         logging.info(f"Creating new file: {combined_csv_path}")
+    #     elif choice == "3":
+    #         # Overwrite existing file
+    #         logging.info(f"Overwriting existing file: {combined_csv_path}")
+    #     else:
+    #         # Default to append
+    #         logging.info(f"Appending to existing file: {combined_csv_path}")
     
     # Generate parameter combinations
     param_combinations = generate_parameter_combinations()
