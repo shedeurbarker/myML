@@ -36,7 +36,7 @@ lambda_min = 3.5E-7               * m, lower bound wavelength
 lambda_max = 8E-7                 * m, upper bound wavelength
 
 **Numerical Parameters**************************************************************
-NP = 300                          * integer, number of grid points, must be at least 5 per layer.
+NP = 400                          * integer, number of grid points, must be at least 5 per layer.
 tolPois = 1E-6                    * V, abs. tolerance of iterative Poisson solver
 maxDelV = 10                      * maximum change (in Vt) of the potential per loop
 maxItPois = 3000                  * max. number it. Poisson loop
