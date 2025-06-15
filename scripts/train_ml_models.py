@@ -14,8 +14,13 @@ from datetime import datetime
 
 # Set up logging
 log_dir = 'results/train_ml_models/logs'
+scatter_plot = 'results/train_ml_models/scatter_plot'
+residual_plot = 'results/train_ml_models/residual_plot'
+importance_plot = 'results/train_ml_models/importance_plot'
 os.makedirs(log_dir, exist_ok=True)
-#_{datetime.now().strftime("%Y%m%d_%H%M%S")}
+os.makedirs(scatter_plot, exist_ok=True)
+os.makedirs(residual_plot, exist_ok=True)
+os.makedirs(importance_plot, exist_ok=True)
 log_file = os.path.join(log_dir, f'ml_training.log')
 
 logging.basicConfig(
@@ -85,7 +90,7 @@ def evaluate_model(y_true, y_pred, target_name, model_name):
     plt.ylabel(f'Predicted {target_name}')
     plt.title(f'{model_name} - {target_name}: True vs Predicted')
     plt.tight_layout()
-    plt.savefig(f'results/train_ml_models/{model_name}_{target_name}_scatter.png')
+    plt.savefig(f'{scatter_plot}/{model_name}_{target_name}_scatter.png')
     
     # Create residual plot
     residuals = y_true - y_pred
@@ -96,7 +101,7 @@ def evaluate_model(y_true, y_pred, target_name, model_name):
     plt.ylabel('Residuals')
     plt.title(f'{model_name} - {target_name}: Residual Plot')
     plt.tight_layout()
-    plt.savefig(f'results/train_ml_models/{model_name}_{target_name}_residuals.png')
+    plt.savefig(f'{residual_plot}/{model_name}_{target_name}_residuals.png')
     
     return {'rmse': rmse, 'mae': mae, 'r2': r2}
 
@@ -193,11 +198,11 @@ for target_idx, target_name in enumerate(target_names):
     sns.barplot(x='Importance', y='Feature', data=feature_importance.head(20))
     plt.title(f'Top 20 Features for {target_name} (Random Forest)')
     plt.tight_layout()
-    plt.savefig(f'results/train_ml_models/{target_name}_feature_importance.png')
-    logging.info(f"Feature importance plot saved to results/train_ml_models/{target_name}_feature_importance.png")
+    plt.savefig(f'{importance_plot}/{target_name}_feature_importance.png')
+    logging.info(f"Feature importance plot saved to {importance_plot}/{target_name}_feature_importance.png")
     
     # Save feature importance to CSV
-    csv_path = f'results/train_ml_models/{target_name}_feature_importance.csv'
+    csv_path = f'{importance_plot}/{target_name}_feature_importance.csv'
     feature_importance.to_csv(csv_path, index=False)
     logging.info(f"Feature importance data saved to {csv_path}")
 

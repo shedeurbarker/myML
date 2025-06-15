@@ -125,20 +125,6 @@ def create_model_comparison_plots():
         #ax3 = plt.subplot(2, 2, 3, projection='radar')
         for model in ['RandomForest', 'GradientBoosting', 'LinearRegression']:
             values = [metrics['IntSRHn'][model][label] for label in labels]
-            #ax3.plot(theta, values, label=model)
-            #ax3.fill(theta, values, alpha=0.1)
-        #ax3.set_varlabels(labels)
-        #ax3.set_title('IntSRHn Model Comparison')
-        #ax3.legend(loc='upper right', bbox_to_anchor=(0.3, 0.3))
-        # 4. Radar chart for IntSRHp
-        #ax4 = plt.subplot(2, 2, 4, projection='radar')
-        #for model in ['RandomForest', 'GradientBoosting', 'LinearRegression']:
-        #    values = [metrics['IntSRHp'][model][label] for label in labels]
-        #    ax4.plot(theta, values, label=model)
-        #    ax4.fill(theta, values, alpha=0.1)
-        #ax4.set_varlabels(labels)
-        #ax4.set_title('IntSRHp Model Comparison')
-        #ax4.legend(loc='upper right', bbox_to_anchor=(0.3, 0.3))
     except Exception as e:
         logging.warning(f"Radar plots could not be generated: {e}")
     

@@ -41,16 +41,6 @@ target_vars = ['IntSRHn', 'IntSRHp']
 logging.info("Statistics of target variables:")
 logging.info(f"\n{df[target_vars].describe()}")
 
-# # Visualize the distribution of target variables
-# plt.figure(figsize=(12, 5))
-# for i, var in enumerate(target_vars):
-#     plt.subplot(1, 2, i+1)
-#     sns.histplot(df[var], kde=True)
-#     plt.title(f'Distribution of {var}')
-# plt.tight_layout()
-# plt.savefig(os.path.join(output_dir, 'target_distributions.png'))
-# print(f"\nSaved target variable distributions to '{output_dir}/target_distributions.png'")
-
 # Identify potential feature columns (excluding target variables and other non-feature columns)
 non_feature_cols = ['lid', 'x', 'y', 'z', 'IntSRHn', 'IntSRHp', 'BulkSRHn', 'BulkSRHp']
 feature_cols = [col for col in df.columns if col not in non_feature_cols]

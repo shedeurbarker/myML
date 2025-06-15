@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Path to the output_Var.dat file
-var_file_path = 'sim/output_Var.dat'
+var_file_path = '../results/generate/combined_output.csv'
 
 # Read the data, skipping the header
 data = np.loadtxt(var_file_path, skiprows=1)

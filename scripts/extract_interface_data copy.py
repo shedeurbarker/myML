@@ -105,20 +105,11 @@ def main():
         # Fill any remaining NaN values with 0
         final_df = final_df.fillna(0)
         
-        # Filter out rows where IntSRHp or IntSRHn are exactly zero
-        initial_rows = len(final_df)
-        final_df = final_df[
-            (final_df['IntSRHn'] != 0) |  # Keep any non-zero value, including very small numbers
-            (final_df['IntSRHp'] != 0)
-        ]
-        filtered_rows = initial_rows - len(final_df)
-        
         # Save with optimized settings
         logging.info(f"Saving data to {out_padded}")
         final_df.to_csv(out_padded, index=False, float_format='%.6g')
         
-        logging.info(f"Successfully extracted {len(final_df)} interface grid points")
-        logging.info(f"Filtered out {filtered_rows} rows with zero IntSRHn and IntSRHp values")
+        logging.info(f"Successfully extracted {len(rows)} interface grid points")
         logging.info(f"Output saved to {out_padded}")
         
     except Exception as e:
