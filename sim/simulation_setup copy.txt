@@ -58,7 +58,7 @@ fixIons = 0                       * fix ions at first applied voltage? yes(1) or
 Vscan = 1                         * integer, 1 for forward sweep direction, -1 for reverse sweep
 Vmin = -0.05                      * V
 Vmax = 1.25                       * V
-Vstep = 0.01                      * V
+Vstep = 0.02                      * V
 Vacc = 0                          * V, point of accumulation of row of V's, note: Vacc should be
                                   * slightly larger than Vmax or slightly lower than Vmin
 NJV = 100                         * number of JV points in logarithmic distribution
