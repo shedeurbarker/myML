@@ -39,6 +39,9 @@ Thumbs.db
 *.dat
 *.log
 output_*/
+sim/simulations/
+sim/simulations/*
+!sim/simulations/.gitkeep
 
 # Generated data files
 *.npy
