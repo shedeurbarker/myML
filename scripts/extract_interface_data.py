@@ -4,6 +4,9 @@ import logging
 from typing import Dict, List, Optional, Any
 from pathlib import Path
 
+# Create result directory if it doesn't exist
+Path('results/extract').mkdir(parents=True, exist_ok=True)
+
 # Set up logging
 logging.basicConfig(
     level=logging.INFO,
@@ -15,14 +18,14 @@ logging.basicConfig(
 )
 
 # Constants
-SIM_DIR = Path('sim')
-var_file = SIM_DIR / 'output_Var.dat'
+SIM_DIR = Path('sim/simulations')
+var_file = SIM_DIR / 'combined_output.csv'
 out_padded = 'results/extract/interface_data.csv'
 
 layer_files = {
-    1: SIM_DIR / 'L1_parameters.txt',
-    2: SIM_DIR / 'L2_parameters.txt',
-    3: SIM_DIR / 'L3_parameters.txt'
+    1: Path('sim/L1_parameters.txt'),
+    2: Path('sim/L2_parameters.txt'),
+    3: Path('sim/L3_parameters.txt')
 }
 
 # List of parameters to extract from each layer

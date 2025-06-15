@@ -181,3 +181,142 @@ If you encounter any issues:
 -   Add hyperparameter tuning
 -   Include feature importance analysis
 -   Add support for ensemble methods
+
+# Solar Cell Simulation Project
+
+This project uses SimSS (version 5.22) to simulate solar cell performance with different material parameters and configurations, followed by machine learning analysis of the results.
+
+## Project Structure
+
+```
+myML/
+├── sim/
+│   ├── simulations/          # Simulation outputs (gitignored)
+│   ├── Data/                 # Material data files
+│   ├── parameters.txt        # Parameter ranges for simulations
+│   ├── simulation_setup.txt  # Simulation configuration
+│   └── generate_simulations.py # Script to generate and run simulations
+├── scripts/                  # Machine learning and analysis scripts
+│   ├── extract_interface_data.py    # Extract interface data from simulation results
+│   ├── prepare_ml_data.py          # Prepare and preprocess data for ML models
+│   ├── train_ml_models.py          # Train and evaluate ML models
+│   ├── visualize_model_comparison.py # Visualize and compare model performance
+│   └── predict.py                   # Make predictions using trained models
+├── run_all.py               # Master script to run multiple simulation scripts
+├── .gitignore
+└── README.md
+```
+
+## Setup
+
+1. Ensure Python 3.x is installed
+2. Create and activate virtual environment:
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # Linux/Mac
+    venv\Scripts\activate     # Windows
+    ```
+3. Install required packages:
+    ```bash
+    pip install numpy pandas scikit-learn matplotlib seaborn
+    ```
+
+## Simulation Parameters
+
+The simulation uses a three-layer structure:
+
+1. Layer 1 (PCBM): Electron Transport Layer
+
+    - Band energies: E_c = 3.7-4.0 eV, E_v = 5.7-5.9 eV
+    - Thickness: 20-50 nm
+
+2. Layer 2 (MAPI): Active Layer
+
+    - Band energies: E_c = 4.4-4.6 eV, E_v = 5.6-5.8 eV
+    - Thickness: 200-500 nm
+
+3. Layer 3 (PEDOT): Hole Transport Layer
+    - Band energies: E_c = 3.4-3.6 eV, E_v = 5.3-5.5 eV
+    - Thickness: 20-50 nm
+
+## Running Simulations
+
+### Option 1: Run Individual Scripts
+
+1. Configure parameters in `sim/parameters.txt`
+2. Adjust simulation settings in `sim/simulation_setup.txt`
+3. Run the simulation generator:
+    ```bash
+    python sim/generate_simulations.py
+    ```
+
+### Option 2: Run All Scripts
+
+Use the master script to run multiple simulation scripts in sequence:
+
+```bash
+python run_all.py
+```
+
+The master script will:
+
+-   Run all configured scripts in order
+-   Log output to both console and a timestamped log file
+-   Provide a summary of successful/failed scripts
+
+The script will:
+
+-   Generate parameter combinations
+-   Create simulation directories
+-   Run simulations
+-   Combine results into `simulations/combined_output.csv`
+
+## Machine Learning Pipeline
+
+The project includes a complete ML pipeline for analyzing simulation results:
+
+1. **Data Extraction** (`extract_interface_data.py`):
+
+    - Extracts interface data from simulation results
+    - Processes raw simulation outputs
+    - Creates structured datasets for ML
+
+2. **Data Preparation** (`prepare_ml_data.py`):
+
+    - Preprocesses extracted data
+    - Handles missing values
+    - Performs feature engineering
+    - Splits data into training and testing sets
+
+3. **Model Training** (`train_ml_models.py`):
+
+    - Trains multiple ML models
+    - Performs cross-validation
+    - Evaluates model performance
+    - Saves trained models
+
+4. **Visualization** (`visualize_model_comparison.py`):
+
+    - Compares model performance
+    - Generates performance plots
+    - Creates feature importance visualizations
+    - Saves analysis results
+
+5. **Prediction** (`predict.py`):
+    - Loads trained models
+    - Makes predictions on new data
+    - Generates prediction reports
+
+## Output
+
+-   Individual simulation results are stored in `sim/simulations/sim_XXXX/`
+-   Combined results are saved in `sim/simulations/combined_output.csv`
+-   ML model outputs and visualizations are saved in `scripts/output/`
+-   Log file contains simulation progress and errors
+
+## Notes
+
+-   Maximum number of simulations is set to 20 (adjustable in `generate_simulations.py`)
+-   Non-converging simulations (return code 95) are considered successful
+-   The simulations directory is gitignored to avoid committing large output files
+-   ML models and their outputs are version controlled for reproducibility

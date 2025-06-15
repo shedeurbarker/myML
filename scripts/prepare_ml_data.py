@@ -7,6 +7,12 @@ import seaborn as sns
 import os
 import logging
 
+# Create output directories
+output_dir = 'results/prepare_ml_data'
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+    logging.info(f"Created directory: {output_dir}")
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -16,16 +22,6 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
-
-def ensure_dir(directory):
-    """Create directory if it doesn't exist."""
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-        logging.info(f"Created directory: {directory}")
-
-# Create output directories
-output_dir = 'results/prepare_ml_data'
-ensure_dir(output_dir)
 
 # Load the interface data
 logging.info("Loading interface data...")
