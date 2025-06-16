@@ -55,5 +55,5 @@ results/*
 *.log
 
 # Backup files
-helper_files/
-helper_files/backups/*
+# helper_files/
+# helper_files/backups/*
