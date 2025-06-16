@@ -320,3 +320,80 @@ The project includes a complete ML pipeline for analyzing simulation results:
 -   Non-converging simulations (return code 95) are considered successful
 -   The simulations directory is gitignored to avoid committing large output files
 -   ML models and their outputs are version controlled for reproducibility
+
+## Data Preparation
+
+Before training the models, the following steps are taken to prepare the data:
+
+1. **Data Cleaning**:
+
+    - Handle missing values.
+    - Remove duplicate rows.
+    - Detect and handle outliers.
+
+2. **Data Transformation**:
+
+    - Normalize or standardize features.
+    - Apply log transformations to skewed data.
+    - Encode categorical variables.
+
+3. **Feature Engineering**:
+
+    - Create new features from existing ones.
+    - Select relevant features using techniques like correlation analysis.
+
+4. **Data Splitting**:
+
+    - Split the dataset into training and testing sets.
+    - Use cross-validation for robust model evaluation.
+
+5. **Data Augmentation**:
+
+    - Generate synthetic data if necessary.
+
+6. **Handling Imbalanced Data**:
+
+    - Use resampling techniques to balance classes.
+
+7. **Data Validation**:
+
+    - Ensure data integrity and consistency.
+
+8. **Documentation and Logging**:
+
+    - Log data preparation steps for reproducibility.
+
+9. **Exploratory Data Analysis (EDA)**:
+
+    - Visualize data to understand distributions and relationships.
+
+10. **Data Privacy and Security**:
+    - Anonymize sensitive information.
+
+## Usage
+
+To prepare the data for training, run:
+
+```bash
+python scripts/prepare_ml_data.py
+```
+
+## Training Models
+
+To train the models, run:
+
+```bash
+python scripts/train_ml_models.py
+```
+
+## Making Predictions
+
+To make predictions using the trained models, run:
+
+```bash
+python scripts/predict.py
+```
+
+## Logs
+
+Logs are stored in the `logs` directory for tracking the data preparation and model training processes.

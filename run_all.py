@@ -31,6 +31,7 @@ def run_script(script_name, description):
 def main():
     # List of scripts to run in sequence
     scripts = [
+        ('scripts/create_feature_names.py', 'Create feature names'),
         ('sim/generate_simulations.py', 'Generate and run simulations'),
         ('scripts/extract_interface_data.py', 'Extract interface data from simulation results'),
         ('scripts/prepare_ml_data.py', 'Prepare data for machine learning'),
