@@ -47,8 +47,6 @@ sim/simulations/*
 *.npy
 *.csv
 *.txt
-!requirements.txt
-!README.md
 
 # Results directory (but keep the directory structure)
 results/*
