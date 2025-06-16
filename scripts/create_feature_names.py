@@ -1,16 +1,5 @@
 import numpy as np
 
-# Define the features to be used
-# feature_names = [
-#     'x', 'V', 'Evac', 'Ec', 'Ev', 'phin', 'phip', 'n', 'p', 'ND', 'NA',
-#     'anion', 'cation', 'ntb', 'nti', 'mun', 'mup', 'G_ehp', 'Gfree', 'Rdir',
-#     'Jn', 'Jp', 'Jint', 'lid', 'Vext', 'left_L', 'left_eps_r', 'left_E_c',
-#     'left_E_v', 'left_N_c', 'left_mu_n', 'left_mu_p', 'left_N_t_int',
-#     'left_C_n_int', 'left_C_p_int', 'left_E_t_int', 'right_L', 'right_eps_r',
-#     'right_E_c', 'right_E_v', 'right_N_c', 'right_mu_n', 'right_mu_p',
-#     'right_N_t_int', 'right_C_n_int', 'right_C_p_int', 'right_E_t_int'
-# ]
-
 feature_names = [
     'p', 'n',
     'cation', 'anion',
