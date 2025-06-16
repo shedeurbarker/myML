@@ -34,7 +34,7 @@ def prepare_data():
     """Prepare data for machine learning."""
     # Load the interface data
     logging.info("Loading interface data...")
-    data = pd.read_csv('results/extract/interface_data.csv')
+    data = pd.read_csv('results/extract/extracted_data.csv')
     # Remove duplicate rows
     data = data.drop_duplicates()
     # Log the number of rows after removing duplicates

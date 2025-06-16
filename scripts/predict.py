@@ -6,6 +6,7 @@ from datetime import datetime
 import os
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 import matplotlib.pyplot as plt
+from create_example_data import create_example_data
 
 # Set up logging
 log_dir = 'results/predict'
@@ -29,7 +30,7 @@ def load_model_and_features(target_name, model_type):
     model_path = f'results/train_ml_models/models/{model_type}_{target_name}.joblib'
     model = joblib.load(model_path)
     logging.info(f"Loaded model from {model_path}")
-    original_data = pd.read_csv('results/extract/interface_data.csv')
+    original_data = pd.read_csv('results/extract/extracted_data.csv')
     non_feature_cols = ['lid', 'x', 'y', 'z', 'IntSRHn', 'IntSRHp', 'BulkSRHn', 'BulkSRHp']
     feature_names = [col for col in original_data.columns if col not in non_feature_cols]
     return model, feature_names
@@ -188,10 +189,13 @@ def validate_predictions_all_models():
     
     return all_metrics
 
-def write_predictions_to_file(all_predictions, experimental_values, filename='results/predict/predicted_values.txt'):
+def write_predictions_to_file(feature_names, all_predictions, experimental_values, filename='results/predict/predicted_values.txt'):
     """Write predictions, errors, and percent accuracy for each model and target to a file."""
     with open(filename, 'w') as f:
         f.write("Predicted Interface Recombination Values\n")
+        f.write("=====================================\n\n")
+        f.write("Features\n\n")
+        f.write(f'{feature_names}\n')
         f.write("=====================================\n\n")
         for target in ['IntSRHn', 'IntSRHp']:
             f.write(f"\n{target} Predictions:\n")
@@ -263,46 +267,9 @@ def plot_predictions(predictions, experimental_values, save_dir='results/predict
     logging.info(f"Prediction plots saved to {save_dir}/prediction_comparison.png")
 
 def example_usage():
-    # Example data for prediction
-    example_data = pd.DataFrame({
-        'p': [1.297e+18],
-        'n': [9.18056e+23],
-        'cation': [1.41364e+19],
-        'anion': [2.37984e+22],
-        'phip': [-4.1167],
-        'phin': [-3.30357],
-        'mun': [0.0001],
-        'mup': [0.0001],
-        'Ec': [-3.28135],
-        'Ev': [-4.48135],
-        'Jp': [3.27136],
-        'Jn': [-18.3825],
-        'Gfree': [1.27696e+28],
-        'G_ehp': [1.27696e+28],
-        'Jint': [-15.1111],
-        'Vext': [-0.05],
-        'Evac': [1.21865],
-        'ntb': [9.99081e+20],
-        'V': [-0.61865],
-        'Rdir': [1.19422e+25],
-        'NA': [3.16e+20],
-        'left_mu_n': [1e-06],
-        'right_mu_n': [0.0001],
-        'left_eps_r': [5],
-        'right_eps_r': [24],
-        'left_mu_p': [1e-09],
-        'right_mu_p': [0.0001],
-        'left_L': [2.5e-08],
-        'right_L': [5e-07],
-        'left_E_c': [4],
-        'right_E_c': [3.9],
-        'left_E_v': [5.9],
-        'right_E_v': [5.53],
-        'left_N_t_int': [4e+12],
-        'right_N_t_int': [1e+12],
-        'left_N_c': [5e+26],
-        'right_N_c': [2.2e+24]
-    })
+    # Get the example data and experimental values
+    example_data, experimental_values = create_example_data()
+    feature_names = example_data.columns.tolist()
     
     # Dictionary to store all predictions
     all_predictions = {}
@@ -319,14 +286,8 @@ def example_usage():
             pred_col = f'predicted_{target}_{model_type}'
             all_predictions[target][model_type] = result[pred_col].iloc[0]
     
-    # Define experimental values for comparison
-    experimental_values = {
-        'IntSRHn': 2.56097E+29,  # experimental value
-        'IntSRHp': 1.24002E+27   # experimental value
-    }
-    
     # Write predictions to file
-    write_predictions_to_file(all_predictions, experimental_values)
+    write_predictions_to_file(feature_names, all_predictions, experimental_values)
     
     # Create and save plots
     plot_predictions(all_predictions, experimental_values)
@@ -343,22 +304,5 @@ def example_usage():
     accuracy_IntSRHp = (1 - abs(all_predictions['IntSRHp']['RandomForest'] - experimental_values['IntSRHp']) / experimental_values['IntSRHp']) * 100
     logging.info(f"Accuracy for IntSRHp: {accuracy_IntSRHp:.2f}%")
     
-    # # Add accuracy percentages to the file
-    # with open(f'{log_dir}/predicted_values.txt', 'a') as f:
-    #     f.write(f"\nAccuracy for IntSRHn: {accuracy_IntSRHn:.2f}%\n")
-    #     f.write(f"Accuracy for IntSRHp: {accuracy_IntSRHp:.2f}%\n")
-    #     f.write(f"Model: RandomForest\n")
-    #     f.write(f"Predicted IntSRHn: {all_predictions['IntSRHn']['RandomForest']:.6E}\n")
-    #     f.write(f"Error: {abs(all_predictions['IntSRHn']['RandomForest'] - experimental_values['IntSRHn']):.6E}\n")
-    #     f.write(f"Accuracy: {accuracy_IntSRHn:.2f}%\n")
-    #     f.write(f"Model: GradientBoosting\n")
-    #     f.write(f"Predicted IntSRHn: {all_predictions['IntSRHn']['GradientBoosting']:.6E}\n")
-    #     f.write(f"Error: {abs(all_predictions['IntSRHn']['GradientBoosting'] - experimental_values['IntSRHn']):.6E}\n")
-    #     f.write(f"Accuracy: {accuracy_IntSRHn:.2f}%\n")
-    #     f.write(f"Model: LinearRegression\n")
-    #     f.write(f"Predicted IntSRHn: {all_predictions['IntSRHn']['LinearRegression']:.6E}\n")
-    #     f.write(f"Error: {abs(all_predictions['IntSRHn']['LinearRegression'] - experimental_values['IntSRHn']):.6E}\n")
-    #     f.write(f"Accuracy: {accuracy_IntSRHn:.2f}%\n")
-
 if __name__ == "__main__":
     example_usage() 

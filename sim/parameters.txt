@@ -8,8 +8,8 @@ E_c = [3.7, 4.0, 3, False]
 E_v = [5.7, 5.9, 3, False]
 N_D = [1E20, 1E21, 3, True]
 N_A = [1E20, 1E21, 3, True]
-# N_t_int = [1E10, 1E11, 3, True]
-# E_t_int = [3.8, 5.2, 3, False]
+N_t_int = [1E10, 1E11, 3, True]
+E_t_int = [3.8, 5.2, 3, False]
 
 # Layer 2 (MAPI) parameters
 Layer 2
@@ -27,5 +27,5 @@ E_c = [3.4, 3.6, 3, False]
 E_v = [5.3, 5.5, 3, False]
 N_D = [1E20, 1E21, 3, True]
 N_A = [1E20, 1E21, 3, True]
-# N_t_int = [1E10, 1E11, 3, True]
-# E_t_int = [3.5, 5.2, 3, false]
+N_t_int = [1E10, 1E11, 3, True]
+E_t_int = [3.5, 5.2, 3, False]

@@ -11,7 +11,7 @@ myML/
 ├── results/             # Output results
 │   ├── predict/        # Prediction outputs
 │   └── visualize/      # Visualization outputs
-├── extract_interface_data.py    # Extract interface data from simulations
+├── extracted_data.py    # Extract interface data from simulations
 ├── prepare_ml_data.py          # Prepare data for ML training
 ├── train_ml_models.py          # Train ML models
 ├── predict.py                  # Make predictions with trained models
@@ -42,7 +42,7 @@ myML/
 Run the interface data extraction script:
 
 ```bash
-python extract_interface_data.py
+python extracted_data.py
 ```
 
 This script:
@@ -50,7 +50,7 @@ This script:
 -   Reads simulation data from the `data/` directory
 -   Extracts interface-related parameters
 -   Handles missing values by padding with zeros
--   Saves processed data to `interface_data_padded.csv`
+-   Saves processed data to `interface_extracted_data.csv`
 
 ### 3. Prepare Data for Machine Learning
 
@@ -197,7 +197,7 @@ myML/
 │   ├── simulation_setup.txt  # Simulation configuration
 │   └── generate_simulations.py # Script to generate and run simulations
 ├── scripts/                  # Machine learning and analysis scripts
-│   ├── extract_interface_data.py    # Extract interface data from simulation results
+│   ├── extracted_data.py    # Extract interface data from simulation results
 │   ├── prepare_ml_data.py          # Prepare and preprocess data for ML models
 │   ├── train_ml_models.py          # Train and evaluate ML models
 │   ├── visualize_model_comparison.py # Visualize and compare model performance
@@ -275,7 +275,7 @@ The script will:
 
 The project includes a complete ML pipeline for analyzing simulation results:
 
-1. **Data Extraction** (`extract_interface_data.py`):
+1. **Data Extraction** (`extracted_data.py`):
 
     - Extracts interface data from simulation results
     - Processes raw simulation outputs
