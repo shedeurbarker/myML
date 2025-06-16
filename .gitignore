@@ -46,7 +46,6 @@ sim/simulations/*
 # Generated data files
 *.npy
 *.csv
-*.txt
 
 # Results directory (but keep the directory structure)
 results/*
@@ -56,4 +55,5 @@ results/*
 *.log
 
 # Backup files
-helper_files/backups/ 
+helper_files/
+helper_files/backups/*
