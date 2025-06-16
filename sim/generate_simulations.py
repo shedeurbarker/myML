@@ -296,26 +296,7 @@ def main():
     # Create combined CSV file path in results/generate
     combined_csv_path = os.path.join(results_dir, 'combined_output.csv')
     
-    # Handle existing combined_output.csv
-    # if os.path.exists(combined_csv_path):
-    #     print("\ncombined_output.csv already exists. Choose an option:")
-    #     print("1. Append to existing file")
-    #     print("2. Create new file with timestamp")
-    #     print("3. Overwrite existing file")
-    #     choice = input("Enter your choice (1-3): ").strip()
-        
-    #     if choice == "2":
-    #         # Create new file with timestamp
-    #         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    #         combined_csv_path = os.path.join(results_dir, f'combined_output_{timestamp}.csv')
-    #         logging.info(f"Creating new file: {combined_csv_path}")
-    #     elif choice == "3":
-    #         # Overwrite existing file
-    #         logging.info(f"Overwriting existing file: {combined_csv_path}")
-    #     else:
-    #         # Default to append
-    #         logging.info(f"Appending to existing file: {combined_csv_path}")
-    
+   
     # Generate parameter combinations
     param_combinations = generate_parameter_combinations()
     total_sims = len(param_combinations)

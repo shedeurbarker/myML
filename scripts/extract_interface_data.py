@@ -33,6 +33,10 @@ all_params = [
     'L', 'eps_r', 'E_c', 'E_v', 'N_c', 'mu_n', 'mu_p',
     'N_t_int', 'C_n_int', 'C_p_int', 'E_t_int'
 ]
+# all_params = [
+#     'L', 'eps_r', 'E_c', 'E_v', 'N_c', 'mu_n', 'mu_p',
+#     'N_t_int', 'C_n_int', 'C_p_int', 'E_t_int'
+# ]
 
 def extract_params(filename: Optional[Path]) -> Dict[str, Any]:
     """

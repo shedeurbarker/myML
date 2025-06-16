@@ -13,7 +13,7 @@ from datetime import datetime
 
 
 # Set up logging
-log_dir = 'results/train_ml_models/logs'
+log_dir = 'results/train_ml_models'
 scatter_plot = 'results/train_ml_models/scatter_plot'
 residual_plot = 'results/train_ml_models/residual_plot'
 importance_plot = 'results/train_ml_models/importance_plot'
@@ -42,14 +42,9 @@ X_test = np.load('results/prepare_ml_data/X_test.npy')
 y_train = np.load('results/prepare_ml_data/y_train.npy')
 y_test = np.load('results/prepare_ml_data/y_test.npy')
 
-# Load the original data to get feature names
-logging.info("Loading original data to get feature names...")
-original_data = pd.read_csv('results/extract/interface_data.csv')
-
-# Get feature names (excluding target variables and other non-feature columns)
-# Use the same exclusion list as in prepare_ml_data.py
-non_feature_cols = ['lid', 'x', 'y', 'z', 'IntSRHn', 'IntSRHp', 'BulkSRHn', 'BulkSRHp']
-feature_names = [col for col in original_data.columns if col not in non_feature_cols]
+# Load feature names from scripts/feature_names.npy
+feature_names = np.load('scripts/feature_names.npy')
+logging.info(f"Loaded feature names from scripts/feature_names.npy")
 
 # Verify the number of features matches the training data
 logging.info(f"Number of features: {len(feature_names)}")
@@ -67,6 +62,13 @@ for name in feature_names:
 
 # Define target variable names
 target_names = ['IntSRHn', 'IntSRHp']
+
+# After loading y_train and y_test
+logging.info(f"First 5 rows of y_train (log space):\n{y_train[:5]}")
+logging.info(f"First 5 rows of y_test (log space):\n{y_test[:5]}")
+
+# Use feature_names in the script
+X = X_train
 
 # Function to evaluate and plot model performance
 def evaluate_model(y_true, y_pred, target_name, model_name):
@@ -113,6 +115,10 @@ def train_and_evaluate_model(model, model_name, X_train, X_test, y_train, y_test
     
     # Make predictions
     y_pred = model.predict(X_test)
+    
+    # Debug: Show first 5 predictions in log space and original space
+    logging.info(f"First 5 predictions for {model_name} ({target_names[target_idx]}) in log space: {y_pred[:5]}")
+    logging.info(f"First 5 predictions for {model_name} ({target_names[target_idx]}) in original space: {np.power(10, y_pred[:5])}")
     
     # Evaluate the model
     metrics = evaluate_model(y_test[:, target_idx], y_pred, target_names[target_idx], model_name)
@@ -195,7 +201,7 @@ for target_idx, target_name in enumerate(target_names):
     
     # Plot top 40 features
     plt.figure(figsize=(15, 10))  # Increased figure size to accommodate more features
-    sns.barplot(x='Importance', y='Feature', data=feature_importance.head(20))
+    sns.barplot(x='Importance', y='Feature', data=feature_importance.head(25))
     plt.title(f'Top 20 Features for {target_name} (Random Forest)')
     plt.tight_layout()
     plt.savefig(f'{importance_plot}/{target_name}_feature_importance.png')
@@ -205,6 +211,20 @@ for target_idx, target_name in enumerate(target_names):
     csv_path = f'{importance_plot}/{target_name}_feature_importance.csv'
     feature_importance.to_csv(csv_path, index=False)
     logging.info(f"Feature importance data saved to {csv_path}")
+
+    # Log the contents of the feature_importance DataFrame
+    logging.info("Feature Importance DataFrame:")
+    logging.info(feature_importance)
+
+    # Log top 25 important features for IntSRHn
+    logging.info("Top 25 important features for IntSRHn:")
+    for feature, importance in zip(feature_names, rf_model.feature_importances_):
+        logging.info(f"{feature}: {importance}")
+
+    # Log top 25 important features for IntSRHp
+    logging.info("Top 25 important features for IntSRHp:")
+    for feature, importance in zip(feature_names, rf_model.feature_importances_):
+        logging.info(f"{feature}: {importance}")
 
 logging.info("\nTraining and evaluation complete!")
 logging.info("Models saved in the 'models' directory")
