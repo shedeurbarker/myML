@@ -47,7 +47,7 @@ def main():
     # List of scripts to run in order
     scripts = [
         'scripts/create_feature_names.py',
-        'sim/generate_simulations.py',
+#        'sim/generate_simulations.py',
         'scripts/extract_data.py',
         'scripts/prepare_data.py',
         'scripts/train_models.py',
