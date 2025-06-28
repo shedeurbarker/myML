@@ -1,5 +1,4 @@
 import pandas as pd
-import re
 import logging
 from typing import Dict, List, Optional, Any
 from pathlib import Path
@@ -22,52 +21,54 @@ SIM_DIR = Path('results/generate')
 var_file = SIM_DIR / 'combined_output.csv'
 out_padded = 'results/extract/extracted_data.csv'
 
-layer_files = {
-    1: Path('sim/L1_parameters.txt'),
-    2: Path('sim/L2_parameters.txt'),
-    3: Path('sim/L3_parameters.txt')
+# Layer parameter mapping - these are the parameters available in the combined CSV
+layer_params = {
+    'L': 'L',           # Layer thickness
+    'E_c': 'E_c',       # Conduction band energy
+    'E_v': 'E_v',       # Valence band energy
+    'N_A': 'N_A',       # Acceptor concentration
+    'N_D': 'N_D'        # Donor concentration
 }
 
-# List of parameters to extract from each layer
-all_params = [
-    'L', 'eps_r', 'E_c', 'E_v', 'N_c', 'mu_n', 'mu_p',
-    'N_t_int', 'C_n_int', 'C_p_int', 'E_t_int'
-]
-# all_params = [
-#     'L', 'eps_r', 'E_c', 'E_v', 'N_c', 'mu_n', 'mu_p',
-#     'N_t_int', 'C_n_int', 'C_p_int', 'E_t_int'
-# ]
-
-def extract_params(filename: Optional[Path]) -> Dict[str, Any]:
+def get_interface_parameters(row: pd.Series, lid: int) -> Dict[str, float]:
     """
-    Extract parameters from a layer parameter file.
+    Extract left and right layer parameters for an interface based on layer ID.
     
     Args:
-        filename: Path to the parameter file
+        row: DataFrame row containing layer parameters
+        lid: Layer ID (1, 2, or 3)
         
     Returns:
-        Dictionary containing extracted parameters
+        Dictionary with left and right parameters for the interface
     """
-    params = {k: 0.0 for k in all_params}  # Initialize with 0.0 instead of None
-    if filename is None or not filename.exists():
-        logging.warning(f"Parameter file not found: {filename}")
-        return params
-        
-    try:
-        with open(filename) as f:
-            for line in f:
-                for key in all_params:
-                    if re.match(rf'\s*{key}\s*=', line):
-                        val = line.split('=')[1].split()[0]
-                        try:
-                            params[key] = float(val)
-                        except ValueError:
-                            params[key] = 0.0  # Use 0.0 instead of the string value
-                            logging.warning(f"Could not convert {key}={val} to float in {filename}, using 0.0 instead")
-    except Exception as e:
-        logging.error(f"Error reading {filename}: {str(e)}")
+    interface_params = {}
     
-    return params
+    # For interface at layer boundary, left layer is lid-1, right layer is lid
+    left_layer = lid - 1
+    right_layer = lid
+    
+    # Extract parameters for left layer (if it exists)
+    if left_layer >= 1:
+        for param_name, csv_param in layer_params.items():
+            csv_col = f'L{left_layer}_{csv_param}'
+            if csv_col in row:
+                interface_params[f'left_{param_name}'] = row[csv_col]
+            else:
+                interface_params[f'left_{param_name}'] = 0.0
+    else:
+        # No left layer (interface at first layer)
+        for param_name in layer_params.keys():
+            interface_params[f'left_{param_name}'] = 0.0
+    
+    # Extract parameters for right layer
+    for param_name, csv_param in layer_params.items():
+        csv_col = f'L{right_layer}_{csv_param}'
+        if csv_col in row:
+            interface_params[f'right_{param_name}'] = row[csv_col]
+        else:
+            interface_params[f'right_{param_name}'] = 0.0
+    
+    return interface_params
 
 def main():
     try:
@@ -75,35 +76,30 @@ def main():
         if not var_file.exists():
             raise FileNotFoundError(f"Input file not found: {var_file}")
 
-        # Read the data with optimized settings
+        # Read the combined CSV data
         logging.info(f"Reading data from {var_file}")
-        df = pd.read_csv(
-            var_file,
-            sep=r'\s+',  # Using regex pattern for whitespace instead of delim_whitespace
-            on_bad_lines='skip',
-            dtype={'lid': 'int32'}  # Optimize memory usage
-        )
+        df = pd.read_csv(var_file, dtype={'lid': 'int32'})
 
-        # Find interface indices more efficiently
+        # Find interface indices (where layer ID changes)
         interface_indices = df.index[df['lid'].diff() != 0].tolist()
         interface_df = df.iloc[interface_indices].copy()
 
-        # Build padded rows using list comprehension for better performance
+        logging.info(f"Found {len(interface_df)} interface data points")
+
+        # Process interface data
         logging.info("Processing interface data")
         rows = []
         for _, row in interface_df.iterrows():
             lid = int(row['lid'])
-            left_params = extract_params(layer_files.get(lid - 1)) if lid > 1 else {k: 0.0 for k in all_params}
-            right_params = extract_params(layer_files.get(lid))
             
-            # Use dictionary comprehension for better performance
-            left_params = {f'left_{k}': left_params.get(k, 0.0) for k in all_params}
-            right_params = {f'right_{k}': right_params.get(k, 0.0) for k in all_params}
+            # Get interface parameters from the existing layer data in CSV
+            interface_params = get_interface_parameters(row, lid)
             
-            combined = {**row.to_dict(), **left_params, **right_params}
+            # Combine original row data with interface parameters
+            combined = {**row.to_dict(), **interface_params}
             rows.append(combined)
 
-        # Create DataFrame more efficiently
+        # Create DataFrame
         final_df = pd.DataFrame(rows)
         
         # Fill any remaining NaN values with 0
@@ -112,18 +108,23 @@ def main():
         # Filter out rows where IntSRHp or IntSRHn are exactly zero
         initial_rows = len(final_df)
         final_df = final_df[
-            (final_df['IntSRHn'] != 0) |  # Keep any non-zero value, including very small numbers
+            (final_df['IntSRHn'] != 0) |  # Keep any non-zero value
             (final_df['IntSRHp'] != 0)
         ]
         filtered_rows = initial_rows - len(final_df)
         
-        # Save with optimized settings
+        # Save the extracted interface data
         logging.info(f"Saving data to {out_padded}")
         final_df.to_csv(out_padded, index=False, float_format='%.6g')
         
         logging.info(f"Successfully extracted {len(final_df)} interface grid points")
         logging.info(f"Filtered out {filtered_rows} rows with zero IntSRHn and IntSRHp values")
         logging.info(f"Output saved to {out_padded}")
+        
+        # Log some statistics about the extracted data
+        if len(final_df) > 0:
+            logging.info(f"Interface parameters extracted: {list(layer_params.keys())}")
+            logging.info(f"Sample interface data columns: {list(final_df.columns[-10:])}")  # Last 10 columns
         
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}", exc_info=True)
