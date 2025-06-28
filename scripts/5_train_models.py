@@ -216,13 +216,13 @@ for target_idx, target_name in enumerate(target_names):
     logging.info("Feature Importance DataFrame:")
     logging.info(feature_importance)
 
-    # Log top 25 important features for IntSRHn
-    logging.info("Top 25 important features for IntSRHn:")
+    # Log top 20 important features for IntSRHn
+    logging.info("Top 20 important features for IntSRHn:")
     for feature, importance in zip(feature_names, rf_model.feature_importances_):
         logging.info(f"{feature}: {importance}")
 
-    # Log top 25 important features for IntSRHp
-    logging.info("Top 25 important features for IntSRHp:")
+    # Log top 20 important features for IntSRHp
+    logging.info("Top 20 important features for IntSRHp:")
     for feature, importance in zip(feature_names, rf_model.feature_importances_):
         logging.info(f"{feature}: {importance}")
 
