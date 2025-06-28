@@ -46,11 +46,11 @@ def main():
     
     # List of scripts to run in order
     scripts = [
-#         'scripts/1_create_feature_names.py',
-# #        'sim/2_generate_simulations.py',
-#         'scripts/3_extract_data.py',
-#         'scripts/4_prepare_data.py',
-#        'scripts/5_train_models.py',
+        'scripts/1_create_feature_names.py',
+        'scripts/2_generate_simulations.py',
+        'scripts/3_extract_data.py',
+        'scripts/4_prepare_data.py',
+        'scripts/5_train_models.py',
         'scripts/create_example_data.py',
         'scripts/7_predict.py',
         'scripts/8_visualize_example.py'

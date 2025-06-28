@@ -7,15 +7,20 @@ import itertools
 import subprocess
 import json
 
+# Define base paths - updated for scripts folder location
+SCRIPT_DIR = os.path.dirname(__file__)  # scripts folder
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)  # project root
+SIM_DIR = os.path.join(PROJECT_ROOT, 'sim')  # sim folder
+RESULTS_DIR = os.path.join(PROJECT_ROOT, 'results', 'generate')
+
 # Configure logging
-results_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'results', 'generate')
-os.makedirs(results_dir, exist_ok=True)  # Ensure the results/generate directory exists
+os.makedirs(RESULTS_DIR, exist_ok=True)  # Ensure the results/generate directory exists
 
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler(os.path.join(results_dir, 'simulation.log')),
+        logging.FileHandler(os.path.join(RESULTS_DIR, 'simulation.log')),
         logging.StreamHandler()
     ]
 )
@@ -118,7 +123,8 @@ def update_layer_file(layer_file, param_values, layer_num):
 
 def create_simulation_directory(sim_id, param_values):
     """Create a directory for a simulation and copy necessary files."""
-    base_dir = os.path.join(os.path.dirname(__file__), 'simulations')
+    # Create simulations directory in sim folder
+    base_dir = os.path.join(SIM_DIR, 'simulations')
     os.makedirs(base_dir, exist_ok=True)
     
     # Find the next available simulation number
@@ -133,37 +139,47 @@ def create_simulation_directory(sim_id, param_values):
     os.makedirs(sim_dir, exist_ok=True)
     data_dir = os.path.join(sim_dir, 'Data')
     os.makedirs(data_dir, exist_ok=True)
+    
+    # Files to copy from sim directory
     files_to_copy = ['simss.exe', 'simulation_setup.txt', 'L1_parameters.txt', 'L2_parameters.txt', 'L3_parameters.txt']
     for file in files_to_copy:
-        source_path = os.path.join(os.path.dirname(__file__), file)
+        source_path = os.path.join(SIM_DIR, file)
         dest_path = os.path.join(sim_dir, file)
         try:
             shutil.copy2(source_path, dest_path)
             logging.info(f"Copied {file} to {sim_dir}")
         except Exception as e:
             logging.error(f"Failed to copy {file}: {e}")
+    
+    # Data files to copy from sim/Data directory
     data_files = [
         'nk_SiO2.txt', 'nk_ITO.txt', 'nk_PEDOT.txt', 'nk_Au.txt',
         'AM15G.txt', 'nk_PCBM.txt', 'nk_MAPI.txt'
     ]
     for file in data_files:
-        source_path = os.path.join(os.path.dirname(__file__), 'Data', file)
+        source_path = os.path.join(SIM_DIR, 'Data', file)
         dest_path = os.path.join(data_dir, file)
         try:
             shutil.copy2(source_path, dest_path)
             logging.info(f"Copied {file} to {data_dir}")
         except Exception as e:
             logging.error(f"Failed to copy data file {file}: {e}")
+    
     # Update each layer file with only its parameters
     for layer_num in [1, 2, 3]:
         update_layer_file(os.path.join(sim_dir, f"L{layer_num}_parameters.txt"), param_values, layer_num)
+    
     with open(os.path.join(sim_dir, 'parameters.json'), 'w') as f:
         json.dump(param_values, f, indent=4)
+    
     return sim_dir
 
 def run_simulation(sim_dir):
     """Run the simulation in the specified directory."""
     try:
+        # Store current directory
+        original_dir = os.getcwd()
+        
         # Change to simulation directory
         os.chdir(sim_dir)
         
@@ -174,7 +190,7 @@ def run_simulation(sim_dir):
                               check=False)
         
         # Change back to original directory
-        os.chdir(os.path.dirname(os.path.dirname(__file__)))
+        os.chdir(original_dir)
         
         # Consider return code 0, empty return code, and return code 95 (non-convergence) as success
         if result.returncode in [0, 95] or result.returncode is None:
@@ -183,13 +199,13 @@ def run_simulation(sim_dir):
             raise subprocess.CalledProcessError(result.returncode, './simss.exe', result.stdout, result.stderr)
     except Exception as e:
         # Change back to original directory in case of error
-        os.chdir(os.path.dirname(os.path.dirname(__file__)))
+        os.chdir(original_dir)
         raise e
 
 def generate_parameter_combinations():
     """Generate parameter combinations for simulations."""
-    # Parse parameters from file
-    params = parse_parameters(os.path.join(os.path.dirname(__file__), 'parameters.txt'))
+    # Parse parameters from file in sim directory
+    params = parse_parameters(os.path.join(SIM_DIR, 'parameters.txt'))
     layer_params = generate_parameter_values(params)
     
     # Calculate total possible combinations per layer
@@ -314,18 +330,16 @@ def extract_and_combine_data(sim_path, combined_csv_path, is_first_simulation, p
 
 def main():
     """Main function to generate and run simulations."""
-    # Create simulations directory
-    sim_dir = os.path.join(os.path.dirname(__file__), 'simulations')
+    # Create simulations directory in sim folder
+    sim_dir = os.path.join(SIM_DIR, 'simulations')
     os.makedirs(sim_dir, exist_ok=True)
     
     # Create results/generate directory
-    results_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'results', 'generate')
-    os.makedirs(results_dir, exist_ok=True)
+    os.makedirs(RESULTS_DIR, exist_ok=True)
     
     # Create combined CSV file path in results/generate
-    combined_csv_path = os.path.join(results_dir, 'combined_output.csv')
+    combined_csv_path = os.path.join(RESULTS_DIR, 'combined_output.csv')
     
-   
     # Generate parameter combinations
     param_combinations = generate_parameter_combinations()
     total_sims = len(param_combinations)
