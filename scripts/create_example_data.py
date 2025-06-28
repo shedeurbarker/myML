@@ -4,10 +4,10 @@ import numpy as np
 def create_example_data():
     # Read the first two rows of the CSV file
     file_path = 'results/extract/extracted_data.csv'
-    data = pd.read_csv(file_path, nrows=3)
+    data = pd.read_csv(file_path, nrows=55)
     
     # index to fetch the values
-    index = 1
+    index = 50
     print(data['IntSRHn'].values[index])
     print(data['IntSRHp'].values[index])
     
