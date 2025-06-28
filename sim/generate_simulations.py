@@ -21,7 +21,7 @@ logging.basicConfig(
 )
 
 # Maximum number of parameter combinations to generate
-MAX_COMBINATIONS = 5
+MAX_COMBINATIONS = 2
 
 def parse_parameters(param_file):
     """Parse parameters from file, organizing them by layer and making names unique per layer."""
@@ -252,8 +252,8 @@ def generate_parameter_combinations():
     
     return combinations
 
-def extract_and_combine_data(sim_path, combined_csv_path, is_first_simulation):
-    """Extract data from output_Var.dat and append to combined CSV file."""
+def extract_and_combine_data(sim_path, combined_csv_path, is_first_simulation, param_values):
+    """Extract data from output_Var.dat and append to combined CSV file with layer parameters."""
     var_file = os.path.join(sim_path, 'output_Var.dat')
     if not os.path.exists(var_file):
         logging.warning(f"No output_Var.dat found in {sim_path}")
@@ -268,18 +268,47 @@ def extract_and_combine_data(sim_path, combined_csv_path, is_first_simulation):
             return
 
         file_exists = os.path.exists(combined_csv_path)
-        # Only write header if file does not exist, always skip header when appending
-        if file_exists:
-            data_lines = lines[1:]
-            mode = 'a'
+        
+        # Always separate header from data lines
+        header_line = lines[0].strip()
+        data_lines = lines[1:]  # Skip header for all cases
+        
+        # Add layer parameters to each data line
+        modified_lines = []
+        for line in data_lines:
+            line = line.strip()
+            if line:  # Skip empty lines
+                # Split the space-separated line and convert to comma-separated
+                values = line.split()
+                csv_line = ','.join(values)
+                
+                # Add layer parameters as additional columns
+                param_values_list = [f"{param_values.get(param, 'N/A')}" for param in sorted(param_values.keys())]
+                param_str = ','.join(param_values_list)
+                modified_line = f"{csv_line},{param_str}\n"
+                modified_lines.append(modified_line)
+
+        # If this is the first simulation, create the header with parameter names
+        if not file_exists:
+            # Convert space-separated header to comma-separated
+            header_values = header_line.split()
+            csv_header = ','.join(header_values)
+            
+            # Add parameter names to header
+            param_names = ','.join(sorted(param_values.keys()))
+            new_header = f"{csv_header},{param_names}\n"
+            
+            # Write header first, then data
+            with open(combined_csv_path, 'w') as f:
+                f.write(new_header)
+                f.writelines(modified_lines)
         else:
-            data_lines = lines
-            mode = 'w'
+            # Append data only (no header)
+            with open(combined_csv_path, 'a') as f:
+                f.writelines(modified_lines)
 
-        with open(combined_csv_path, mode) as f:
-            f.writelines(data_lines)
-
-        logging.info(f"Successfully combined data from {sim_path}")
+        logging.info(f"Successfully combined data from {sim_path} with layer parameters")
+        logging.info(f"Added {len(sorted(param_values.keys()))} layer parameters: {list(sorted(param_values.keys()))}")
     except Exception as e:
         logging.error(f"Error combining data from {sim_path}: {str(e)}")
 
@@ -328,7 +357,7 @@ def main():
                 
                 # Extract and combine data
                 is_first_simulation = (i == 1)
-                extract_and_combine_data(sim_path, combined_csv_path, is_first_simulation)
+                extract_and_combine_data(sim_path, combined_csv_path, is_first_simulation, params)
             else:
                 failed += 1
                 logging.error(f"Simulation {i} failed with return code {result.returncode}")
