@@ -26,7 +26,7 @@ logging.basicConfig(
 )
 
 # Maximum number of parameter combinations to generate
-MAX_COMBINATIONS = 2
+MAX_COMBINATIONS = 100
 
 def parse_parameters(param_file):
     """Parse parameters from file, organizing them by layer and making names unique per layer."""
