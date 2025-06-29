@@ -11,7 +11,7 @@ feature_names = [
     'Ev',        # hole energy
     'NA',        # acceptor concentration
     'ND',        # donor concentration
-    'V',         # voltage
+    #'V',         # voltage
     'Vext',      # external voltage
     
     # Interface parameters (available in extracted data)

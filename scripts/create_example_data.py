@@ -6,8 +6,8 @@ def create_example_data():
     file_path = 'results/extract/extracted_data.csv'
     data = pd.read_csv(file_path, nrows=55)
     
-    # index to fetch the values
-    index = 50
+    # index to fetch the values - choose a random index
+    index = np.random.randint(3, len(data))
     print(data['IntSRHn'].values[index])
     print(data['IntSRHp'].values[index])
     

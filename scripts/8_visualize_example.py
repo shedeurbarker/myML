@@ -11,6 +11,11 @@ from matplotlib.transforms import Affine2D
 import logging
 import os
 from datetime import datetime
+import sys
+
+# Add current directory to path for imports
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from ml_models import ML_MODEL_NAMES
 
 # Set up logging
 log_dir = 'results/visualize'
@@ -64,7 +69,7 @@ def load_metrics_from_csv():
         metrics[target] = {}
         target_data = metrics_df[metrics_df['Target'] == target]
         
-        for model in ['RandomForest', 'GradientBoosting', 'LinearRegression']:
+        for model in ML_MODEL_NAMES:
             model_data = target_data[target_data['Model'] == model].iloc[0]
             metrics[target][model] = {
                 'Mean Accuracy': model_data['Mean_Accuracy'],
@@ -92,7 +97,7 @@ def create_model_comparison_plots():
     # 1. Bar plots for Mean Accuracy
     ax1 = plt.subplot(2, 1, 1)
     for target in ['IntSRHn', 'IntSRHp']:
-        accuracies = [metrics[target][model]['Mean Accuracy'] for model in ['RandomForest', 'GradientBoosting', 'LinearRegression']]
+        accuracies = [metrics[target][model]['Mean Accuracy'] for model in ML_MODEL_NAMES]
         x = np.arange(len(accuracies))
         width = 0.35
         ax1.bar(x + (width if target == 'IntSRHp' else 0), accuracies, width, label=target)
@@ -100,13 +105,13 @@ def create_model_comparison_plots():
     ax1.set_ylabel('Mean Accuracy (%)')
     ax1.set_title('Mean Accuracy Comparison')
     ax1.set_xticks(x + width/2)
-    ax1.set_xticklabels(['Random Forest', 'Gradient Boosting', 'Linear Regression'])
+    ax1.set_xticklabels([m.replace('RandomForest', 'Random Forest').replace('GradientBoosting', 'Gradient Boosting').replace('LinearRegression', 'Linear Regression') for m in ML_MODEL_NAMES])
     ax1.legend()
     
     # 2. Bar plots for R² scores
     ax2 = plt.subplot(2, 1, 2)
     for target in ['IntSRHn', 'IntSRHp']:
-        r2_scores = [metrics[target][model]['R²'] for model in ['RandomForest', 'GradientBoosting', 'LinearRegression']]
+        r2_scores = [metrics[target][model]['R²'] for model in ML_MODEL_NAMES]
         x = np.arange(len(r2_scores))
         width = 0.35
         ax2.bar(x + (width if target == 'IntSRHp' else 0), r2_scores, width, label=target)
@@ -114,7 +119,7 @@ def create_model_comparison_plots():
     ax2.set_ylabel('R² Score')
     ax2.set_title('R² Score Comparison')
     ax2.set_xticks(x + width/2)
-    ax2.set_xticklabels(['Random Forest', 'Gradient Boosting', 'Linear Regression'])
+    ax2.set_xticklabels([m.replace('RandomForest', 'Random Forest').replace('GradientBoosting', 'Gradient Boosting').replace('LinearRegression', 'Linear Regression') for m in ML_MODEL_NAMES])
     ax2.legend()
     
     # Register radar projection before using it
@@ -123,7 +128,7 @@ def create_model_comparison_plots():
         labels = ['Mean Accuracy', 'Median Accuracy', 'Within 90%', 'Within 80%', 'Within 70%', 'R²']
         # 3. Radar chart for IntSRHn
         #ax3 = plt.subplot(2, 2, 3, projection='radar')
-        for model in ['RandomForest', 'GradientBoosting', 'LinearRegression']:
+        for model in ML_MODEL_NAMES:
             values = [metrics['IntSRHn'][model][label] for label in labels]
     except Exception as e:
         logging.warning(f"Radar plots could not be generated: {e}")
@@ -142,7 +147,7 @@ def create_model_comparison_plots():
         x = np.arange(len(metrics_to_plot))
         width = 0.25
         
-        for i, model in enumerate(['RandomForest', 'GradientBoosting', 'LinearRegression']):
+        for i, model in enumerate(ML_MODEL_NAMES):
             values = [metrics[target][model][m] for m in metrics_to_plot]
             ax1.bar(x + i*width, values, width, label=model)
         
@@ -153,8 +158,8 @@ def create_model_comparison_plots():
         ax1.legend()
         
         # Bar plot for R²
-        r2_values = [metrics[target][model]['R²'] for model in ['RandomForest', 'GradientBoosting', 'LinearRegression']]
-        ax2.bar(['Random Forest', 'Gradient Boosting', 'Linear Regression'], r2_values)
+        r2_values = [metrics[target][model]['R²'] for model in ML_MODEL_NAMES]
+        ax2.bar([m.replace('RandomForest', 'Random Forest').replace('GradientBoosting', 'Gradient Boosting').replace('LinearRegression', 'Linear Regression') for m in ML_MODEL_NAMES], r2_values)
         ax2.set_ylabel('R² Score')
         ax2.set_title(f'{target} - R² Scores')
         

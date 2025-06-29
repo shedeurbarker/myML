@@ -10,6 +10,11 @@ import joblib
 import os
 import logging
 from datetime import datetime
+import sys
+
+# Add current directory to path for imports
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from ml_models import ML_MODELS, ML_MODEL_NAMES
 
 
 # Set up logging
@@ -130,13 +135,6 @@ def train_and_evaluate_model(model, model_name, X_train, X_test, y_train, y_test
     
     return model, metrics
 
-# Define models to train
-models = {
-    'RandomForest': RandomForestRegressor(n_estimators=100, random_state=42),
-    'GradientBoosting': GradientBoostingRegressor(n_estimators=100, random_state=42),
-    'LinearRegression': LinearRegression()
-}
-
 # Train and evaluate models for each target variable
 results = {}
 
@@ -147,7 +145,8 @@ for target_idx, target_name in enumerate(target_names):
     
     target_results = {}
     
-    for model_name, model in models.items():
+    for model_name in ML_MODEL_NAMES:
+        model = ML_MODELS[model_name]
         logging.info(f"\nTraining {model_name} for {target_name}...")
         trained_model, metrics = train_and_evaluate_model(
             model, model_name, X_train, X_test, y_train, y_test, target_idx

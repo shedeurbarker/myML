@@ -51,7 +51,6 @@ def main():
         'scripts/3_extract_data.py',
         'scripts/4_prepare_data.py',
         'scripts/5_train_models.py',
-        'scripts/create_example_data.py',
         'scripts/7_predict.py',
         'scripts/8_visualize_example.py'
     ]
