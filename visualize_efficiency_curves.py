@@ -12,7 +12,7 @@ sns.set_palette("husl")
 
 # Load the ML-ready data
 print("Loading ML-ready data...")
-df = pd.read_csv('results/extract/ml_ready_data.csv')
+df = pd.read_csv('results/extract/extracted_data.csv')
 
 print(f"Data shape: {df.shape}")
 

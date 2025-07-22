@@ -70,15 +70,21 @@ def load_metrics_from_csv():
         target_data = metrics_df[metrics_df['Target'] == target]
         
         for model in ML_MODEL_NAMES:
-            model_data = target_data[target_data['Model'] == model].iloc[0]
-            metrics[target][model] = {
-                'Mean Accuracy': model_data['Mean_Accuracy'],
-                'Median Accuracy': model_data['Median_Accuracy'],
-                'Within 90%': model_data['Within_90%'],
-                'Within 80%': model_data['Within_80%'],
-                'Within 70%': model_data['Within_70%'],
-                'R²': model_data['R²']
-            }
+            model_data = target_data[target_data['Model'] == model]
+            if len(model_data) > 0:
+                model_row = model_data.iloc[0]
+                metrics[target][model] = {
+                    'Mean Accuracy': model_row['Mean_Accuracy'],
+                    'Median Accuracy': model_row['Median_Accuracy'],
+                    'Within 90%': model_row['Within_90%'],
+                    'Within 80%': model_row['Within_80%'],
+                    'Within 70%': model_row['Within_70%'],
+                    'R²': model_row['R²']
+                }
+            else:
+                # Skip models that don't have data
+                logging.warning(f"No data found for model {model} and target {target}")
+                continue
     
     return metrics
 
@@ -96,8 +102,17 @@ def create_model_comparison_plots():
     
     # 1. Bar plots for Mean Accuracy
     ax1 = plt.subplot(2, 1, 1)
+    available_models = []
     for target in ['IntSRHn', 'IntSRHp']:
-        accuracies = [metrics[target][model]['Mean Accuracy'] for model in ML_MODEL_NAMES]
+        accuracies = []
+        for model in ML_MODEL_NAMES:
+            if model in metrics[target]:
+                accuracies.append(metrics[target][model]['Mean Accuracy'])
+                if target == 'IntSRHn':  # Only add models once
+                    available_models.append(model)
+            else:
+                accuracies.append(0)  # Use 0 for missing models
+        
         x = np.arange(len(ML_MODEL_NAMES))
         width = 0.35
         
@@ -117,7 +132,13 @@ def create_model_comparison_plots():
     # 2. Bar plots for R² Score
     ax2 = plt.subplot(2, 1, 2)
     for target in ['IntSRHn', 'IntSRHp']:
-        r2_scores = [metrics[target][model]['R²'] for model in ML_MODEL_NAMES]
+        r2_scores = []
+        for model in ML_MODEL_NAMES:
+            if model in metrics[target]:
+                r2_scores.append(metrics[target][model]['R²'])
+            else:
+                r2_scores.append(0)  # Use 0 for missing models
+        
         x = np.arange(len(ML_MODEL_NAMES))
         width = 0.35
         
@@ -156,9 +177,10 @@ def create_radar_charts(metrics):
         ax = plt.subplot(1, 1, 1, projection='radar')
         
         # Plot data for each model
-        colors = plt.cm.Set3(np.linspace(0, 1, len(ML_MODEL_NAMES)))
+        available_models = [model for model in ML_MODEL_NAMES if model in metrics[target]]
+        colors = plt.cm.Set3(np.linspace(0, 1, len(available_models)))
         
-        for i, model in enumerate(ML_MODEL_NAMES):
+        for i, model in enumerate(available_models):
             values = [metrics[target][model][metric] for metric in radar_metrics]
             ax.plot(theta, values, 'o-', linewidth=2, label=model, color=colors[i])
             ax.fill(theta, values, alpha=0.1, color=colors[i])
@@ -179,9 +201,17 @@ def create_heatmap(metrics):
     
     # Create data matrix
     data = []
+    available_models = []
     for target in targets:
         for metric in metrics_list:
-            row = [metrics[target][model][metric] for model in ML_MODEL_NAMES]
+            row = []
+            for model in ML_MODEL_NAMES:
+                if model in metrics[target]:
+                    row.append(metrics[target][model][metric])
+                    if target == targets[0] and metric == metrics_list[0]:  # Only add models once
+                        available_models.append(model)
+                else:
+                    row.append(0)  # Use 0 for missing models
             data.append(row)
     
     data = np.array(data)

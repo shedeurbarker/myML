@@ -70,15 +70,21 @@ def load_metrics_from_csv():
         target_data = metrics_df[metrics_df['Target'] == target]
         
         for model in ML_MODEL_NAMES:
-            model_data = target_data[target_data['Model'] == model].iloc[0]
-            metrics[target][model] = {
-                'Mean Accuracy': model_data['Mean_Accuracy'],
-                'Median Accuracy': model_data['Median_Accuracy'],
-                'Within 90%': model_data['Within_90%'],
-                'Within 80%': model_data['Within_80%'],
-                'Within 70%': model_data['Within_70%'],
-                'R²': model_data['R²']
-            }
+            model_data = target_data[target_data['Model'] == model]
+            if len(model_data) > 0:
+                model_row = model_data.iloc[0]
+                metrics[target][model] = {
+                    'Mean Accuracy': model_row['Mean_Accuracy'],
+                    'Median Accuracy': model_row['Median_Accuracy'],
+                    'Within 90%': model_row['Within_90%'],
+                    'Within 80%': model_row['Within_80%'],
+                    'Within 70%': model_row['Within_70%'],
+                    'R²': model_row['R²']
+                }
+            else:
+                # Skip models that don't have data
+                logging.warning(f"No data found for model {model} and target {target}")
+                continue
     
     return metrics
 
@@ -97,7 +103,13 @@ def create_model_comparison_plots():
     # 1. Bar plots for Mean Accuracy
     ax1 = plt.subplot(2, 1, 1)
     for target in ['IntSRHn', 'IntSRHp']:
-        accuracies = [metrics[target][model]['Mean Accuracy'] for model in ML_MODEL_NAMES]
+        accuracies = []
+        for model in ML_MODEL_NAMES:
+            if model in metrics[target]:
+                accuracies.append(metrics[target][model]['Mean Accuracy'])
+            else:
+                accuracies.append(0)  # Use 0 for missing models
+        
         x = np.arange(len(accuracies))
         width = 0.35
         ax1.bar(x + (width if target == 'IntSRHp' else 0), accuracies, width, label=target)
@@ -111,7 +123,13 @@ def create_model_comparison_plots():
     # 2. Bar plots for R² scores
     ax2 = plt.subplot(2, 1, 2)
     for target in ['IntSRHn', 'IntSRHp']:
-        r2_scores = [metrics[target][model]['R²'] for model in ML_MODEL_NAMES]
+        r2_scores = []
+        for model in ML_MODEL_NAMES:
+            if model in metrics[target]:
+                r2_scores.append(metrics[target][model]['R²'])
+            else:
+                r2_scores.append(0)  # Use 0 for missing models
+        
         x = np.arange(len(r2_scores))
         width = 0.35
         ax2.bar(x + (width if target == 'IntSRHp' else 0), r2_scores, width, label=target)
@@ -129,7 +147,8 @@ def create_model_comparison_plots():
         # 3. Radar chart for IntSRHn
         #ax3 = plt.subplot(2, 2, 3, projection='radar')
         for model in ML_MODEL_NAMES:
-            values = [metrics['IntSRHn'][model][label] for label in labels]
+            if model in metrics['IntSRHn']:
+                values = [metrics['IntSRHn'][model][label] for label in labels]
     except Exception as e:
         logging.warning(f"Radar plots could not be generated: {e}")
     
@@ -148,8 +167,9 @@ def create_model_comparison_plots():
         width = 0.25
         
         for i, model in enumerate(ML_MODEL_NAMES):
-            values = [metrics[target][model][m] for m in metrics_to_plot]
-            ax1.bar(x + i*width, values, width, label=model)
+            if model in metrics[target]:
+                values = [metrics[target][model][m] for m in metrics_to_plot]
+                ax1.bar(x + i*width, values, width, label=model)
         
         ax1.set_ylabel('Percentage (%)')
         ax1.set_title(f'{target} - Accuracy Metrics')
@@ -158,10 +178,17 @@ def create_model_comparison_plots():
         ax1.legend()
         
         # Bar plot for R²
-        r2_values = [metrics[target][model]['R²'] for model in ML_MODEL_NAMES]
-        ax2.bar([m.replace('RandomForest', 'Random Forest').replace('GradientBoosting', 'Gradient Boosting').replace('LinearRegression', 'Linear Regression') for m in ML_MODEL_NAMES], r2_values)
-        ax2.set_ylabel('R² Score')
-        ax2.set_title(f'{target} - R² Scores')
+        r2_values = []
+        model_names = []
+        for model in ML_MODEL_NAMES:
+            if model in metrics[target]:
+                r2_values.append(metrics[target][model]['R²'])
+                model_names.append(model.replace('RandomForest', 'Random Forest').replace('GradientBoosting', 'Gradient Boosting').replace('LinearRegression', 'Linear Regression'))
+        
+        if r2_values:  # Only create plot if we have data
+            ax2.bar(model_names, r2_values)
+            ax2.set_ylabel('R² Score')
+            ax2.set_title(f'{target} - R² Scores')
         
         #plt.tight_layout()
         plt.savefig(f'results/visualize/{target}_comparison.png', dpi=300, bbox_inches='tight')
