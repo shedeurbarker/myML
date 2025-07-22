@@ -1,11 +1,11 @@
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
-#from sklearn.linear_model import LinearRegression  # Uncomment to enable
+from sklearn.linear_model import LinearRegression  # Uncomment to enable
 
 # Centralized model dictionary for the ML pipeline
 ML_MODELS = {
     'RandomForest': RandomForestRegressor(n_estimators=100, random_state=42),
     'GradientBoosting': GradientBoostingRegressor(n_estimators=100, random_state=42),
-    # 'LinearRegression': LinearRegression(),  # Uncomment to enable
+    'LinearRegression': LinearRegression(),
 }
 
 # Centralized model list for iteration order

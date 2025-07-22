@@ -4,29 +4,29 @@ import os
 import shutil
 from datetime import datetime
 
-def cleanup_previous_results():
-    """Delete previous results and simulation folders before starting new run."""
-    print(f"\n{'='*50}")
-    print("Cleaning up previous results...")
-    print(f"{'='*50}\n")
+# def cleanup_previous_results():
+#     """Delete previous results and simulation folders before starting new run."""
+#     print(f"\n{'='*50}")
+#     print("Cleaning up previous results...")
+#     print(f"{'='*50}\n")
     
     # Folders to delete
-    folders_to_delete = [
-        'results',
-        'sim/simulations'
-    ]
+    # folders_to_delete = [
+    #     'results',
+    #     'sim/simulations'
+    # ]
     
-    for folder in folders_to_delete:
-        if os.path.exists(folder):
-            try:
-                shutil.rmtree(folder)
-                print(f"✓ Deleted folder: {folder}")
-            except Exception as e:
-                print(f"✗ Error deleting {folder}: {e}")
-        else:
-            print(f"- Folder does not exist: {folder}")
+    # for folder in folders_to_delete:
+    #     if os.path.exists(folder):
+    #         try:
+    #             shutil.rmtree(folder)
+    #             print(f"✓ Deleted folder: {folder}")
+    #         except Exception as e:
+    #             print(f"✗ Error deleting {folder}: {e}")
+    #     else:
+    #         print(f"- Folder does not exist: {folder}")
     
-    print("\nCleanup completed!\n")
+    # print("\nCleanup completed!\n")
 
 def run_script(script_name):
     """Run a Python script and display its output in real-time."""
@@ -59,7 +59,7 @@ def run_script(script_name):
 
 def main():
     # Clean up previous results before starting
-    cleanup_previous_results()
+    # cleanup_previous_results()
     
     # Create logs directory if it doesn't exist
     os.makedirs('logs', exist_ok=True)
@@ -74,7 +74,7 @@ def main():
     
     # List of scripts to run in order
     scripts = [
-        'scripts/1_create_feature_names.py',
+        #'scripts/1_create_feature_names.py',
         #'scripts/2_generate_simulations.py',
         'scripts/3_extract_data.py',
         'scripts/4_prepare_data.py',
