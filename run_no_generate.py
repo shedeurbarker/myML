@@ -74,7 +74,7 @@ def main():
     
     # List of scripts to run in order
     scripts = [
-        #'scripts/1_create_feature_names.py',
+        'scripts/1_create_feature_names.py',
         #'scripts/2_generate_simulations.py',
         #'scripts/3_extract_data.py',
         'scripts/4_prepare_data.py',
