@@ -1,3 +1,41 @@
+"""
+===============================================================================
+GENERATE ENHANCED SIMULATIONS
+===============================================================================
+
+PURPOSE:
+This script generates parameter combinations, creates simulation directories, and runs physics-based simulations for solar cell optimization. 
+It automates the setup and execution of multiple simulation runs based on parameter grids or random sampling.
+
+WHAT THIS SCRIPT DOES:
+1. Reads parameter ranges from sim/parameters.txt
+2. Generates all (or a random subset of) parameter combinations for each device layer
+3. Creates a new directory for each simulation in sim/simulations/
+4. Copies required input files and sets up simulation folders
+5. Runs the simulation executable (simss.exe) for each parameter set
+6. Logs the status and results of each simulation run
+
+IMPORTANT:
+- This script DOES NOT extract or combine simulation results.
+- To extract device parameters, efficiency metrics, and recombination data, run scripts/3_extract_simulation_data.py after all simulations are complete.
+
+INPUT FILES:
+- sim/parameters.txt (parameter ranges)
+- sim/simulation_setup.txt, L1_parameters.txt, L2_parameters.txt, L3_parameters.txt (simulation setup)
+- sim/Data/ (material property files)
+- sim/simss.exe (simulation executable)
+
+OUTPUT FILES:
+- sim/simulations/sim_XXXX/ (simulation output folders)
+- results/generate_enhanced/simulation_enhanced.log (log file)
+
+USAGE:
+python scripts/2_generate_simulations_enhanced.py
+
+AUTHOR: [ANTHONY BAKER]
+DATE: 2025
+===============================================================================
+"""
 import numpy as np
 import os
 import shutil
@@ -27,7 +65,7 @@ logging.basicConfig(
 )
 
 # Maximum number of parameter combinations to generate
-MAX_COMBINATIONS = 10
+MAX_COMBINATIONS = 10000
 
 def parse_parameters(param_file):
     """Parse parameters from file, organizing them by layer and making names unique per layer."""
@@ -191,99 +229,6 @@ def run_simulation(sim_dir):
         os.chdir(original_dir)
         raise e
 
-def extract_efficiency_metrics(sim_path):
-    """Extract efficiency metrics from simulation output files."""
-    efficiency_data = {}
-    
-    # Extract from output_scPars.dat
-    scpars_file = os.path.join(sim_path, 'output_scPars.dat')
-    if os.path.exists(scpars_file):
-        try:
-            with open(scpars_file, 'r') as f:
-                lines = f.readlines()
-                if len(lines) >= 2:
-                    header = lines[0].strip().split()
-                    values = lines[1].strip().split()
-                    
-                    for i, param in enumerate(header):
-                        if i < len(values):
-                            try:
-                                efficiency_data[param] = float(values[i])
-                            except ValueError:
-                                efficiency_data[param] = 0.0
-                                
-            logging.info(f"Extracted efficiency metrics: {efficiency_data}")
-        except Exception as e:
-            logging.error(f"Error extracting efficiency metrics: {e}")
-    
-    return efficiency_data
-
-def extract_recombination_data(sim_path):
-    """Extract IntSRHn recombination data from simulation output."""
-    recombination_data = {}
-    
-    # Extract from output_Var.dat
-    var_file = os.path.join(sim_path, 'output_Var.dat')
-    if os.path.exists(var_file):
-        try:
-            with open(var_file, 'r') as f:
-                lines = f.readlines()
-                
-            if len(lines) > 1:
-                # Find IntSRHn column
-                header = lines[0].strip().split()
-                intsrhn_col = None
-                for i, col in enumerate(header):
-                    if col == 'IntSRHn':
-                        intsrhn_col = i
-                        break
-                
-                if intsrhn_col is not None:
-                    # Calculate average IntSRHn across all data points
-                    intsrhn_values = []
-                    for line in lines[1:]:
-                        values = line.strip().split()
-                        if len(values) > intsrhn_col:
-                            try:
-                                intsrhn_values.append(float(values[intsrhn_col]))
-                            except ValueError:
-                                continue
-                    
-                    if intsrhn_values:
-                        recombination_data['IntSRHn_mean'] = np.mean(intsrhn_values)
-                        recombination_data['IntSRHn_std'] = np.std(intsrhn_values)
-                        recombination_data['IntSRHn_min'] = np.min(intsrhn_values)
-                        recombination_data['IntSRHn_max'] = np.max(intsrhn_values)
-                        
-            logging.info(f"Extracted recombination data: {recombination_data}")
-        except Exception as e:
-            logging.error(f"Error extracting recombination data: {e}")
-    
-    return recombination_data
-
-def extract_and_combine_enhanced_data(sim_path, combined_csv_path, is_first_simulation, param_values):
-    """Extract both efficiency and recombination data and combine with parameters."""
-    # Extract efficiency metrics
-    efficiency_metrics = extract_efficiency_metrics(sim_path)
-    
-    # Extract recombination data
-    recombination_data = extract_recombination_data(sim_path)
-    
-    # Combine all data
-    combined_data = {**param_values, **efficiency_metrics, **recombination_data}
-    
-    # Convert to DataFrame
-    df_row = pd.DataFrame([combined_data])
-    
-    # Save to CSV
-    if is_first_simulation:
-        df_row.to_csv(combined_csv_path, index=False)
-    else:
-        df_row.to_csv(combined_csv_path, mode='a', header=False, index=False)
-    
-    logging.info(f"Combined data saved: {len(combined_data)} parameters")
-    return combined_data
-
 def generate_parameter_combinations():
     """Generate parameter combinations for simulations."""
     # Parse parameters from file in sim directory
@@ -350,9 +295,6 @@ def main():
     # Create results/generate_enhanced directory
     os.makedirs(RESULTS_DIR, exist_ok=True)
     
-    # Create combined CSV file path in results/generate_enhanced
-    combined_csv_path = os.path.join(RESULTS_DIR, 'combined_output_with_efficiency.csv')
-    
     # Generate parameter combinations
     param_combinations = generate_parameter_combinations()
     total_sims = len(param_combinations)
@@ -380,19 +322,6 @@ def main():
                     logging.info(f"Simulation {i} completed with non-convergence (return code 95)")
                 else:
                     logging.info(f"Simulation {i} completed successfully")
-                
-                # Extract and combine enhanced data
-                is_first_simulation = (i == 1)
-                combined_data = extract_and_combine_enhanced_data(sim_path, combined_csv_path, is_first_simulation, params)
-                
-                # Log key metrics
-                if 'MPP' in combined_data and 'IntSRHn_mean' in combined_data:
-                    logging.info(f"Simulation {i} results:")
-                    logging.info(f"  - MPP: {combined_data['MPP']:.2f} W/m²")
-                    logging.info(f"  - IntSRHn: {combined_data['IntSRHn_mean']:.2e} A/m²")
-                    logging.info(f"  - Jsc: {combined_data.get('Jsc', 0):.2f} A/m²")
-                    logging.info(f"  - Voc: {combined_data.get('Voc', 0):.2f} V")
-                    logging.info(f"  - FF: {combined_data.get('FF', 0):.2f}")
             else:
                 failed += 1
                 logging.error(f"Simulation {i} failed with return code {result.returncode}")
@@ -407,21 +336,6 @@ def main():
     logging.info(f"Successful: {successful}")
     logging.info(f"Failed: {failed}")
     logging.info(f"Success rate: {(successful/total_sims)*100:.2f}%")
-    logging.info(f"Enhanced data saved to: {combined_csv_path}")
-    
-    # Load and analyze the combined data
-    if os.path.exists(combined_csv_path):
-        df = pd.read_csv(combined_csv_path)
-        logging.info(f"\nData Analysis:")
-        logging.info(f"Total data points: {len(df)}")
-        logging.info(f"Columns: {list(df.columns)}")
-        
-        # Analyze efficiency vs recombination
-        if 'MPP' in df.columns and 'IntSRHn_mean' in df.columns:
-            best_efficiency = df['MPP'].max()
-            best_recombination = df.loc[df['MPP'].idxmax(), 'IntSRHn_mean']
-            logging.info(f"Best efficiency: {best_efficiency:.2f} W/m²")
-            logging.info(f"Corresponding IntSRHn: {best_recombination:.2e} A/m²")
 
 if __name__ == "__main__":
     main() 

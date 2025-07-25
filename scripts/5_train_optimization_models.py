@@ -1,3 +1,47 @@
+"""
+Solar Cell Optimization Model Training Script
+============================================
+
+PURPOSE:
+--------
+Trains machine learning models for solar cell optimization using physics-based simulation data.
+Implements multi-target learning to predict efficiency, recombination rates, and optimal device parameters.
+
+MODELS TRAINED:
+---------------
+1. Efficiency Predictors: MPP, Jsc, Voc, FF from device parameters (4 models)
+2. Recombination Predictors: IntSRHn_mean, IntSRHn_std, IntSRHp_mean, IntSRHp_std, IntSRH_total, IntSRH_ratio (6 models)
+3. Optimal Recombination Analysis: Direct analysis of recombination-efficiency relationship
+
+ALGORITHMS:
+-----------
+- Random Forest Regressor (ensemble, robust)
+- Gradient Boosting Regressor (sequential boosting)
+- Linear Regression (baseline, interpretable)
+
+INPUT:
+------
+- ML-ready data: results/prepare_ml_data/X_full.csv, y_efficiency_full.csv, y_recombination_full.csv
+- Contains derived features and prepared targets for machine learning
+
+OUTPUT:
+-------
+- Models: results/train_optimization_models/models/ (~10 total models)
+- Analysis: results/train_optimization_models/optimal_recombination_analysis.json
+- Plots: results/train_optimization_models/plots/
+- Logs: results/train_optimization_models/optimization_training.log
+
+USAGE:
+------
+python scripts/5_train_optimization_models.py
+
+PREREQUISITES:
+--------------
+1. Run scripts/2_generate_simulations_enhanced.py
+2. Run scripts/3_extract_simulation_data.py
+3. Run scripts/4_prepare_ml_data.py
+"""
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -36,17 +80,31 @@ os.makedirs('results/train_optimization_models/models', exist_ok=True)
 os.makedirs('results/train_optimization_models/plots', exist_ok=True)
 
 def load_enhanced_data():
-    """Load the enhanced data with efficiency and recombination metrics."""
-    data_path = 'results/generate_enhanced/combined_output_with_efficiency.csv'
+    """Load the ML-ready data prepared by the prepare_ml_data script."""
+    # Load the full dataset prepared by script 4
+    X_path = 'results/prepare_ml_data/X_full.csv'
+    y_efficiency_path = 'results/prepare_ml_data/y_efficiency_full.csv'
+    y_recombination_path = 'results/prepare_ml_data/y_recombination_full.csv'
     
-    if not os.path.exists(data_path):
-        logging.error(f"Enhanced data not found at {data_path}")
-        logging.error("Please run scripts/2_generate_simulations_enhanced.py first")
-        raise FileNotFoundError(f"Enhanced data not found: {data_path}")
+    if not os.path.exists(X_path):
+        logging.error(f"ML data not found at {X_path}")
+        logging.error("Please run scripts/4_prepare_ml_data.py first")
+        raise FileNotFoundError(f"ML data not found: {X_path}")
     
-    df = pd.read_csv(data_path)
-    logging.info(f"Loaded enhanced data: {df.shape}")
-    logging.info(f"Columns: {list(df.columns)}")
+    # Load features and targets
+    X = pd.read_csv(X_path)
+    y_efficiency = pd.read_csv(y_efficiency_path) if os.path.exists(y_efficiency_path) else pd.DataFrame()
+    y_recombination = pd.read_csv(y_recombination_path) if os.path.exists(y_recombination_path) else pd.DataFrame()
+    
+    logging.info(f"Loaded ML data: X={X.shape}, y_efficiency={y_efficiency.shape}, y_recombination={y_recombination.shape}")
+    logging.info(f"Features: {list(X.columns)}")
+    
+    # Combine into a single dataframe for compatibility
+    df = X.copy()
+    for col in y_efficiency.columns:
+        df[col] = y_efficiency[col]
+    for col in y_recombination.columns:
+        df[col] = y_recombination[col]
     
     return df
 
@@ -54,27 +112,38 @@ def prepare_optimization_data(df):
     """Prepare data for optimization models."""
     logging.info("Preparing optimization data...")
     
-    # Define device parameters (features)
-    device_params = [col for col in df.columns if col.startswith('L') and '_' in col]
-    logging.info(f"Device parameters: {device_params}")
+    # Define all features (both primary and derived parameters)
+    # Exclude target columns and other performance metrics from features
+    target_columns = [
+        'MPP', 'Jsc', 'Voc', 'FF',  # Efficiency targets
+        'IntSRHn_mean', 'IntSRHn_std', 'IntSRHn_min', 'IntSRHn_max',  # Recombination targets
+        'PCE', 'IntSRHp_mean', 'IntSRHp_std', 'IntSRH_total', 'IntSRH_ratio'  # Other performance metrics
+    ]
+    all_features = [col for col in df.columns if col not in target_columns]
+    logging.info(f"All features: {all_features}")
+    logging.info(f"Total features: {len(all_features)}")
     
     # Define efficiency metrics (targets)
     efficiency_metrics = ['MPP', 'Jsc', 'Voc', 'FF']
     available_efficiency = [col for col in efficiency_metrics if col in df.columns]
     logging.info(f"Available efficiency metrics: {available_efficiency}")
     
-    # Define recombination metrics (targets)
-    recombination_metrics = ['IntSRHn_mean', 'IntSRHn_std', 'IntSRHn_min', 'IntSRHn_max']
+    # Define recombination metrics (targets) - ALL recombination metrics
+    recombination_metrics = [
+        'IntSRHn_mean', 'IntSRHn_std',  # Electron recombination
+        'IntSRHp_mean', 'IntSRHp_std',  # Hole recombination  
+        'IntSRH_total', 'IntSRH_ratio'   # Total and ratio
+    ]
     available_recombination = [col for col in recombination_metrics if col in df.columns]
     logging.info(f"Available recombination metrics: {available_recombination}")
     
     # Remove rows with missing data
-    required_cols = device_params + available_efficiency + available_recombination
+    required_cols = all_features + available_efficiency + available_recombination
     df_clean = df[required_cols].dropna()
     logging.info(f"Clean data shape: {df_clean.shape}")
     
     # Split features and targets
-    X = df_clean[device_params]
+    X = df_clean[all_features]
     y_efficiency = df_clean[available_efficiency]
     y_recombination = df_clean[available_recombination]
     
@@ -82,10 +151,10 @@ def prepare_optimization_data(df):
     logging.info(f"Efficiency targets: {y_efficiency.shape}")
     logging.info(f"Recombination targets: {y_recombination.shape}")
     
-    return X, y_efficiency, y_recombination, device_params
+    return X, y_efficiency, y_recombination, all_features
 
-def train_efficiency_predictor(X, y_efficiency, device_params):
-    """Train model to predict efficiency from device parameters."""
+def train_efficiency_predictor(X, y_efficiency, all_features):
+    """Train model to predict efficiency from all features (primary and derived)."""
     logging.info("\n=== Training Efficiency Predictor ===")
     
     # Handle small datasets
@@ -139,8 +208,8 @@ def train_efficiency_predictor(X, y_efficiency, device_params):
     
     return efficiency_models, efficiency_scalers
 
-def train_recombination_predictor(X, y_recombination, device_params):
-    """Train model to predict recombination from device parameters."""
+def train_recombination_predictor(X, y_recombination, all_features):
+    """Train model to predict recombination from all features (primary and derived)."""
     logging.info("\n=== Training Recombination Predictor ===")
     
     # Handle small datasets
@@ -194,116 +263,118 @@ def train_recombination_predictor(X, y_recombination, device_params):
     
     return recombination_models, recombination_scalers
 
-def train_inverse_optimizer(X, y_efficiency, device_params):
-    """Train inverse model to predict optimal device parameters from target efficiency."""
-    logging.info("\n=== Training Inverse Optimizer ===")
+def find_optimal_recombination_efficiency_relationship(X, y_efficiency, y_recombination):
+    """Find the optimal recombination rate that maximizes efficiency."""
+    logging.info("\n=== Finding Optimal Recombination-Efficiency Relationship ===")
     
-    # Find the best efficiency configuration for each target
-    inverse_models = {}
-    inverse_scalers = {}
+    # Combine efficiency and recombination data
+    combined_data = pd.concat([y_efficiency, y_recombination], axis=1)
     
-    for target in y_efficiency.columns:
-        logging.info(f"\nTraining inverse model for {target}...")
-        
-        # Find optimal configurations (top 10% efficiency)
-        efficiency_threshold = y_efficiency[target].quantile(0.9)
-        optimal_mask = y_efficiency[target] >= efficiency_threshold
-        
-        if optimal_mask.sum() < 10:
-            logging.warning(f"Too few optimal configurations for {target}, using top 10")
-            optimal_mask = y_efficiency[target] >= y_efficiency[target].quantile(0.9)
-        
-        X_optimal = X[optimal_mask]
-        y_optimal = y_efficiency[target][optimal_mask]
-        
-        logging.info(f"Optimal configurations for {target}: {len(X_optimal)} samples")
-        
-        # Skip inverse training if we have too few samples
-        if len(X_optimal) < 2:
-            logging.warning(f"Skipping inverse training for {target} - insufficient samples ({len(X_optimal)})")
-            continue
-        
-        # Train model to predict device parameters from efficiency
-        # We'll use the efficiency as an additional feature
-        X_with_efficiency = X_optimal.copy()
-        X_with_efficiency[f'target_{target}'] = y_optimal
-        
-        # For very small datasets, use all data for training
-        if len(X_with_efficiency) < 5:
-            X_train, X_test = X_with_efficiency, X_with_efficiency
-            y_train, y_test = X_optimal, X_optimal
-        else:
-            # Split data
-            X_train, X_test, y_train, y_test = train_test_split(
-                X_with_efficiency, X_optimal, test_size=0.2, random_state=42
-            )
-        
-        # Scale features
-        scaler = StandardScaler()
-        X_train_scaled = scaler.fit_transform(X_train)
-        X_test_scaled = scaler.transform(X_test)
-        
-        # Train models for each device parameter
-        param_models = {}
-        for param in device_params:
-            models = {}
-            for model_name in ML_MODEL_NAMES:
-                model = ML_MODELS[model_name]
-                model.fit(X_train_scaled, y_train[param])
-                
-                # Evaluate
-                y_pred = model.predict(X_test_scaled)
-                r2 = r2_score(y_test[param], y_pred)
-                rmse = np.sqrt(mean_squared_error(y_test[param], y_pred))
-                
-                models[model_name] = model
-            
-            # Save best model
-            best_model_name = max(models.keys(), key=lambda m: r2_score(y_test[param], models[m].predict(X_test_scaled)))
-            param_models[param] = models[best_model_name]
-            
-            # Save model
-            model_path = f'results/train_optimization_models/models/inverse_{target}_{param}.joblib'
-            joblib.dump(models[best_model_name], model_path)
-        
-        inverse_models[target] = param_models
-        inverse_scalers[target] = scaler
-        
-        logging.info(f"Saved inverse models for {target}")
+    # Find the configuration with maximum efficiency
+    max_efficiency_idx = combined_data['MPP'].idxmax()
+    max_efficiency = combined_data.loc[max_efficiency_idx, 'MPP']
     
-    return inverse_models, inverse_scalers
+    # Get recombination rates for maximum efficiency configuration
+    optimal_recombination_rates = {}
+    for col in y_recombination.columns:
+        optimal_recombination_rates[col] = combined_data.loc[max_efficiency_idx, col]
+    
+    logging.info(f"Maximum efficiency: {max_efficiency:.2f} W/m²")
+    logging.info(f"Optimal recombination rates:")
+    for metric, rate in optimal_recombination_rates.items():
+        logging.info(f"  {metric}: {rate:.2e}")
+    
+    # Analyze recombination-efficiency relationship
+    recombination_analysis = {}
+    for col in y_recombination.columns:
+        if col in combined_data.columns:
+            # Find correlation with efficiency
+            correlation = combined_data['MPP'].corr(combined_data[col])
+            recombination_analysis[col] = {
+                'correlation_with_efficiency': correlation,
+                'optimal_rate': optimal_recombination_rates.get(col, np.nan),
+                'min_rate': combined_data[col].min(),
+                'max_rate': combined_data[col].max(),
+                'mean_rate': combined_data[col].mean()
+            }
+    
+    # Save analysis results
+    analysis_path = 'results/train_optimization_models/optimal_recombination_analysis.json'
+    import json
+    with open(analysis_path, 'w') as f:
+        json.dump({
+            'max_efficiency': max_efficiency,
+            'optimal_recombination_rates': optimal_recombination_rates,
+            'recombination_analysis': recombination_analysis,
+            'analysis_date': datetime.now().isoformat()
+        }, f, indent=2, default=str)
+    
+    logging.info(f"Recombination analysis saved to: {analysis_path}")
+    
+    return optimal_recombination_rates, recombination_analysis
 
-def create_optimization_plots(df, efficiency_models, recombination_models):
-    """Create visualization plots for optimization analysis."""
+def create_optimization_plots(df, efficiency_models, recombination_models, X):
+    """Create visualization plots for optimization analysis with focus on recombination."""
     logging.info("\n=== Creating Optimization Plots ===")
     
     plots_dir = 'results/train_optimization_models/plots'
     os.makedirs(plots_dir, exist_ok=True)
     
-    # 1. Efficiency vs Recombination scatter plot
-    if 'MPP' in df.columns and 'IntSRHn_mean' in df.columns:
-        plt.figure(figsize=(10, 6))
-        plt.scatter(df['IntSRHn_mean'], df['MPP'], alpha=0.6)
-        plt.xlabel('IntSRHn (A/m²)')
-        plt.ylabel('MPP (W/m²)')
-        plt.title('Efficiency vs Electron Recombination Rate')
-        plt.xscale('log')
-        plt.grid(True, alpha=0.3)
-        plt.savefig(f'{plots_dir}/efficiency_vs_recombination.png', dpi=300, bbox_inches='tight')
-        plt.close()
+    # 1. Efficiency vs Recombination scatter plots (MULTIPLE)
+    recombination_metrics = ['IntSRHn_mean', 'IntSRHp_mean', 'IntSRH_total', 'IntSRH_ratio']
+    
+    fig, axes = plt.subplots(2, 2, figsize=(15, 12))
+    axes = axes.ravel()
+    
+    for i, metric in enumerate(recombination_metrics):
+        if metric in df.columns and 'MPP' in df.columns:
+            axes[i].scatter(df[metric], df['MPP'], alpha=0.6, color='blue')
+            axes[i].set_xlabel(f'{metric} (A/m²)')
+            axes[i].set_ylabel('MPP (W/m²)')
+            axes[i].set_title(f'Efficiency vs {metric}')
+            if metric != 'IntSRH_ratio':
+                axes[i].set_xscale('log')
+            axes[i].grid(True, alpha=0.3)
+            
+            # Find optimal recombination range
+            best_efficiency = df['MPP'].max()
+            optimal_recombination = df.loc[df['MPP'].idxmax(), metric]
+            logging.info(f"Best efficiency: {best_efficiency:.2f} W/m²")
+            logging.info(f"Optimal {metric}: {optimal_recombination:.2e}")
+    
+    plt.tight_layout()
+    plt.savefig(f'{plots_dir}/efficiency_vs_recombination_comprehensive.png', dpi=300, bbox_inches='tight')
+    plt.close()
+    
+    # 2. Recombination correlation analysis
+    if len([col for col in recombination_metrics if col in df.columns]) > 1:
+        recombination_cols = [col for col in recombination_metrics if col in df.columns]
+        recombination_data = df[recombination_cols]
         
-        # Find optimal recombination range
-        best_efficiency = df['MPP'].max()
-        optimal_recombination = df.loc[df['MPP'].idxmax(), 'IntSRHn_mean']
-        logging.info(f"Best efficiency: {best_efficiency:.2f} W/m²")
-        logging.info(f"Optimal IntSRHn: {optimal_recombination:.2e} A/m²")
+        plt.figure(figsize=(10, 8))
+        sns.heatmap(recombination_data.corr(), annot=True, cmap='coolwarm', center=0, 
+                    square=True, fmt='.2f', cbar_kws={'shrink': 0.8})
+        plt.title('Recombination Metrics Correlation Matrix')
+        plt.tight_layout()
+        plt.savefig(f'{plots_dir}/recombination_correlation.png', dpi=300, bbox_inches='tight')
+        plt.close()
     
     # 2. Feature importance for efficiency prediction
     if 'MPP' in efficiency_models:
         rf_model = efficiency_models['MPP']
         if hasattr(rf_model, 'feature_importances_'):
             importance = rf_model.feature_importances_
-            feature_names = [col for col in df.columns if col.startswith('L') and '_' in col]
+            
+            # Debug: Check if lengths match
+            logging.info(f"Feature importance length: {len(importance)}")
+            logging.info(f"X columns length: {len(X.columns)}")
+            
+            # Create generic feature names if lengths don't match
+            if len(importance) != len(X.columns):
+                logging.warning(f"Length mismatch! Creating generic feature names")
+                feature_names = [f'Feature_{i}' for i in range(len(importance))]
+            else:
+                feature_names = X.columns.tolist()
             
             # Create DataFrame for importance
             importance_df = pd.DataFrame({
@@ -323,7 +394,17 @@ def create_optimization_plots(df, efficiency_models, recombination_models):
         rf_model = recombination_models['IntSRHn_mean']
         if hasattr(rf_model, 'feature_importances_'):
             importance = rf_model.feature_importances_
-            feature_names = [col for col in df.columns if col.startswith('L') and '_' in col]
+            
+            # Debug: Check if lengths match
+            logging.info(f"Feature importance length: {len(importance)}")
+            logging.info(f"X columns length: {len(X.columns)}")
+            
+            # Create generic feature names if lengths don't match
+            if len(importance) != len(X.columns):
+                logging.warning(f"Length mismatch! Creating generic feature names")
+                feature_names = [f'Feature_{i}' for i in range(len(importance))]
+            else:
+                feature_names = X.columns.tolist()
             
             # Create DataFrame for importance
             importance_df = pd.DataFrame({
@@ -360,31 +441,32 @@ def main():
     df = load_enhanced_data()
     
     # Prepare data
-    X, y_efficiency, y_recombination, device_params = prepare_optimization_data(df)
+    X, y_efficiency, y_recombination, all_features = prepare_optimization_data(df)
     
     # Train efficiency predictor
-    efficiency_models, efficiency_scalers = train_efficiency_predictor(X, y_efficiency, device_params)
+    efficiency_models, efficiency_scalers = train_efficiency_predictor(X, y_efficiency, all_features)
     
     # Train recombination predictor
-    recombination_models, recombination_scalers = train_recombination_predictor(X, y_recombination, device_params)
+    recombination_models, recombination_scalers = train_recombination_predictor(X, y_recombination, all_features)
     
-    # Train inverse optimizer
-    inverse_models, inverse_scalers = train_inverse_optimizer(X, y_efficiency, device_params)
+    # Find optimal recombination-efficiency relationship (SIMPLIFIED!)
+    optimal_recombination_rates, recombination_analysis = find_optimal_recombination_efficiency_relationship(X, y_efficiency, y_recombination)
     
     # Create optimization plots
-    create_optimization_plots(df, efficiency_models, recombination_models)
+    create_optimization_plots(df, efficiency_models, recombination_models, X)
     
     # Save model metadata
     metadata = {
-        'device_params': device_params,
+        'all_features': all_features,
         'efficiency_targets': list(y_efficiency.columns),
         'recombination_targets': list(y_recombination.columns),
         'training_date': datetime.now().isoformat(),
         'data_shape': df.shape,
+        'optimal_recombination_rates': optimal_recombination_rates,
+        'recombination_analysis': recombination_analysis,
         'model_info': {
             'efficiency_models': list(efficiency_models.keys()),
-            'recombination_models': list(recombination_models.keys()),
-            'inverse_models': list(inverse_models.keys())
+            'recombination_models': list(recombination_models.keys())
         }
     }
     
@@ -400,7 +482,7 @@ def main():
     
     # Summary
     logging.info(f"\nSummary:")
-    logging.info(f"- Device parameters: {len(device_params)}")
+    logging.info(f"- All features: {len(all_features)}")
     logging.info(f"- Efficiency targets: {len(y_efficiency.columns)}")
     logging.info(f"- Recombination targets: {len(y_recombination.columns)}")
     logging.info(f"- Training samples: {len(X)}")
