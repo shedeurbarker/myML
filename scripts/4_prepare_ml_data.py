@@ -169,7 +169,18 @@ def handle_missing_values(df):
         if count > 0:
             logging.info(f"  {col}: {count} missing values")
     
-    # For numerical columns, fill with median
+    # Check for failed simulations (rows where ALL efficiency values are missing)
+    efficiency_cols = ['MPP', 'Jsc', 'Voc', 'FF', 'PCE']
+    failed_simulations = df[efficiency_cols].isnull().all(axis=1)
+    failed_count = failed_simulations.sum()
+    
+    if failed_count > 0:
+        logging.info(f"Found {failed_count} failed simulations (all efficiency values missing)")
+        logging.info("Removing failed simulation rows to preserve data quality")
+        df = df[~failed_simulations]
+        logging.info(f"Remaining data points after removing failed simulations: {len(df)}")
+    
+    # For remaining numerical columns with missing values, fill with median
     numerical_cols = df.select_dtypes(include=[np.number]).columns
     for col in numerical_cols:
         if df[col].isnull().sum() > 0:
@@ -177,46 +188,53 @@ def handle_missing_values(df):
             df[col].fillna(median_val, inplace=True)
             logging.info(f"Filled {col} with median: {median_val}")
     
-    # For categorical columns, fill with mode
-    categorical_cols = df.select_dtypes(include=['object']).columns
-    for col in categorical_cols:
-        if df[col].isnull().sum() > 0:
-            mode_val = df[col].mode().iloc[0] if len(df[col].mode()) > 0 else 'Unknown'
-            df[col].fillna(mode_val, inplace=True)
-            logging.info(f"Filled {col} with mode: {mode_val}")
-    
-    missing_after = df.isnull().sum().sum()
-    logging.info(f"Missing values after handling: {missing_after}")
+    # Count missing values after handling
+    missing_after = df.isnull().sum()
+    logging.info(f"Missing values after handling: {missing_after.sum()}")
     
     return df
 
 def remove_outliers(df, columns, method='iqr'):
-    """Remove outliers from specified columns."""
-    logging.info("Removing outliers...")
+    """Remove outliers from specified columns using a conservative approach."""
+    logging.info("Removing outliers using conservative approach...")
     
     original_count = len(df)
+    df_clean = df.copy()
+    
+    # Create a mask for outliers across all columns
+    outlier_mask = pd.Series([False] * len(df), index=df.index)
     
     for col in columns:
         if col not in df.columns:
             continue
             
         if method == 'iqr':
-            # IQR method
+            # Use a more conservative IQR method (2.5 instead of 1.5)
             Q1 = df[col].quantile(0.25)
             Q3 = df[col].quantile(0.75)
             IQR = Q3 - Q1
-            lower_bound = Q1 - 1.5 * IQR
-            upper_bound = Q3 + 1.5 * IQR
+            lower_bound = Q1 - 2.5 * IQR  # More conservative threshold
+            upper_bound = Q3 + 2.5 * IQR
             
-            # Remove outliers
-            df = df[(df[col] >= lower_bound) & (df[col] <= upper_bound)]
+            # Mark outliers for this column
+            col_outliers = (df[col] < lower_bound) | (df[col] > upper_bound)
+            outlier_mask = outlier_mask | col_outliers
             
-            removed = original_count - len(df)
-            if removed > 0:
-                logging.info(f"Removed {removed} outliers from {col}")
+            removed_count = col_outliers.sum()
+            if removed_count > 0:
+                logging.info(f"Marked {removed_count} outliers from {col}")
     
-    logging.info(f"Data points after outlier removal: {len(df)}")
-    return df
+    # Remove all outliers at once (not sequentially)
+    df_clean = df[~outlier_mask]
+    
+    total_removed = original_count - len(df_clean)
+    if total_removed > 0:
+        logging.info(f"Removed {total_removed} total outliers ({total_removed/original_count*100:.1f}% of data)")
+    else:
+        logging.info("No outliers removed")
+    
+    logging.info(f"Data points after outlier removal: {len(df_clean)}")
+    return df_clean
 
 def prepare_ml_datasets(df):
     """Prepare ML-ready datasets with train/test splits."""
@@ -358,6 +376,14 @@ def save_ml_datasets(datasets):
 
 def main():
     """Main function to prepare ML data."""
+    import argparse
+    
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='Prepare ML data for solar cell optimization')
+    parser.add_argument('--remove-outliers', action='store_true', 
+                       help='Enable outlier removal (disabled by default to preserve all data)')
+    args = parser.parse_args()
+    
     logging.info("Starting ML data preparation...")
     
     # Load extracted data
@@ -371,11 +397,14 @@ def main():
     # Handle missing values
     df = handle_missing_values(df)
     
-    # Remove outliers from efficiency and recombination targets
-    efficiency_cols = [col for col in df.columns if col in ['MPP', 'Jsc', 'Voc', 'FF', 'PCE']]
-    recombination_cols = [col for col in df.columns if 'IntSRH' in col]
-    
-    df = remove_outliers(df, efficiency_cols + recombination_cols)
+    # Remove outliers from efficiency and recombination targets (disabled by default)
+    if args.remove_outliers:
+        efficiency_cols = [col for col in df.columns if col in ['MPP', 'Jsc', 'Voc', 'FF', 'PCE']]
+        recombination_cols = [col for col in df.columns if 'IntSRH' in col]
+        
+        df = remove_outliers(df, efficiency_cols + recombination_cols)
+    else:
+        logging.info("Outlier removal disabled by default to preserve all data")
     
     # Prepare ML datasets
     datasets = prepare_ml_datasets(df)

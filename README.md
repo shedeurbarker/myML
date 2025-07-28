@@ -8,9 +8,11 @@ This project implements a **machine learning-driven optimization pipeline** to f
 
 -   **Enhanced Simulation Generation**: Captures both recombination rates and efficiency metrics
 -   **Multi-Target ML Models**: Predicts efficiency, recombination, and optimal parameters
+-   **SHAP Analysis**: Comprehensive feature importance analysis using SHAP values
 -   **Global Optimization**: Uses multiple optimization algorithms to find optimal configurations
 -   **Physics Validation**: Ensures results are physically meaningful
 -   **Comprehensive Reporting**: Generates detailed reports and visualizations
+-   **Advanced Visualization**: Dashboard showing optimization results and model performance
 
 ## Workflow Overview
 
@@ -69,12 +71,29 @@ python run_optimization_workflow.py
 
 This will run the entire optimization pipeline:
 
-1. Generate enhanced simulations
-2. Train optimization models
-3. Run optimization algorithms
-4. Generate reports and visualizations
+1. Define feature structure and parameter bounds
+2. Generate enhanced simulations
+3. Train optimization models
+4. Run optimization algorithms
+5. Generate reports and visualizations
 
-### 2. Important Note on PCE Calculation
+### 2. Run ML and Optimization Only
+
+```bash
+python run_ml_optimization_workflow.py
+```
+
+This runs only the ML and optimization portion (scripts 4-8), assuming data preparation is complete:
+
+1. Prepare ML data (derived features, cleaning, splits)
+2. Train optimization models (efficiency & recombination)
+3. Run optimization (find optimal device parameters)
+4. Make predictions (validate and predict)
+5. Visualize results (comprehensive dashboard)
+
+**Prerequisites:** Scripts 1-3 must be run first.
+
+### 3. Important Note on PCE Calculation
 
 The Power Conversion Efficiency (PCE) is calculated as:
 
@@ -84,9 +103,20 @@ PCE = (MPP / 1000 W/m²) × 100
 
 where MPP is the Maximum Power Point in W/m² and 1000 W/m² is the standard AM1.5G solar irradiance.
 
-### 2. Run Individual Steps
+### 4. Run Individual Steps
 
-#### Step 1: Generate Enhanced Simulations
+#### Step 1: Define Feature Structure
+
+```bash
+python scripts/1_create_feature_names.py
+```
+
+-   Defines all feature names and parameter bounds
+-   Reads bounds from `sim/parameters.txt` for consistency
+-   Creates centralized feature definitions for all scripts
+-   Output: `results/feature_definitions.json`
+
+#### Step 2: Generate Enhanced Simulations
 
 ```bash
 python scripts/2_generate_simulations_enhanced.py
@@ -96,7 +126,7 @@ python scripts/2_generate_simulations_enhanced.py
 -   **Does NOT extract or combine data** (see next step)
 -   Output: simulation result files in `sim/simulations/`
 
-#### Step 2: Extract Simulation Data
+#### Step 3: Extract Simulation Data
 
 ```bash
 python scripts/3_extract_simulation_data.py
@@ -106,7 +136,18 @@ python scripts/3_extract_simulation_data.py
 -   Combines all data into a single CSV for ML
 -   Output: `results/generate_enhanced/combined_output_with_efficiency.csv`
 
-#### Step 3: Train Optimization Models
+#### Step 4: Prepare ML Data
+
+```bash
+python scripts/4_prepare_ml_data.py
+```
+
+-   Creates derived features from primary parameters
+-   Handles missing values and outliers
+-   Prepares train/test splits for ML models
+-   Output: `results/prepare_ml_data/`
+
+#### Step 5: Train Optimization Models
 
 ```bash
 python scripts/5_train_optimization_models.py
@@ -114,10 +155,10 @@ python scripts/5_train_optimization_models.py
 
 -   Trains efficiency prediction models
 -   Trains recombination prediction models
--   Trains inverse optimization models
+-   Performs SHAP analysis for feature importance
 -   Output: `results/train_optimization_models/models/`
 
-#### Step 4: Run Optimization
+#### Step 6: Run Optimization
 
 ```bash
 python scripts/6_optimize_efficiency.py
@@ -127,6 +168,26 @@ python scripts/6_optimize_efficiency.py
 -   Predicts optimal recombination rates
 -   Validates results with physics constraints
 -   Output: `results/optimize_efficiency/reports/optimization_report.json`
+
+#### Step 7: Make Predictions
+
+```bash
+python scripts/7_predict.py
+```
+
+-   Makes predictions using trained optimization models
+-   Validates predictions against experimental data
+-   Output: `results/predict/`
+
+#### Step 8: Visualize Results
+
+```bash
+python scripts/8_visualize_example_fixed.py
+```
+
+-   Creates comprehensive dashboard of optimization results
+-   Shows model performance and feature importance
+-   Output: `results/visualize/`
 
 ## Output Files
 
@@ -144,6 +205,10 @@ python scripts/6_optimize_efficiency.py
     -   `efficiency_Jsc.joblib`: Predicts Jsc from device parameters
     -   `recombination_IntSRHn_mean.joblib`: Predicts recombination from device parameters
     -   `inverse_MPP_*.joblib`: Predicts optimal device parameters for target efficiency
+-   **SHAP Analysis**:
+    -   `shap_summary_efficiency.png`: SHAP summary plot for efficiency prediction
+    -   `shap_importance_efficiency.png`: Feature importance from SHAP analysis
+    -   `shap_values_efficiency.csv`: Raw SHAP values for further analysis
 
 ### Optimization Results
 
@@ -152,6 +217,16 @@ python scripts/6_optimize_efficiency.py
     -   `reports/optimization_report.json`: Comprehensive optimization results
     -   `plots/optimization_results.png`: Visualization of optimal parameters
     -   `plots/optimization_methods.png`: Comparison of optimization algorithms
+
+### Visualization Results
+
+-   **Location**: `results/visualize/`
+-   **Files**:
+    -   `comprehensive_dashboard.png`: Complete dashboard of all results
+    -   `optimal_parameters.png`: Visualization of optimal device parameters
+    -   `efficiency_vs_recombination_optimal.png`: Trade-off analysis
+    -   `model_performance_comparison.png`: Model performance metrics
+    -   `shap_importance_efficiency.png`: SHAP feature importance plots
 
 ## Key Insights
 

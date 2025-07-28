@@ -56,10 +56,32 @@ import os
 import logging
 from datetime import datetime
 import sys
+import json
+
+# SHAP for comprehensive feature importance analysis
+try:
+    import shap
+    SHAP_AVAILABLE = True
+    logging.info("SHAP library available for feature importance analysis")
+except ImportError:
+    SHAP_AVAILABLE = False
+    logging.warning("SHAP library not available. Install with: pip install shap")
 
 # Add current directory to path for imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from ml_models import ML_MODELS, ML_MODEL_NAMES
+
+# Define ML models and names directly
+ML_MODELS = {
+    'RandomForest': RandomForestRegressor(n_estimators=100, random_state=42),
+    'GradientBoosting': GradientBoostingRegressor(n_estimators=100, random_state=42),
+    'LinearRegression': LinearRegression()
+}
+
+ML_MODEL_NAMES = {
+    'RandomForest': 'Random Forest',
+    'GradientBoosting': 'Gradient Boosting', 
+    'LinearRegression': 'Linear Regression'
+}
 
 # Set up logging
 log_dir = 'results/train_optimization_models'
@@ -313,6 +335,296 @@ def find_optimal_recombination_efficiency_relationship(X, y_efficiency, y_recomb
     
     return optimal_recombination_rates, recombination_analysis
 
+def perform_shap_analysis(X, y_efficiency, y_recombination, efficiency_models, recombination_models, feature_names):
+    """Perform comprehensive SHAP analysis for feature importance with robust error handling."""
+    if not SHAP_AVAILABLE:
+        logging.warning("SHAP not available - skipping SHAP analysis")
+        return
+    
+    logging.info("Performing SHAP analysis with robust error handling...")
+    
+    plots_dir = 'results/train_optimization_models/plots'
+    os.makedirs(plots_dir, exist_ok=True)
+    
+    # Prepare data for SHAP - ensure no missing values and use smaller sample
+    X_clean = X.copy()
+    X_clean = X_clean.fillna(X_clean.median())
+    
+    # Use a smaller sample for SHAP to avoid memory/time issues
+    sample_size = min(1000, len(X_clean))
+    X_sample = X_clean.sample(n=sample_size, random_state=42)
+    logging.info(f"Using {sample_size} samples for SHAP analysis")
+    
+    # SHAP analysis for efficiency prediction
+    if efficiency_models and len(y_efficiency.columns) > 0:
+        logging.info("Performing SHAP analysis for efficiency prediction...")
+        
+        # Use the first efficiency target for SHAP analysis
+        target_col = y_efficiency.columns[0]
+        
+        # Find best model for SHAP (prefer Random Forest)
+        best_model = None
+        for model_name, model in efficiency_models.items():
+            if isinstance(model, RandomForestRegressor):
+                best_model = model
+                break
+        
+        if best_model is None and efficiency_models:
+            best_model = list(efficiency_models.values())[0]
+        
+        if best_model:
+            try:
+                logging.info(f"Using {type(best_model).__name__} for SHAP analysis")
+                
+                # Use a simpler SHAP approach
+                if isinstance(best_model, RandomForestRegressor):
+                    # For Random Forest, use TreeExplainer with background
+                    background = X_sample.sample(n=min(100, len(X_sample)), random_state=42)
+                    explainer = shap.TreeExplainer(best_model, background)
+                    shap_values = explainer.shap_values(X_sample)
+                else:
+                    # For other models, use a simpler approach
+                    explainer = shap.Explainer(best_model, X_sample)
+                    shap_values = explainer(X_sample)
+                    if hasattr(shap_values, 'values'):
+                        shap_values = shap_values.values
+                
+                # Create summary plot
+                plt.figure(figsize=(12, 8))
+                shap.summary_plot(shap_values, X_sample, feature_names=feature_names, show=False, max_display=20)
+                plt.title(f'SHAP Summary Plot - {target_col} Prediction')
+                plt.tight_layout()
+                plt.savefig(f'{plots_dir}/shap_summary_efficiency.png', dpi=300, bbox_inches='tight')
+                plt.close()
+                
+                # Create feature importance plot
+                plt.figure(figsize=(10, 8))
+                shap.summary_plot(shap_values, X_sample, feature_names=feature_names, plot_type="bar", show=False, max_display=20)
+                plt.title(f'SHAP Feature Importance - {target_col}')
+                plt.tight_layout()
+                plt.savefig(f'{plots_dir}/shap_importance_efficiency.png', dpi=300, bbox_inches='tight')
+                plt.close()
+                
+                # Save SHAP values
+                shap_values_df = pd.DataFrame(shap_values, columns=feature_names)
+                shap_values_df.to_csv(f'{plots_dir}/shap_values_efficiency.csv', index=False)
+                
+                logging.info(f"SHAP analysis completed for {target_col}")
+                
+            except Exception as e:
+                logging.error(f"SHAP analysis failed for efficiency: {e}")
+                logging.info("Continuing without SHAP analysis for efficiency")
+    
+    # SHAP analysis for recombination prediction
+    if recombination_models and len(y_recombination.columns) > 0:
+        logging.info("Performing SHAP analysis for recombination prediction...")
+        
+        # Use the first recombination target for SHAP analysis
+        target_col = y_recombination.columns[0]
+        
+        # Find best model for SHAP
+        best_model = None
+        for model_name, model in recombination_models.items():
+            if isinstance(model, RandomForestRegressor):
+                best_model = model
+                break
+        
+        if best_model is None and recombination_models:
+            best_model = list(recombination_models.values())[0]
+        
+        if best_model:
+            try:
+                logging.info(f"Using {type(best_model).__name__} for SHAP analysis")
+                
+                # Use a simpler SHAP approach
+                if isinstance(best_model, RandomForestRegressor):
+                    # For Random Forest, use TreeExplainer with background
+                    background = X_sample.sample(n=min(100, len(X_sample)), random_state=42)
+                    explainer = shap.TreeExplainer(best_model, background)
+                    shap_values = explainer.shap_values(X_sample)
+                else:
+                    # For other models, use a simpler approach
+                    explainer = shap.Explainer(best_model, X_sample)
+                    shap_values = explainer(X_sample)
+                    if hasattr(shap_values, 'values'):
+                        shap_values = shap_values.values
+                
+                # Create summary plot
+                plt.figure(figsize=(12, 8))
+                shap.summary_plot(shap_values, X_sample, feature_names=feature_names, show=False, max_display=20)
+                plt.title(f'SHAP Summary Plot - {target_col} Prediction')
+                plt.tight_layout()
+                plt.savefig(f'{plots_dir}/shap_summary_recombination.png', dpi=300, bbox_inches='tight')
+                plt.close()
+                
+                # Create feature importance plot
+                plt.figure(figsize=(10, 8))
+                shap.summary_plot(shap_values, X_sample, feature_names=feature_names, plot_type="bar", show=False, max_display=20)
+                plt.title(f'SHAP Feature Importance - {target_col}')
+                plt.tight_layout()
+                plt.savefig(f'{plots_dir}/shap_importance_recombination.png', dpi=300, bbox_inches='tight')
+                plt.close()
+                
+                # Save SHAP values
+                shap_values_df = pd.DataFrame(shap_values, columns=feature_names)
+                shap_values_df.to_csv(f'{plots_dir}/shap_values_recombination.csv', index=False)
+                
+                logging.info(f"SHAP analysis completed for {target_col}")
+                
+            except Exception as e:
+                logging.error(f"SHAP analysis failed for recombination: {e}")
+                logging.info("Continuing without SHAP analysis for recombination")
+    
+    logging.info("SHAP analysis completed")
+
+def create_optimal_recombination_visualizations(X, y_efficiency, y_recombination, optimal_recombination_rates, recombination_analysis):
+    """Create visualizations for optimal recombination analysis."""
+    logging.info("Creating optimal recombination visualizations...")
+    
+    plots_dir = 'results/train_optimization_models/plots'
+    os.makedirs(plots_dir, exist_ok=True)
+    
+    # Combine efficiency and recombination data
+    combined_data = pd.concat([y_efficiency, y_recombination], axis=1)
+    
+    # 1. Efficiency vs Recombination Scatter Plots
+    fig, axes = plt.subplots(2, 3, figsize=(18, 12))
+    fig.suptitle('Efficiency vs Recombination Rates Analysis', fontsize=16, fontweight='bold')
+    
+    recombination_cols = list(y_recombination.columns)
+    for i, col in enumerate(recombination_cols):
+        row = i // 3
+        col_idx = i % 3
+        ax = axes[row, col_idx]
+        
+        # Create scatter plot
+        scatter = ax.scatter(combined_data[col], combined_data['MPP'], 
+                           alpha=0.6, s=20, c=combined_data['MPP'], cmap='viridis')
+        
+        # Highlight optimal point
+        optimal_rate = optimal_recombination_rates[col]
+        max_efficiency = combined_data['MPP'].max()
+        ax.scatter(optimal_rate, max_efficiency, color='red', s=200, 
+                  marker='*', edgecolors='black', linewidth=2, label='Optimal Point')
+        
+        # Add correlation info
+        correlation = recombination_analysis[col]['correlation_with_efficiency']
+        ax.text(0.05, 0.95, f'Correlation: {correlation:.3f}', 
+               transform=ax.transAxes, bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8))
+        
+        ax.set_xlabel(f'{col}')
+        ax.set_ylabel('MPP (W/m²)')
+        ax.set_title(f'{col} vs Efficiency')
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    plt.savefig(f'{plots_dir}/efficiency_vs_recombination_scatter.png', dpi=300, bbox_inches='tight')
+    plt.close()
+    
+    # 2. Optimal Recombination Rates Bar Chart
+    fig, ax = plt.subplots(figsize=(12, 8))
+    
+    # Prepare data for plotting (use log scale for large values)
+    optimal_rates = list(optimal_recombination_rates.values())
+    rate_names = list(optimal_recombination_rates.keys())
+    
+    # Use log scale for better visualization
+    log_rates = np.log10([max(rate, 1e-30) for rate in optimal_rates])
+    
+    bars = ax.bar(range(len(rate_names)), log_rates, color='skyblue', alpha=0.7)
+    
+    # Highlight the optimal point for each metric
+    for i, (name, rate) in enumerate(optimal_recombination_rates.items()):
+        bars[i].set_color('lightcoral')
+    
+    ax.set_xlabel('Recombination Metrics')
+    ax.set_ylabel('Log10(Optimal Rate)')
+    ax.set_title('Optimal Recombination Rates for Maximum Efficiency')
+    ax.set_xticks(range(len(rate_names)))
+    ax.set_xticklabels(rate_names, rotation=45, ha='right')
+    ax.grid(True, alpha=0.3)
+    
+    # Add value labels on bars
+    for i, (bar, rate) in enumerate(zip(bars, optimal_rates)):
+        height = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width()/2., height + 0.1,
+               f'{rate:.2e}', ha='center', va='bottom', fontsize=8)
+    
+    plt.tight_layout()
+    plt.savefig(f'{plots_dir}/optimal_recombination_rates.png', dpi=300, bbox_inches='tight')
+    plt.close()
+    
+    # 3. Correlation Heatmap for Recombination vs Efficiency
+    fig, ax = plt.subplots(figsize=(10, 8))
+    
+    # Create correlation matrix
+    efficiency_cols = ['MPP', 'Jsc', 'Voc', 'FF']
+    available_efficiency = [col for col in efficiency_cols if col in combined_data.columns]
+    
+    correlation_matrix = combined_data[available_efficiency + recombination_cols].corr()
+    
+    # Create heatmap
+    im = ax.imshow(correlation_matrix, cmap='RdBu_r', vmin=-1, vmax=1, aspect='auto')
+    
+    # Add text annotations
+    for i in range(len(correlation_matrix.columns)):
+        for j in range(len(correlation_matrix.columns)):
+            text = ax.text(j, i, f'{correlation_matrix.iloc[i, j]:.2f}',
+                          ha="center", va="center", color="black", fontsize=8)
+    
+    ax.set_xticks(range(len(correlation_matrix.columns)))
+    ax.set_yticks(range(len(correlation_matrix.columns)))
+    ax.set_xticklabels(correlation_matrix.columns, rotation=45, ha='right')
+    ax.set_yticklabels(correlation_matrix.columns)
+    ax.set_title('Correlation Matrix: Efficiency vs Recombination Metrics')
+    
+    # Add colorbar
+    cbar = plt.colorbar(im, ax=ax)
+    cbar.set_label('Correlation Coefficient')
+    
+    plt.tight_layout()
+    plt.savefig(f'{plots_dir}/efficiency_recombination_correlation_heatmap.png', dpi=300, bbox_inches='tight')
+    plt.close()
+    
+    # 4. Recombination Rate Distributions
+    fig, axes = plt.subplots(2, 3, figsize=(18, 12))
+    fig.suptitle('Recombination Rate Distributions', fontsize=16, fontweight='bold')
+    
+    for i, col in enumerate(recombination_cols):
+        row = i // 3
+        col_idx = i % 3
+        ax = axes[row, col_idx]
+        
+        # Create histogram
+        ax.hist(combined_data[col], bins=50, alpha=0.7, color='lightblue', edgecolor='black')
+        
+        # Mark optimal point
+        optimal_rate = optimal_recombination_rates[col]
+        ax.axvline(optimal_rate, color='red', linestyle='--', linewidth=2, 
+                  label=f'Optimal: {optimal_rate:.2e}')
+        
+        # Add statistics
+        mean_rate = recombination_analysis[col]['mean_rate']
+        ax.axvline(mean_rate, color='green', linestyle=':', linewidth=2, 
+                  label=f'Mean: {mean_rate:.2e}')
+        
+        ax.set_xlabel(f'{col}')
+        ax.set_ylabel('Frequency')
+        ax.set_title(f'Distribution of {col}')
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+        
+        # Use log scale for x-axis if values are very large
+        if combined_data[col].max() > 1e10:
+            ax.set_xscale('log')
+    
+    plt.tight_layout()
+    plt.savefig(f'{plots_dir}/recombination_distributions.png', dpi=300, bbox_inches='tight')
+    plt.close()
+    
+    logging.info("Optimal recombination visualizations created successfully")
+
 def create_optimization_plots(df, efficiency_models, recombination_models, X):
     """Create visualization plots for optimization analysis with focus on recombination."""
     logging.info("\n=== Creating Optimization Plots ===")
@@ -437,55 +749,94 @@ def main():
     """Main function to train optimization models."""
     logging.info("Starting optimization model training...")
     
-    # Load enhanced data
-    df = load_enhanced_data()
+    # Clean up previous training results
+    training_dir = 'results/train_optimization_models'
+    if os.path.exists(training_dir):
+        import shutil
+        try:
+            shutil.rmtree(training_dir)
+            logging.info(f"Deleted previous training directory: {training_dir}")
+        except Exception as e:
+            logging.warning(f"Could not delete previous training directory: {e}")
     
-    # Prepare data
-    X, y_efficiency, y_recombination, all_features = prepare_optimization_data(df)
+    # Recreate directories
+    os.makedirs(training_dir, exist_ok=True)
+    os.makedirs('results/train_optimization_models/models', exist_ok=True)
+    os.makedirs('results/train_optimization_models/plots', exist_ok=True)
+    logging.info("Created fresh training directories")
     
-    # Train efficiency predictor
-    efficiency_models, efficiency_scalers = train_efficiency_predictor(X, y_efficiency, all_features)
-    
-    # Train recombination predictor
-    recombination_models, recombination_scalers = train_recombination_predictor(X, y_recombination, all_features)
-    
-    # Find optimal recombination-efficiency relationship (SIMPLIFIED!)
-    optimal_recombination_rates, recombination_analysis = find_optimal_recombination_efficiency_relationship(X, y_efficiency, y_recombination)
-    
-    # Create optimization plots
-    create_optimization_plots(df, efficiency_models, recombination_models, X)
-    
-    # Save model metadata
-    metadata = {
-        'all_features': all_features,
-        'efficiency_targets': list(y_efficiency.columns),
-        'recombination_targets': list(y_recombination.columns),
-        'training_date': datetime.now().isoformat(),
-        'data_shape': df.shape,
-        'optimal_recombination_rates': optimal_recombination_rates,
-        'recombination_analysis': recombination_analysis,
-        'model_info': {
-            'efficiency_models': list(efficiency_models.keys()),
-            'recombination_models': list(recombination_models.keys())
+    try:
+        # Load data
+        df = load_enhanced_data()
+        logging.info(f"Loaded data with shape: {df.shape}")
+        
+        # Prepare optimization data
+        X, y_efficiency, y_recombination, all_features = prepare_optimization_data(df)
+        logging.info(f"Prepared data - X: {X.shape}, y_efficiency: {y_efficiency.shape}, y_recombination: {y_recombination.shape}")
+        
+        # Train efficiency predictors
+        logging.info("\n=== Training Efficiency Predictors ===")
+        efficiency_models, efficiency_scalers = train_efficiency_predictor(X, y_efficiency, all_features)
+        logging.info(f"Trained {len(efficiency_models)} efficiency models")
+        
+        # Train recombination predictors
+        logging.info("\n=== Training Recombination Predictors ===")
+        recombination_models, recombination_scalers = train_recombination_predictor(X, y_recombination, all_features)
+        logging.info(f"Trained {len(recombination_models)} recombination models")
+        
+        # Find optimal recombination-efficiency relationship
+        logging.info("\n=== Finding Optimal Recombination-Efficiency Relationship ===")
+        optimal_recombination_rates, recombination_analysis = find_optimal_recombination_efficiency_relationship(X, y_efficiency, y_recombination)
+        
+        # Perform SHAP analysis
+        logging.info("\n=== Performing SHAP Analysis ===")
+        perform_shap_analysis(X, y_efficiency, y_recombination, efficiency_models, recombination_models, all_features)
+        
+        # Create optimal recombination visualizations
+        logging.info("\n=== Creating Optimal Recombination Visualizations ===")
+        create_optimal_recombination_visualizations(X, y_efficiency, y_recombination, optimal_recombination_rates, recombination_analysis)
+        
+        # Create optimization plots
+        logging.info("\n=== Creating Optimization Plots ===")
+        create_optimization_plots(df, efficiency_models, recombination_models, X)
+        
+        logging.info("\n=== Model Training Complete ===")
+        logging.info(f"Efficiency models saved: {len(efficiency_models)}")
+        logging.info(f"Recombination models saved: {len(recombination_models)}")
+        
+        # Save model metadata for script 6
+        metadata = {
+            'efficiency_targets': list(y_efficiency.columns),
+            'recombination_targets': list(y_recombination.columns),
+            'device_params': all_features,
+            'training_date': datetime.now().isoformat(),
+            'data_shape': df.shape,
+            'model_info': {
+                'efficiency_models': list(efficiency_models.keys()),
+                'recombination_models': list(recombination_models.keys())
+            }
         }
-    }
-    
-    metadata_path = 'results/train_optimization_models/models/metadata.json'
-    import json
-    with open(metadata_path, 'w') as f:
-        json.dump(metadata, f, indent=2)
-    
-    logging.info("\n=== Optimization Model Training Complete ===")
-    logging.info(f"Models saved to: results/train_optimization_models/models/")
-    logging.info(f"Plots saved to: results/train_optimization_models/plots/")
-    logging.info(f"Metadata saved to: {metadata_path}")
-    
-    # Summary
-    logging.info(f"\nSummary:")
-    logging.info(f"- All features: {len(all_features)}")
-    logging.info(f"- Efficiency targets: {len(y_efficiency.columns)}")
-    logging.info(f"- Recombination targets: {len(y_recombination.columns)}")
-    logging.info(f"- Training samples: {len(X)}")
+        
+        metadata_path = 'results/train_optimization_models/models/metadata.json'
+        with open(metadata_path, 'w') as f:
+            json.dump(metadata, f, indent=2)
+        
+        logging.info(f"Model metadata saved to: {metadata_path}")
+        
+        # Print summary
+        print("\n=== MODEL TRAINING SUMMARY ===")
+        print(f"Data points: {len(X)}")
+        print(f"Features: {len(all_features)}")
+        print(f"Efficiency targets: {len(y_efficiency.columns)}")
+        print(f"Recombination targets: {len(y_recombination.columns)}")
+        print(f"Models trained: {len(efficiency_models) + len(recombination_models)}")
+        print(f"Results saved to: results/train_optimization_models/")
+        
+    except Exception as e:
+        logging.error(f"Error in main function: {e}")
+        import traceback
+        logging.error(traceback.format_exc())
+        raise
 
 if __name__ == "__main__":
     main() 

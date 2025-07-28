@@ -132,37 +132,64 @@ def constraint_recombination(device_params, recombination_models, recombination_
         return -1e6  # Return negative value for failed predictions
 
 def get_parameter_bounds(metadata):
-    """Get parameter bounds for optimization."""
-    # Load original data to get parameter ranges
-    data_path = 'results/generate_enhanced/combined_output_with_efficiency.csv'
-    if os.path.exists(data_path):
-        df = pd.read_csv(data_path)
-        bounds = []
+    """Get parameter bounds for optimization from centralized feature definitions."""
+    try:
+        # Load bounds from script 1's output
+        with open('results/feature_definitions.json', 'r') as f:
+            feature_definitions = json.load(f)
         
-        for param in metadata['device_params']:
-            if param in df.columns:
-                min_val = df[param].min()
-                max_val = df[param].max()
-                bounds.append((min_val, max_val))
-            else:
-                # Default bounds if parameter not found
-                bounds.append((0.0, 1.0))
+        parameter_bounds = feature_definitions.get('parameter_bounds', {})
         
-        return bounds
-    else:
-        # Default bounds based on parameter types
+        # Create bounds list in the order of device_params
         bounds = []
         for param in metadata['device_params']:
-            if 'L' in param:  # Layer thickness
-                bounds.append((1e-9, 1e-6))  # 1 nm to 1 μm
-            elif 'E_' in param:  # Energy levels
-                bounds.append((1.0, 10.0))  # 1-10 eV
-            elif 'N_' in param:  # Doping concentrations
-                bounds.append((1e18, 1e22))  # 1e18 to 1e22 m⁻³
+            if param in parameter_bounds:
+                bounds.append(parameter_bounds[param])
             else:
-                bounds.append((0.0, 1.0))
+                # Fallback bounds if parameter not found
+                if 'L' in param:  # Layer thickness
+                    bounds.append((1e-9, 1e-6))  # 1 nm to 1 μm
+                elif 'E_' in param:  # Energy levels
+                    bounds.append((1.0, 10.0))  # 1-10 eV
+                elif 'N_' in param:  # Doping concentrations
+                    bounds.append((1e18, 1e22))  # 1e18 to 1e22 m⁻³
+                else:
+                    bounds.append((0.0, 1.0))
         
+        logging.info(f"Loaded {len(bounds)} parameter bounds from centralized feature definitions")
         return bounds
+        
+    except FileNotFoundError:
+        logging.warning("Feature definitions not found. Run script 1 first. Using fallback bounds.")
+        # Fallback to data-based bounds
+        data_path = 'results/generate_enhanced/combined_output_with_efficiency.csv'
+        if os.path.exists(data_path):
+            df = pd.read_csv(data_path)
+            bounds = []
+            
+            for param in metadata['device_params']:
+                if param in df.columns:
+                    min_val = df[param].min()
+                    max_val = df[param].max()
+                    bounds.append((min_val, max_val))
+                else:
+                    bounds.append((0.0, 1.0))
+            
+            return bounds
+        else:
+            # Final fallback bounds based on parameter types
+            bounds = []
+            for param in metadata['device_params']:
+                if 'L' in param:  # Layer thickness
+                    bounds.append((1e-9, 1e-6))  # 1 nm to 1 μm
+                elif 'E_' in param:  # Energy levels
+                    bounds.append((1.0, 10.0))  # 1-10 eV
+                elif 'N_' in param:  # Doping concentrations
+                    bounds.append((1e18, 1e22))  # 1e18 to 1e22 m⁻³
+                else:
+                    bounds.append((0.0, 1.0))
+            
+            return bounds
 
 def optimize_for_maximum_efficiency(efficiency_models, efficiency_scalers, 
                                   recombination_models, recombination_scalers,
@@ -310,7 +337,7 @@ def create_optimization_report(results, metadata):
     optimal_params = results['optimal_parameters']
     
     # Analyze layer thicknesses
-    thickness_params = [p for p in optimal_params.keys() if 'L' in p and 'L_' in p]
+    thickness_params = [p for p in optimal_params.keys() if p.endswith('_L')]
     for param in thickness_params:
         value = optimal_params[param]
         if 'L1' in param:  # PCBM layer
@@ -354,7 +381,7 @@ def create_optimization_report(results, metadata):
     return report
 
 def create_optimization_plots(results, metadata):
-    """Create visualization plots for optimization results."""
+    """Create visualization plots for optimization results with value labels."""
     logging.info("\n=== Creating Optimization Plots ===")
     
     plots_dir = 'results/optimize_efficiency/plots'
@@ -364,55 +391,84 @@ def create_optimization_plots(results, metadata):
     optimal_params = results['optimal_parameters']
     
     # Group parameters by type
-    thickness_params = [p for p in optimal_params.keys() if 'L' in p and 'L_' in p]
+    thickness_params = [p for p in optimal_params.keys() if p.endswith('_L')]
     energy_params = [p for p in optimal_params.keys() if 'E_' in p]
     doping_params = [p for p in optimal_params.keys() if 'N_' in p]
     
-    fig, axes = plt.subplots(2, 2, figsize=(15, 12))
+    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
     
     # Thickness parameters
     if thickness_params:
         thickness_values = [optimal_params[p] for p in thickness_params]
         thickness_labels = [p.replace('_', ' ') for p in thickness_params]
         
-        axes[0, 0].bar(range(len(thickness_params)), thickness_values)
+        bars = axes[0, 0].bar(range(len(thickness_params)), thickness_values, color='skyblue', alpha=0.7)
         axes[0, 0].set_xticks(range(len(thickness_params)))
-        axes[0, 0].set_xticklabels(thickness_labels, rotation=45)
+        axes[0, 0].set_xticklabels(thickness_labels, rotation=45, ha='right')
         axes[0, 0].set_ylabel('Thickness (m)')
         axes[0, 0].set_title('Optimal Layer Thicknesses')
         axes[0, 0].ticklabel_format(style='scientific', axis='y', scilimits=(0,0))
+        
+        # Add value labels on bars
+        for i, (bar, value) in enumerate(zip(bars, thickness_values)):
+            height = bar.get_height()
+            axes[0, 0].text(bar.get_x() + bar.get_width()/2., height + height*0.01,
+                           f'{value:.2e}', ha='center', va='bottom', fontsize=8, rotation=0)
     
     # Energy parameters
     if energy_params:
         energy_values = [optimal_params[p] for p in energy_params]
         energy_labels = [p.replace('_', ' ') for p in energy_params]
         
-        axes[0, 1].bar(range(len(energy_params)), energy_values)
+        bars = axes[0, 1].bar(range(len(energy_params)), energy_values, color='lightgreen', alpha=0.7)
         axes[0, 1].set_xticks(range(len(energy_params)))
-        axes[0, 1].set_xticklabels(energy_labels, rotation=45)
+        axes[0, 1].set_xticklabels(energy_labels, rotation=45, ha='right')
         axes[0, 1].set_ylabel('Energy (eV)')
         axes[0, 1].set_title('Optimal Energy Levels')
+        
+        # Add value labels on bars
+        for i, (bar, value) in enumerate(zip(bars, energy_values)):
+            height = bar.get_height()
+            axes[0, 1].text(bar.get_x() + bar.get_width()/2., height + height*0.01,
+                           f'{value:.3f}', ha='center', va='bottom', fontsize=8, rotation=0)
     
     # Doping parameters
     if doping_params:
         doping_values = [optimal_params[p] for p in doping_params]
         doping_labels = [p.replace('_', ' ') for p in doping_params]
         
-        axes[1, 0].bar(range(len(doping_params)), doping_values)
+        bars = axes[1, 0].bar(range(len(doping_params)), doping_values, color='lightcoral', alpha=0.7)
         axes[1, 0].set_xticks(range(len(doping_params)))
-        axes[1, 0].set_xticklabels(doping_labels, rotation=45)
-        axes[1, 0].set_ylabel('Concentration (m⁻³)')
+        axes[1, 0].set_xticklabels(doping_labels, rotation=45, ha='right')
+        axes[1, 0].set_ylabel('Concentration (m-3)')
         axes[1, 0].set_title('Optimal Doping Concentrations')
         axes[1, 0].ticklabel_format(style='scientific', axis='y', scilimits=(0,0))
+        
+        # Add value labels on bars
+        for i, (bar, value) in enumerate(zip(bars, doping_values)):
+            height = bar.get_height()
+            axes[1, 0].text(bar.get_x() + bar.get_width()/2., height + height*0.01,
+                           f'{value:.2e}', ha='center', va='bottom', fontsize=8, rotation=0)
     
-    # Efficiency vs Recombination
-    axes[1, 1].scatter(results['optimal_recombination'], results['optimal_efficiency'], 
-                       s=100, color='red', alpha=0.7)
+    # Efficiency vs Recombination with value annotation
+    optimal_efficiency = results['optimal_efficiency']
+    optimal_recombination = results['optimal_recombination']
+    
+    axes[1, 1].scatter(optimal_recombination, optimal_efficiency, 
+                       s=200, color='red', alpha=0.8, marker='*', edgecolors='black', linewidth=2)
     axes[1, 1].set_xlabel('IntSRHn (A/m²)')
     axes[1, 1].set_ylabel('MPP (W/m²)')
     axes[1, 1].set_title('Optimal Point')
     axes[1, 1].set_xscale('log')
     axes[1, 1].grid(True, alpha=0.3)
+    
+    # Add value annotation
+    axes[1, 1].annotate(f'MPP: {optimal_efficiency:.2f} W/m²\nIntSRHn: {optimal_recombination:.2e} A/m²',
+                        xy=(optimal_recombination, optimal_efficiency),
+                        xytext=(optimal_recombination*10, optimal_efficiency*1.1),
+                        arrowprops=dict(arrowstyle='->', color='red', alpha=0.7),
+                        bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8),
+                        fontsize=10)
     
     plt.tight_layout()
     plt.savefig(f'{plots_dir}/optimization_results.png', dpi=300, bbox_inches='tight')
@@ -425,25 +481,82 @@ def create_optimization_plots(results, metadata):
         efficiencies = [-results['all_results'][m].fun for m in methods]
         success = [results['all_results'][m].success for m in methods]
         
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
         
-        # Efficiency comparison
+        # Efficiency comparison with value labels
         colors = ['green' if s else 'red' for s in success]
-        ax1.bar(methods, efficiencies, color=colors, alpha=0.7)
+        bars1 = ax1.bar(methods, efficiencies, color=colors, alpha=0.7)
         ax1.set_ylabel('MPP (W/m²)')
         ax1.set_title('Optimization Method Comparison')
         ax1.tick_params(axis='x', rotation=45)
         
+        # Add value labels on efficiency bars
+        for bar, efficiency in zip(bars1, efficiencies):
+            height = bar.get_height()
+            ax1.text(bar.get_x() + bar.get_width()/2., height + height*0.01,
+                    f'{efficiency:.2f}', ha='center', va='bottom', fontsize=10, fontweight='bold')
+        
         # Success rate
         success_rate = [1 if s else 0 for s in success]
-        ax2.bar(methods, success_rate, color=colors, alpha=0.7)
+        bars2 = ax2.bar(methods, success_rate, color=colors, alpha=0.7)
         ax2.set_ylabel('Success (1=Yes, 0=No)')
         ax2.set_title('Optimization Success')
         ax2.tick_params(axis='x', rotation=45)
+        ax2.set_ylim(0, 1.2)
+        
+        # Add success/failure labels
+        for bar, success_val in zip(bars2, success):
+            height = bar.get_height()
+            label = 'SUCCESS' if success_val else 'FAILED'
+            color = 'green' if success_val else 'red'
+            ax2.text(bar.get_x() + bar.get_width()/2., height + 0.05,
+                    label, ha='center', va='bottom', fontsize=10, fontweight='bold', color=color)
         
         plt.tight_layout()
         plt.savefig(f'{plots_dir}/optimization_methods.png', dpi=300, bbox_inches='tight')
         plt.close()
+    
+    # 3. Summary statistics plot
+    fig, ax = plt.subplots(figsize=(12, 8))
+    
+    # Create a summary table
+    summary_data = [
+        ['Optimal Efficiency (MPP)', f'{optimal_efficiency:.2f} W/m²'],
+        ['Optimal Recombination (IntSRHn)', f'{optimal_recombination:.2e} A/m²'],
+        ['Optimization Method', results['optimization_method']],
+        ['Number of Parameters', str(len(optimal_params))],
+        ['Validation Status', 'PASSED' if results.get('validation_passed', True) else 'FAILED']
+    ]
+    
+    # Create table
+    table = ax.table(cellText=summary_data,
+                    colLabels=['Metric', 'Value'],
+                    cellLoc='center',
+                    loc='center',
+                    colWidths=[0.6, 0.4])
+    
+    # Style the table
+    table.auto_set_font_size(False)
+    table.set_fontsize(12)
+    table.scale(1.2, 2)
+    
+    # Color the header
+    for i in range(2):
+        table[(0, i)].set_facecolor('#4CAF50')
+        table[(0, i)].set_text_props(weight='bold', color='white')
+    
+    # Color alternating rows
+    for i in range(1, len(summary_data) + 1):
+        for j in range(2):
+            if i % 2 == 0:
+                table[(i, j)].set_facecolor('#f0f0f0')
+    
+    ax.set_title('Optimization Summary', fontsize=16, fontweight='bold', pad=20)
+    ax.axis('off')
+    
+    plt.tight_layout()
+    plt.savefig(f'{plots_dir}/optimization_summary.png', dpi=300, bbox_inches='tight')
+    plt.close()
     
     logging.info(f"Optimization plots saved to {plots_dir}")
 

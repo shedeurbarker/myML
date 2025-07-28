@@ -1,0 +1,40 @@
+1.5	Research Objectives
+The objective of this project is to develop a robust machine learning model capable 
+of predicting both the quantitative magnitude of Interfacial SRH recombination losses 
+at the critical interfaces within the device stack and the overall efficiency of these 
+devices. The goal is to go beyond simply classifying dominant loss mechanisms to precise, 
+continuous predictions of loss values and their relationship with device performance. By 
+understanding the interplay between interfacial SRH recombination and overall device efficiency, 
+the model aims to identify the optional balance of device parameters and material
+ configurations that yield the highest possible efficiency, considering key 
+ contributing factors.
+
+1.6	Method Employed
+This project addresses a regression problem by predicting continuous numerical values 
+for the SRH recombination rate and the overall efficiency of PSCs. The development of
+ a robust and generalized machine learning model requires a large dataset, which is
+  primarily generated through computational simulations using open-source software, 
+  SIMSalabim. For this regression task, three machine learning models are trained 
+  and compared:
+	Random Forest Regressor
+	 Gradient Boosting Regressor and
+	Linear Regression
+This models are well-suited for predicting continuous material properties and device 
+performance (Valerio et al., 2017).
+
+1.7	Scope of Work
+The scope of this work involves the systemic generation of a comprehensive dataset
+ through computational simulations, focusing on parameters know to influence 
+ interface SRH recombination. The device stack under investigation comprises 
+ PCBM (Electron Transport Layer – ETL), Methylammonium lead iodide (CH_3 NH_3 PbI_3) 
+ as the active perovskite layer (MAPI) and PEDOT:PSS 
+ (Poly(3,4-ethylenedioxythiophene):poly(styrenesulfonate)) as the Hole Transport 
+ layer – HTL. Parameters of these specific materials are systematically varied to 
+ generate the dataset for the machine learning models. This dataset is then used to
+  train and validate three distinct machine learning models: random Forest, Gradient
+   Boosting, and Linear Regression. The primary objective is to predict the interfacial SRH 
+   recombination rate and the overall efficiency of the PSCs, and to identify the optional
+    balance of device parameters and material configurations that yield the highest possible 
+    efficiency. The project includes hyperparameter optimization and detail feature importance
+     analysis, leveraging Shapley additive explanations (SHAP) and Random Forest algorithm to
+      investigate the influence of features on target variables.

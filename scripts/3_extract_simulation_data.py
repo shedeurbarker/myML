@@ -192,15 +192,14 @@ def process_simulation_directory(sim_dir):
     # Extract device parameters
     device_params = extract_device_parameters(sim_dir)
     if device_params is None:
+        logging.warning(f"No device parameters found in {sim_dir}")
         return None
     
     # Extract J-V curve data and efficiency metrics
     efficiency_data = extract_jv_curve_data(sim_dir)
     if efficiency_data is None:
-        efficiency_data = {
-            'MPP': np.nan, 'Jsc': np.nan, 'Voc': np.nan, 
-            'FF': np.nan, 'PCE': np.nan, 'Jmpp': np.nan, 'Vmpp': np.nan
-        }
+        logging.warning(f"No valid J-V data found in {sim_dir} - skipping failed simulation")
+        return None  # Skip this simulation entirely
     
     # Extract recombination data
     recombination_data = extract_recombination_data(sim_dir)
@@ -282,6 +281,7 @@ def main():
     # Process each simulation directory and write immediately
     successful = 0
     failed = 0
+    skipped = 0
     
     for i, sim_dir in enumerate(sim_dirs, 1):
         try:
@@ -301,14 +301,15 @@ def main():
                 if successful % 10 == 0:
                     logging.info(f"Progress: {successful}/{len(sim_dirs)} completed ({successful/len(sim_dirs)*100:.1f}%)")
             else:
-                failed += 1
-                logging.warning(f"Failed to extract data from {sim_dir}")
+                skipped += 1
+                logging.info(f"Skipped failed simulation: {sim_dir}")
         except Exception as e:
             failed += 1
             logging.error(f"Error processing {sim_dir}: {str(e)}")
     
     logging.info(f"Extraction complete!")
     logging.info(f"Successful extractions: {successful}")
+    logging.info(f"Skipped failed simulations: {skipped}")
     logging.info(f"Failed extractions: {failed}")
     logging.info(f"Output saved to: {output_file}")
     
@@ -316,6 +317,7 @@ def main():
     print("\n=== EXTRACTION SUMMARY ===")
     print(f"Total simulations processed: {len(sim_dirs)}")
     print(f"Successful extractions: {successful}")
+    print(f"Skipped failed simulations: {skipped}")
     print(f"Failed extractions: {failed}")
     print(f"Data points extracted: {successful}")
     print(f"Output file: {output_file}")

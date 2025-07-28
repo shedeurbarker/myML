@@ -7,6 +7,7 @@ It includes the 15 primary device parameters (optimization variables) and any de
 
 import json
 import os
+import re
 
 # Create results directory
 os.makedirs('results', exist_ok=True)
@@ -122,28 +123,114 @@ FEATURE_CATEGORIES = {
 # PARAMETER BOUNDS (For optimization constraints)
 # =============================================================================
 
-PARAMETER_BOUNDS = {
-    # Layer 1 (PCBM - Electron Transport Layer)
-    'L1_L': (20, 50),      # nm
-    'L1_E_c': (3.7, 4.0),  # eV
-    'L1_E_v': (5.7, 5.9),  # eV
-    'L1_N_D': (1e20, 1e21), # m⁻³
-    'L1_N_A': (1e20, 1e21), # m⁻³
+def load_parameter_bounds_from_sim():
+    """Load parameter bounds from simulation configuration file."""
+    bounds = {}
     
-    # Layer 2 (MAPI - Active Layer)
-    'L2_L': (200, 500),     # nm
-    'L2_E_c': (4.4, 4.6),   # eV
-    'L2_E_v': (5.6, 5.8),   # eV
-    'L2_N_D': (1e20, 1e21), # m⁻³
-    'L2_N_A': (1e20, 1e21), # m⁻³
-    
-    # Layer 3 (PEDOT - Hole Transport Layer)
-    'L3_L': (20, 50),       # nm
-    'L3_E_c': (3.4, 3.6),   # eV
-    'L3_E_v': (5.3, 5.5),   # eV
-    'L3_N_D': (1e20, 1e21), # m⁻³
-    'L3_N_A': (1e20, 1e21)  # m⁻³
-}
+    try:
+        with open('sim/parameters.txt', 'r') as f:
+            content = f.read()
+        
+        # Parse the file to extract bounds
+        current_layer = None
+        lines = content.split('\n')
+        
+        for line in lines:
+            line = line.strip()
+            
+            # Skip comments and empty lines
+            if line.startswith('#') or not line:
+                continue
+            
+            # Check for layer headers
+            if line.startswith('Layer'):
+                current_layer = line.split()[1]  # Extract layer number
+                continue
+            
+            # Parse parameter lines: parameter = [min, max, num_points, log_scale]
+            if '=' in line and '[' in line:
+                parts = line.split('=')
+                param_name = parts[0].strip()
+                param_values = parts[1].strip()
+                
+                # Extract values from [min, max, num_points, log_scale]
+                values_match = re.search(r'\[(.*?)\]', param_values)
+                if values_match:
+                    values_str = values_match.group(1)
+                    values = values_str.split(',')
+                    
+                    # Parse values, handling both numbers and booleans
+                    parsed_values = []
+                    for x in values:
+                        x = x.strip()
+                        if x.lower() == 'true':
+                            parsed_values.append(True)
+                        elif x.lower() == 'false':
+                            parsed_values.append(False)
+                        else:
+                            try:
+                                parsed_values.append(float(x))
+                            except ValueError:
+                                continue  # Skip invalid values
+                    
+                    if len(parsed_values) >= 2 and isinstance(parsed_values[0], (int, float)) and isinstance(parsed_values[1], (int, float)):
+                        min_val, max_val = parsed_values[0], parsed_values[1]
+                        
+                        # Convert to proper units and create parameter name
+                        if current_layer == '1':
+                            param_key = f'L1_{param_name}'
+                        elif current_layer == '2':
+                            param_key = f'L2_{param_name}'
+                        elif current_layer == '3':
+                            param_key = f'L3_{param_name}'
+                        else:
+                            param_key = param_name
+                        
+                        # Convert units if needed
+                        if param_name == 'L':  # Thickness in meters, convert to nm
+                            min_val = min_val * 1e9  # Convert m to nm
+                            max_val = max_val * 1e9
+                        
+                        bounds[param_key] = (min_val, max_val)
+        
+        print(f"Loaded {len(bounds)} parameter bounds from sim/parameters.txt")
+        return bounds
+        
+    except FileNotFoundError:
+        print("Warning: sim/parameters.txt not found. Using default bounds.")
+        return get_default_bounds()
+    except Exception as e:
+        print(f"Error reading sim/parameters.txt: {e}")
+        print("Using default bounds.")
+        return get_default_bounds()
+
+def get_default_bounds():
+    """Get default parameter bounds if simulation file is not available."""
+    return {
+        # Layer 1 (PCBM - Electron Transport Layer)
+        'L1_L': (20, 50),      # nm
+        'L1_E_c': (3.7, 4.0),  # eV
+        'L1_E_v': (5.7, 5.9),  # eV
+        'L1_N_D': (1e20, 1e21), # m⁻³
+        'L1_N_A': (1e20, 1e21), # m⁻³
+        
+        # Layer 2 (MAPI - Active Layer)
+        'L2_L': (200, 500),     # nm
+        'L2_E_c': (4.4, 4.6),   # eV
+        'L2_E_v': (5.6, 5.8),   # eV
+        'L2_N_D': (1e20, 1e21), # m⁻³
+        'L2_N_A': (1e20, 1e21), # m⁻³
+        
+        # Layer 3 (PEDOT - Hole Transport Layer)
+        'L3_L': (20, 50),       # nm
+        'L3_E_c': (3.4, 3.6),   # eV
+        'L3_E_v': (5.3, 5.5),   # eV
+        'L3_N_D': (1e20, 1e21), # m⁻³
+        'L3_N_A': (1e20, 1e21)  # m⁻³
+    }
+
+# Load parameter bounds from simulation file
+PARAMETER_BOUNDS = load_parameter_bounds_from_sim()
 
 # =============================================================================
 # SAVE FEATURE DEFINITIONS
@@ -207,7 +294,7 @@ def print_feature_summary():
     for target, description in RECOMBINATION_TARGETS.items():
         print(f"  {target}: {description}")
     
-    print(f"\nPARAMETER BOUNDS:")
+    print(f"\nPARAMETER BOUNDS (from sim/parameters.txt):")
     print("-" * 40)
     for param, (min_val, max_val) in PARAMETER_BOUNDS.items():
         print(f"  {param}: [{min_val}, {max_val}]")

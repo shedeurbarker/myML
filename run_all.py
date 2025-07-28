@@ -75,12 +75,12 @@ def main():
     # List of scripts to run in order
     scripts = [
         'scripts/1_create_feature_names.py',
-        #'scripts/2_generate_simulations.py',
-        #'scripts/3_extract_data.py',
-        'scripts/4_prepare_data.py',
-        'scripts/5_train_models.py',
-        'scripts/7_predict.py',
-        'scripts/8_visualize_example.py'
+        'scripts/2_generate_simulations_enhanced.py',
+        'scripts/3_extract_simulation_data.py',
+        'scripts/4_prepare_ml_data.py',
+        'scripts/5_train_optimization_models.py',
+        'scripts/6_predict_optimization_models.py',
+        'scripts/7_visualize_optimization_models.py'
     ]
     
     # Run each script
