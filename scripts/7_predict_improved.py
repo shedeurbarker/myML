@@ -97,6 +97,74 @@ logging.basicConfig(
     ]
 )
 
+def calculate_efficiency(mpp, pin=1000):
+    """
+    Calculate power conversion efficiency.
+    
+    Args:
+        mpp: Maximum power point (mW/cm²)
+        pin: Incident power density (mW/cm²), default 1000 for AM1.5G
+    
+    Returns:
+        efficiency: Power conversion efficiency (%)
+    """
+    if pin <= 0:
+        return 0
+    return (mpp / pin) * 100
+
+def calculate_efficiency_metrics(actual_mpp, predicted_mpp, pin=1000):
+    """
+    Calculate efficiency metrics for validation.
+    
+    Args:
+        actual_mpp: Actual MPP values
+        predicted_mpp: Predicted MPP values
+        pin: Incident power density (mW/cm²)
+    
+    Returns:
+        dict: Efficiency metrics
+    """
+    # Calculate efficiencies
+    actual_efficiency = calculate_efficiency(actual_mpp, pin)
+    predicted_efficiency = calculate_efficiency(predicted_mpp, pin)
+    
+    # Calculate metrics
+    r2 = r2_score(actual_efficiency, predicted_efficiency)
+    rmse = np.sqrt(mean_squared_error(actual_efficiency, predicted_efficiency))
+    mae = mean_absolute_error(actual_efficiency, predicted_efficiency)
+    
+    # Calculate relative errors
+    actual_mean = np.mean(np.abs(actual_efficiency))
+    if actual_mean > 0:
+        rmse_relative = rmse / actual_mean * 100
+        mae_relative = mae / actual_mean * 100
+    else:
+        rmse_relative = 0
+        mae_relative = 0
+    
+    # Calculate MAPE
+    valid_mask = np.abs(actual_efficiency) > 1e-10
+    if np.sum(valid_mask) > 0:
+        mape = np.mean(np.abs((actual_efficiency[valid_mask] - predicted_efficiency[valid_mask]) / np.abs(actual_efficiency[valid_mask]))) * 100
+    else:
+        mape = 0
+    
+    # Cap relative errors
+    rmse_relative = min(rmse_relative, 1000)
+    mae_relative = min(mae_relative, 1000)
+    mape = min(mape, 1000)
+    
+    return {
+        'actual_efficiency': actual_efficiency,
+        'predicted_efficiency': predicted_efficiency,
+        'r2': r2,
+        'rmse': rmse,
+        'mae': mae,
+        'rmse_relative': rmse_relative,
+        'mae_relative': mae_relative,
+        'mape': mape
+    }
+
 def check_prerequisites():
     """Check if all required files and directories exist."""
     logging.info("\n=== Checking Prerequisites ===")
@@ -397,6 +465,12 @@ def validate_predictions_with_experimental_data_improved():
                 
                 logging.info(f"{target_name} - R²: {r2:.4f}, RMSE: {rmse:.4f} ({rmse_relative:.1f}%), MAE: {mae:.4f} ({mae_relative:.1f}%), MAPE: {mape:.1f}%")
                 
+                # Add efficiency calculation for MPP
+                if target_name == 'MPP':
+                    efficiency_metrics = calculate_efficiency_metrics(actual, pred)
+                    predictions['efficiency_PCE'] = efficiency_metrics
+                    logging.info(f"PCE Efficiency - R²: {efficiency_metrics['r2']:.4f}, RMSE: {efficiency_metrics['rmse']:.4f} ({efficiency_metrics['rmse_relative']:.1f}%), MAE: {efficiency_metrics['mae']:.4f} ({efficiency_metrics['mae_relative']:.1f}%), MAPE: {efficiency_metrics['mape']:.1f}%")
+                
             except Exception as e:
                 logging.error(f"Error validating {target_name}: {e}")
     
@@ -490,6 +564,13 @@ def create_example_predictions_improved():
     try:
         predictions, target_names = make_predictions_all_models_improved(example_data)
         
+        # Calculate efficiency for example MPP prediction
+        if 'efficiency_MPP' in predictions:
+            mpp_prediction = predictions['efficiency_MPP']
+            efficiency = calculate_efficiency(mpp_prediction)
+            predictions['efficiency_PCE_example'] = efficiency
+            logging.info(f"  efficiency_PCE_example: {efficiency:.4f}%")
+        
         logging.info("Example predictions (improved models):")
         for target, value in predictions.items():
             logging.info(f"  {target}: {value}")
@@ -567,6 +648,60 @@ def plot_predictions_improved(predictions, save_dir='results/predict_improved'):
                 logging.info(f"Validation plot saved for {target} with R²={data['r2']:.4f}, RMSE={data['rmse']:.4f} ({data['rmse_relative']:.1f}%), MAE={data['mae']:.4f} ({data['mae_relative']:.1f}%), MAPE={data['mape']:.1f}%")
             else:
                 logging.info(f"Validation plot saved for {target} with R²={data['r2']:.4f}, RMSE={data['rmse']:.4f}, MAE={data['mae']:.4f}")
+    
+    # Create efficiency comparison plot if PCE data is available
+    if 'efficiency_PCE' in predictions:
+        pce_data = predictions['efficiency_PCE']
+        plt.figure(figsize=(14, 10))
+        
+        # Create subplot layout for efficiency
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(14, 10), height_ratios=[3, 1])
+        
+        # Main efficiency scatter plot
+        scatter = ax1.scatter(pce_data['actual_efficiency'], pce_data['predicted_efficiency'], 
+                             alpha=0.6, s=50, color='green')
+        
+        # Perfect prediction line
+        min_eff = min(pce_data['actual_efficiency'].min(), pce_data['predicted_efficiency'].min())
+        max_eff = max(pce_data['actual_efficiency'].max(), pce_data['predicted_efficiency'].max())
+        ax1.plot([min_eff, max_eff], [min_eff, max_eff], 'r--', alpha=0.8, linewidth=2, label='Perfect Prediction')
+        
+        ax1.set_xlabel('Actual Efficiency (%)', fontsize=12)
+        ax1.set_ylabel('Predicted Efficiency (%)', fontsize=12)
+        ax1.set_title('Power Conversion Efficiency (PCE) - Prediction vs Actual', fontsize=14, fontweight='bold')
+        ax1.grid(True, alpha=0.3)
+        ax1.legend()
+        
+        # Add efficiency metrics text box
+        eff_metrics_text = f'R² = {pce_data["r2"]:.4f}\nRMSE = {pce_data["rmse"]:.4f}% ({pce_data["rmse_relative"]:.1f}%)\nMAE = {pce_data["mae"]:.4f}% ({pce_data["mae_relative"]:.1f}%)\nMAPE = {pce_data["mape"]:.1f}%'
+        ax1.text(0.05, 0.95, eff_metrics_text, 
+                transform=ax1.transAxes, fontsize=11,
+                verticalalignment='top', 
+                bbox=dict(boxstyle='round,pad=0.5', facecolor='lightgreen', alpha=0.8))
+        
+        # Efficiency residual plot
+        eff_residuals = pce_data['predicted_efficiency'] - pce_data['actual_efficiency']
+        ax2.scatter(pce_data['actual_efficiency'], eff_residuals, alpha=0.6, s=50, color='orange')
+        ax2.axhline(y=0, color='red', linestyle='--', alpha=0.8)
+        ax2.set_xlabel('Actual Efficiency (%)', fontsize=12)
+        ax2.set_ylabel('Residuals (Predicted - Actual) (%)', fontsize=12)
+        ax2.set_title('Efficiency Residual Plot', fontsize=12)
+        ax2.grid(True, alpha=0.3)
+        
+        # Add efficiency residual statistics
+        eff_residual_std = np.std(eff_residuals)
+        eff_residual_mean = np.mean(eff_residuals)
+        eff_residual_text = f'Mean Residual: {eff_residual_mean:.4f}%\nStd Residual: {eff_residual_std:.4f}%'
+        ax2.text(0.05, 0.95, eff_residual_text, 
+                transform=ax2.transAxes, fontsize=10,
+                verticalalignment='top', 
+                bbox=dict(boxstyle='round,pad=0.3', facecolor='lightgreen', alpha=0.8))
+        
+        plt.tight_layout()
+        plt.savefig(f'{save_dir}/efficiency_PCE_validation_improved.png', dpi=300, bbox_inches='tight')
+        plt.close()
+        
+        logging.info(f"Efficiency plot saved with R²={pce_data['r2']:.4f}, RMSE={pce_data['rmse']:.4f}% ({pce_data['rmse_relative']:.1f}%), MAE={pce_data['mae']:.4f}% ({pce_data['mae_relative']:.1f}%), MAPE={pce_data['mape']:.1f}%")
 
 def main():
     """Main function for improved prediction."""
