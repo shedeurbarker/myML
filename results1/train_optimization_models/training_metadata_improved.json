@@ -1,0 +1,793 @@
+{
+  "training_date": "2025-07-28T16:02:42.517663",
+  "efficiency_models": {
+    "MPP": {
+      "best_model": "XGBoost",
+      "all_scores": {
+        "RandomForest": {
+          "cv_mean": 0.9572454170004919,
+          "cv_std": 0.0042085182750636356,
+          "test_metrics": {
+            "r2": 0.9502070039309427,
+            "rmse": 0.46358801203939937,
+            "mae": 0.1693541639412014,
+            "rmse_relative": 45.3820718356025,
+            "mae_relative": 16.578605645619714,
+            "mape": 91.14318860489317
+          }
+        },
+        "XGBoost": {
+          "cv_mean": 0.96363069120347,
+          "cv_std": 0.006173629220188827,
+          "test_metrics": {
+            "r2": 0.9516265765234696,
+            "rmse": 0.45693190107820936,
+            "mae": 0.20032458196003974,
+            "rmse_relative": 44.73048443916052,
+            "mae_relative": 19.61039615531501,
+            "mape": 137.3448095729084
+          }
+        },
+        "LinearRegression": {
+          "cv_mean": 0.44141976972084407,
+          "cv_std": 0.013034429225038393,
+          "test_metrics": {
+            "r2": 0.4407084758262897,
+            "rmse": 1.5537000743047285,
+            "mae": 1.0575759754630296,
+            "rmse_relative": 152.0965308677689,
+            "mae_relative": 103.52940033745224,
+            "mape": 1208.4639740253112
+          }
+        }
+      },
+      "feature_names": [
+        "L1_L",
+        "L1_E_c",
+        "L1_E_v",
+        "L1_N_D",
+        "L1_N_A",
+        "L2_L",
+        "L2_E_c",
+        "L2_E_v",
+        "L2_N_D",
+        "L2_N_A",
+        "L3_L",
+        "L3_E_c",
+        "L3_E_v",
+        "L3_N_D",
+        "L3_N_A",
+        "total_thickness",
+        "thickness_ratio_L2",
+        "thickness_ratio_ETL",
+        "thickness_ratio_HTL",
+        "energy_gap_L1",
+        "energy_gap_L2",
+        "energy_gap_L3",
+        "band_offset_L1_L2",
+        "band_offset_L2_L3",
+        "conduction_band_offset",
+        "valence_band_offset",
+        "doping_ratio_L1",
+        "doping_ratio_L2",
+        "doping_ratio_L3",
+        "total_donor_concentration",
+        "total_acceptor_concentration",
+        "average_energy_gap",
+        "energy_gap_variance",
+        "thickness_variance",
+        "doping_variance"
+      ]
+    },
+    "Jsc": {
+      "best_model": "XGBoost",
+      "all_scores": {
+        "RandomForest": {
+          "cv_mean": 0.9823139441063267,
+          "cv_std": 0.005898787425467785,
+          "test_metrics": {
+            "r2": 0.9758624391322405,
+            "rmse": 0.0709654002800613,
+            "mae": 0.013574451258486277,
+            "rmse_relative": 19.619650545793192,
+            "mae_relative": 3.752899145095519,
+            "mape": 116.75337227871
+          }
+        },
+        "XGBoost": {
+          "cv_mean": 0.9837294741260354,
+          "cv_std": 0.0050360834478801525,
+          "test_metrics": {
+            "r2": 0.9781933273607162,
+            "rmse": 0.06745197459695121,
+            "mae": 0.013474294416872106,
+            "rmse_relative": 18.64830135521303,
+            "mae_relative": 3.725208999975708,
+            "mape": 135.04902763008658
+          }
+        },
+        "LinearRegression": {
+          "cv_mean": 0.491691560316789,
+          "cv_std": 0.012897512021812269,
+          "test_metrics": {
+            "r2": 0.48014529734247047,
+            "rmse": 0.32933732544905137,
+            "mae": 0.26905833894109465,
+            "rmse_relative": 91.05117721448254,
+            "mae_relative": 74.38597634372842,
+            "mape": 15863.713889108365
+          }
+        }
+      },
+      "feature_names": [
+        "L1_L",
+        "L1_E_c",
+        "L1_E_v",
+        "L1_N_D",
+        "L1_N_A",
+        "L2_L",
+        "L2_E_c",
+        "L2_E_v",
+        "L2_N_D",
+        "L2_N_A",
+        "L3_L",
+        "L3_E_c",
+        "L3_E_v",
+        "L3_N_D",
+        "L3_N_A",
+        "total_thickness",
+        "thickness_ratio_L2",
+        "thickness_ratio_ETL",
+        "thickness_ratio_HTL",
+        "energy_gap_L1",
+        "energy_gap_L2",
+        "energy_gap_L3",
+        "band_offset_L1_L2",
+        "band_offset_L2_L3",
+        "conduction_band_offset",
+        "valence_band_offset",
+        "doping_ratio_L1",
+        "doping_ratio_L2",
+        "doping_ratio_L3",
+        "total_donor_concentration",
+        "total_acceptor_concentration",
+        "average_energy_gap",
+        "energy_gap_variance",
+        "thickness_variance",
+        "doping_variance"
+      ]
+    },
+    "Voc": {
+      "best_model": "RandomForest",
+      "all_scores": {
+        "RandomForest": {
+          "cv_mean": 0.8228997401578146,
+          "cv_std": 0.00761556374599779,
+          "test_metrics": {
+            "r2": 0.8357696969654902,
+            "rmse": 0.35620151755114365,
+            "mae": 0.13634049794017564,
+            "rmse_relative": 54.83271954582647,
+            "mae_relative": 20.98789566560054,
+            "mape": 24.10985936488629
+          }
+        },
+        "XGBoost": {
+          "cv_mean": 0.8220313802608589,
+          "cv_std": 0.00843676300782464,
+          "test_metrics": {
+            "r2": 0.813031340108329,
+            "rmse": 0.38006119179465003,
+            "mae": 0.1725016109080243,
+            "rmse_relative": 58.50561469586221,
+            "mae_relative": 26.554441758561246,
+            "mape": 32.5842048209287
+          }
+        },
+        "LinearRegression": {
+          "cv_mean": 0.2721170146992512,
+          "cv_std": 0.01498171379461898,
+          "test_metrics": {
+            "r2": 0.27780758830190944,
+            "rmse": 0.7469569606919663,
+            "mae": 0.5141928808329357,
+            "rmse_relative": 114.9845790102362,
+            "mae_relative": 79.15349216086575,
+            "mape": 87.07539684740965
+          }
+        }
+      },
+      "feature_names": [
+        "L1_L",
+        "L1_E_c",
+        "L1_E_v",
+        "L1_N_D",
+        "L1_N_A",
+        "L2_L",
+        "L2_E_c",
+        "L2_E_v",
+        "L2_N_D",
+        "L2_N_A",
+        "L3_L",
+        "L3_E_c",
+        "L3_E_v",
+        "L3_N_D",
+        "L3_N_A",
+        "total_thickness",
+        "thickness_ratio_L2",
+        "thickness_ratio_ETL",
+        "thickness_ratio_HTL",
+        "energy_gap_L1",
+        "energy_gap_L2",
+        "energy_gap_L3",
+        "band_offset_L1_L2",
+        "band_offset_L2_L3",
+        "conduction_band_offset",
+        "valence_band_offset",
+        "doping_ratio_L1",
+        "doping_ratio_L2",
+        "doping_ratio_L3",
+        "total_donor_concentration",
+        "total_acceptor_concentration",
+        "average_energy_gap",
+        "energy_gap_variance",
+        "thickness_variance",
+        "doping_variance"
+      ]
+    },
+    "FF": {
+      "best_model": "RandomForest",
+      "all_scores": {
+        "RandomForest": {
+          "cv_mean": 0.8413286083609381,
+          "cv_std": 0.04913923561588983,
+          "test_metrics": {
+            "r2": 0.8766969329999662,
+            "rmse": 360.7432495033735,
+            "mae": 70.59467751280157,
+            "rmse_relative": 158.30300819454044,
+            "mae_relative": 30.97868034449654,
+            "mape": 169049.63056455593
+          }
+        },
+        "XGBoost": {
+          "cv_mean": 0.8283746772547973,
+          "cv_std": 0.04722080872551692,
+          "test_metrics": {
+            "r2": 0.8814765826922724,
+            "rmse": 353.6823241172168,
+            "mae": 77.7565940832593,
+            "rmse_relative": 155.20450051406522,
+            "mae_relative": 34.12150543991439,
+            "mape": 216797.1449282953
+          }
+        },
+        "LinearRegression": {
+          "cv_mean": 0.15465155645490267,
+          "cv_std": 0.02134272045419883,
+          "test_metrics": {
+            "r2": 0.18100736500679748,
+            "rmse": 929.7180689983928,
+            "mae": 426.89669620891976,
+            "rmse_relative": 407.9831495055837,
+            "mae_relative": 187.3327672554297,
+            "mape": 1485102.3647844703
+          }
+        }
+      },
+      "feature_names": [
+        "L1_L",
+        "L1_E_c",
+        "L1_E_v",
+        "L1_N_D",
+        "L1_N_A",
+        "L2_L",
+        "L2_E_c",
+        "L2_E_v",
+        "L2_N_D",
+        "L2_N_A",
+        "L3_L",
+        "L3_E_c",
+        "L3_E_v",
+        "L3_N_D",
+        "L3_N_A",
+        "total_thickness",
+        "thickness_ratio_L2",
+        "thickness_ratio_ETL",
+        "thickness_ratio_HTL",
+        "energy_gap_L1",
+        "energy_gap_L2",
+        "energy_gap_L3",
+        "band_offset_L1_L2",
+        "band_offset_L2_L3",
+        "conduction_band_offset",
+        "valence_band_offset",
+        "doping_ratio_L1",
+        "doping_ratio_L2",
+        "doping_ratio_L3",
+        "total_donor_concentration",
+        "total_acceptor_concentration",
+        "average_energy_gap",
+        "energy_gap_variance",
+        "thickness_variance",
+        "doping_variance"
+      ]
+    }
+  },
+  "recombination_models": {
+    "IntSRHn_mean": {
+      "best_model": "XGBoost",
+      "all_scores": {
+        "RandomForest": {
+          "cv_mean": 0.6927850644857356,
+          "cv_std": 0.021856568645032347,
+          "test_metrics": {
+            "r2": 0.7465937839872876,
+            "rmse": 24.058475182662225,
+            "mae": 8.344096049870279,
+            "rmse_relative": 154.18026029917294,
+            "mae_relative": 53.47366743580718,
+            "mape": 7168.532816583883
+          }
+        },
+        "XGBoost": {
+          "cv_mean": 0.6975455939460992,
+          "cv_std": 0.03680694457827612,
+          "test_metrics": {
+            "r2": 0.7270379034821195,
+            "rmse": 24.969545602427388,
+            "mae": 9.23748229596099,
+            "rmse_relative": 160.01891272430663,
+            "mae_relative": 59.19898971513564,
+            "mape": 20301.710316357192
+          }
+        },
+        "LinearRegression": {
+          "cv_mean": 0.308514549554941,
+          "cv_std": 0.013239569674725754,
+          "test_metrics": {
+            "r2": 0.31885771476489944,
+            "rmse": 39.44376726017397,
+            "mae": 23.318536849120168,
+            "rmse_relative": 252.77787794865003,
+            "mae_relative": 149.43831867549656,
+            "mape": 183605.83749236242
+          }
+        }
+      },
+      "feature_names": [
+        "L1_L",
+        "L1_E_c",
+        "L1_E_v",
+        "L1_N_D",
+        "L1_N_A",
+        "L2_L",
+        "L2_E_c",
+        "L2_E_v",
+        "L2_N_D",
+        "L2_N_A",
+        "L3_L",
+        "L3_E_c",
+        "L3_E_v",
+        "L3_N_D",
+        "L3_N_A",
+        "total_thickness",
+        "thickness_ratio_L2",
+        "thickness_ratio_ETL",
+        "thickness_ratio_HTL",
+        "energy_gap_L1",
+        "energy_gap_L2",
+        "energy_gap_L3",
+        "band_offset_L1_L2",
+        "band_offset_L2_L3",
+        "conduction_band_offset",
+        "valence_band_offset",
+        "doping_ratio_L1",
+        "doping_ratio_L2",
+        "doping_ratio_L3",
+        "total_donor_concentration",
+        "total_acceptor_concentration",
+        "average_energy_gap",
+        "energy_gap_variance",
+        "thickness_variance",
+        "doping_variance"
+      ]
+    },
+    "IntSRHn_std": {
+      "best_model": "RandomForest",
+      "all_scores": {
+        "RandomForest": {
+          "cv_mean": 0.6247460725766885,
+          "cv_std": 0.0274540070775981,
+          "test_metrics": {
+            "r2": 0.6922131980415293,
+            "rmse": 21.882223448123572,
+            "mae": 7.844778724949687,
+            "rmse_relative": 167.29599350153643,
+            "mae_relative": 59.97562604647994,
+            "mape": 11971.21535343951
+          }
+        },
+        "XGBoost": {
+          "cv_mean": 0.6208002347575591,
+          "cv_std": 0.03779129253905672,
+          "test_metrics": {
+            "r2": 0.6695320358785479,
+            "rmse": 22.674156213097184,
+            "mae": 8.677805048107633,
+            "rmse_relative": 173.3505509379308,
+            "mae_relative": 66.34435574508792,
+            "mape": 27093.89188434146
+          }
+        },
+        "LinearRegression": {
+          "cv_mean": 0.30361544222905656,
+          "cv_std": 0.014016291209567414,
+          "test_metrics": {
+            "r2": 0.31289823386464954,
+            "rmse": 32.69467196586403,
+            "mae": 18.896471295976802,
+            "rmse_relative": 249.96032243721044,
+            "mae_relative": 144.46904569036337,
+            "mape": 147206.77730692847
+          }
+        }
+      },
+      "feature_names": [
+        "L1_L",
+        "L1_E_c",
+        "L1_E_v",
+        "L1_N_D",
+        "L1_N_A",
+        "L2_L",
+        "L2_E_c",
+        "L2_E_v",
+        "L2_N_D",
+        "L2_N_A",
+        "L3_L",
+        "L3_E_c",
+        "L3_E_v",
+        "L3_N_D",
+        "L3_N_A",
+        "total_thickness",
+        "thickness_ratio_L2",
+        "thickness_ratio_ETL",
+        "thickness_ratio_HTL",
+        "energy_gap_L1",
+        "energy_gap_L2",
+        "energy_gap_L3",
+        "band_offset_L1_L2",
+        "band_offset_L2_L3",
+        "conduction_band_offset",
+        "valence_band_offset",
+        "doping_ratio_L1",
+        "doping_ratio_L2",
+        "doping_ratio_L3",
+        "total_donor_concentration",
+        "total_acceptor_concentration",
+        "average_energy_gap",
+        "energy_gap_variance",
+        "thickness_variance",
+        "doping_variance"
+      ]
+    },
+    "IntSRHp_mean": {
+      "best_model": "RandomForest",
+      "all_scores": {
+        "RandomForest": {
+          "cv_mean": 0.7762088777450944,
+          "cv_std": 0.017402011202293902,
+          "test_metrics": {
+            "r2": 0.8051070577956315,
+            "rmse": 36.14038218058111,
+            "mae": 12.550537231190173,
+            "rmse_relative": 142.35901815555908,
+            "mae_relative": 49.43727901463751,
+            "mape": 4074.8670222652577
+          }
+        },
+        "XGBoost": {
+          "cv_mean": 0.7684179125156579,
+          "cv_std": 0.01999452865215987,
+          "test_metrics": {
+            "r2": 0.7992574218568665,
+            "rmse": 36.67874214478578,
+            "mae": 13.829156356490078,
+            "rmse_relative": 144.47964863299822,
+            "mae_relative": 54.473832373788724,
+            "mape": 11410.452254655442
+          }
+        },
+        "LinearRegression": {
+          "cv_mean": 0.26383894500024224,
+          "cv_std": 0.014708844112605713,
+          "test_metrics": {
+            "r2": 0.2862147379012384,
+            "rmse": 69.16374058061388,
+            "mae": 39.7017214043256,
+            "rmse_relative": 272.4399025949557,
+            "mae_relative": 156.3873356392508,
+            "mape": 157578.38329064788
+          }
+        }
+      },
+      "feature_names": [
+        "L1_L",
+        "L1_E_c",
+        "L1_E_v",
+        "L1_N_D",
+        "L1_N_A",
+        "L2_L",
+        "L2_E_c",
+        "L2_E_v",
+        "L2_N_D",
+        "L2_N_A",
+        "L3_L",
+        "L3_E_c",
+        "L3_E_v",
+        "L3_N_D",
+        "L3_N_A",
+        "total_thickness",
+        "thickness_ratio_L2",
+        "thickness_ratio_ETL",
+        "thickness_ratio_HTL",
+        "energy_gap_L1",
+        "energy_gap_L2",
+        "energy_gap_L3",
+        "band_offset_L1_L2",
+        "band_offset_L2_L3",
+        "conduction_band_offset",
+        "valence_band_offset",
+        "doping_ratio_L1",
+        "doping_ratio_L2",
+        "doping_ratio_L3",
+        "total_donor_concentration",
+        "total_acceptor_concentration",
+        "average_energy_gap",
+        "energy_gap_variance",
+        "thickness_variance",
+        "doping_variance"
+      ]
+    },
+    "IntSRHp_std": {
+      "best_model": "RandomForest",
+      "all_scores": {
+        "RandomForest": {
+          "cv_mean": 0.7974656414334633,
+          "cv_std": 0.021788126429868864,
+          "test_metrics": {
+            "r2": 0.8201611185401084,
+            "rmse": 32.76788747255286,
+            "mae": 11.914038976534805,
+            "rmse_relative": 126.86122515144756,
+            "mae_relative": 46.12532871798074,
+            "mape": 21818.56126549782
+          }
+        },
+        "XGBoost": {
+          "cv_mean": 0.7867246556660297,
+          "cv_std": 0.025560190142860064,
+          "test_metrics": {
+            "r2": 0.8306175671578879,
+            "rmse": 31.80100392091846,
+            "mae": 13.317972956784962,
+            "rmse_relative": 123.1179251891944,
+            "mae_relative": 51.56067406685219,
+            "mape": 45871.16929262752
+          }
+        },
+        "LinearRegression": {
+          "cv_mean": 0.2925483888921656,
+          "cv_std": 0.015959445649178845,
+          "test_metrics": {
+            "r2": 0.31194257158697003,
+            "rmse": 64.09423836679474,
+            "mae": 38.20183999134464,
+            "rmse_relative": 248.14152609536615,
+            "mae_relative": 147.89883017026796,
+            "mape": 246295.8246521655
+          }
+        }
+      },
+      "feature_names": [
+        "L1_L",
+        "L1_E_c",
+        "L1_E_v",
+        "L1_N_D",
+        "L1_N_A",
+        "L2_L",
+        "L2_E_c",
+        "L2_E_v",
+        "L2_N_D",
+        "L2_N_A",
+        "L3_L",
+        "L3_E_c",
+        "L3_E_v",
+        "L3_N_D",
+        "L3_N_A",
+        "total_thickness",
+        "thickness_ratio_L2",
+        "thickness_ratio_ETL",
+        "thickness_ratio_HTL",
+        "energy_gap_L1",
+        "energy_gap_L2",
+        "energy_gap_L3",
+        "band_offset_L1_L2",
+        "band_offset_L2_L3",
+        "conduction_band_offset",
+        "valence_band_offset",
+        "doping_ratio_L1",
+        "doping_ratio_L2",
+        "doping_ratio_L3",
+        "total_donor_concentration",
+        "total_acceptor_concentration",
+        "average_energy_gap",
+        "energy_gap_variance",
+        "thickness_variance",
+        "doping_variance"
+      ]
+    },
+    "IntSRH_total": {
+      "best_model": "XGBoost",
+      "all_scores": {
+        "RandomForest": {
+          "cv_mean": 0.7669307458947591,
+          "cv_std": 0.015921944133265458,
+          "test_metrics": {
+            "r2": 0.8221548204169534,
+            "rmse": 16.537142221665427,
+            "mae": 5.664333252418392,
+            "rmse_relative": 127.38290369812447,
+            "mae_relative": 43.63143326309443,
+            "mape": 4316.663253241627
+          }
+        },
+        "XGBoost": {
+          "cv_mean": 0.7724961560069497,
+          "cv_std": 0.031030608066646637,
+          "test_metrics": {
+            "r2": 0.8146577400565832,
+            "rmse": 16.882106643512007,
+            "mae": 6.269956903115162,
+            "rmse_relative": 130.04010825852262,
+            "mae_relative": 48.296453261104936,
+            "mape": 13424.252587465067
+          }
+        },
+        "LinearRegression": {
+          "cv_mean": 0.3170138722509743,
+          "cv_std": 0.013911797728020573,
+          "test_metrics": {
+            "r2": 0.33097190854148073,
+            "rmse": 32.07462510885017,
+            "mae": 19.210698266136394,
+            "rmse_relative": 247.0655949273584,
+            "mae_relative": 147.97686894190198,
+            "mape": 132167.6862312426
+          }
+        }
+      },
+      "feature_names": [
+        "L1_L",
+        "L1_E_c",
+        "L1_E_v",
+        "L1_N_D",
+        "L1_N_A",
+        "L2_L",
+        "L2_E_c",
+        "L2_E_v",
+        "L2_N_D",
+        "L2_N_A",
+        "L3_L",
+        "L3_E_c",
+        "L3_E_v",
+        "L3_N_D",
+        "L3_N_A",
+        "total_thickness",
+        "thickness_ratio_L2",
+        "thickness_ratio_ETL",
+        "thickness_ratio_HTL",
+        "energy_gap_L1",
+        "energy_gap_L2",
+        "energy_gap_L3",
+        "band_offset_L1_L2",
+        "band_offset_L2_L3",
+        "conduction_band_offset",
+        "valence_band_offset",
+        "doping_ratio_L1",
+        "doping_ratio_L2",
+        "doping_ratio_L3",
+        "total_donor_concentration",
+        "total_acceptor_concentration",
+        "average_energy_gap",
+        "energy_gap_variance",
+        "thickness_variance",
+        "doping_variance"
+      ]
+    },
+    "IntSRH_ratio": {
+      "best_model": "RandomForest",
+      "all_scores": {
+        "RandomForest": {
+          "cv_mean": 0.0817826324324781,
+          "cv_std": 0.08334476424312989,
+          "test_metrics": {
+            "r2": 0.002356173699314845,
+            "rmse": 47.41804428972495,
+            "mae": 15.473212656595697,
+            "rmse_relative": 582.1222298120656,
+            "mae_relative": 189.9551360443931,
+            "mape": 15588.645998291411
+          }
+        },
+        "XGBoost": {
+          "cv_mean": 0.06653626762945597,
+          "cv_std": 0.05442451874964706,
+          "test_metrics": {
+            "r2": -0.03811958610380728,
+            "rmse": 48.37038796356874,
+            "mae": 16.007752987834085,
+            "rmse_relative": 593.8135686529947,
+            "mae_relative": 196.51735964947753,
+            "mape": 19904.461539652566
+          }
+        },
+        "LinearRegression": {
+          "cv_mean": 0.034392944800487935,
+          "cv_std": 0.015041622577999184,
+          "test_metrics": {
+            "r2": 0.021793136809065583,
+            "rmse": 46.95385246971768,
+            "mae": 16.576967933475725,
+            "rmse_relative": 576.4236317072571,
+            "mae_relative": 203.5052622161607,
+            "mape": 36594.63397276491
+          }
+        }
+      },
+      "feature_names": [
+        "L1_L",
+        "L1_E_c",
+        "L1_E_v",
+        "L1_N_D",
+        "L1_N_A",
+        "L2_L",
+        "L2_E_c",
+        "L2_E_v",
+        "L2_N_D",
+        "L2_N_A",
+        "L3_L",
+        "L3_E_c",
+        "L3_E_v",
+        "L3_N_D",
+        "L3_N_A",
+        "total_thickness",
+        "thickness_ratio_L2",
+        "thickness_ratio_ETL",
+        "thickness_ratio_HTL",
+        "energy_gap_L1",
+        "energy_gap_L2",
+        "energy_gap_L3",
+        "band_offset_L1_L2",
+        "band_offset_L2_L3",
+        "conduction_band_offset",
+        "valence_band_offset",
+        "doping_ratio_L1",
+        "doping_ratio_L2",
+        "doping_ratio_L3",
+        "total_donor_concentration",
+        "total_acceptor_concentration",
+        "average_energy_gap",
+        "energy_gap_variance",
+        "thickness_variance",
+        "doping_variance"
+      ]
+    }
+  },
+  "improvements": {
+    "target_scaling": "RobustScaler for both features and targets",
+    "cross_validation": "5-fold CV for model selection",
+    "outlier_handling": "99th percentile clipping",
+    "comprehensive_evaluation": "Multiple metrics beyond R\u00b2"
+  }
+}

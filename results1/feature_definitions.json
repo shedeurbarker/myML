@@ -1,0 +1,237 @@
+{
+  "primary_parameters": {
+    "L1_L": "Layer 1 thickness (nm)",
+    "L1_E_c": "Layer 1 conduction band energy (eV)",
+    "L1_E_v": "Layer 1 valence band energy (eV)",
+    "L1_N_D": "Layer 1 donor concentration (m\u207b\u00b3)",
+    "L1_N_A": "Layer 1 acceptor concentration (m\u207b\u00b3)",
+    "L2_L": "Layer 2 thickness (nm)",
+    "L2_E_c": "Layer 2 conduction band energy (eV)",
+    "L2_E_v": "Layer 2 valence band energy (eV)",
+    "L2_N_D": "Layer 2 donor concentration (m\u207b\u00b3)",
+    "L2_N_A": "Layer 2 acceptor concentration (m\u207b\u00b3)",
+    "L3_L": "Layer 3 thickness (nm)",
+    "L3_E_c": "Layer 3 conduction band energy (eV)",
+    "L3_E_v": "Layer 3 valence band energy (eV)",
+    "L3_N_D": "Layer 3 donor concentration (m\u207b\u00b3)",
+    "L3_N_A": "Layer 3 acceptor concentration (m\u207b\u00b3)"
+  },
+  "derived_features": {
+    "total_thickness": "Total device thickness (L1_L + L2_L + L3_L)",
+    "thickness_ratio_L2": "Active layer thickness ratio (L2_L / total_thickness)",
+    "thickness_ratio_ETL": "ETL thickness ratio (L1_L / total_thickness)",
+    "thickness_ratio_HTL": "HTL thickness ratio (L3_L / total_thickness)",
+    "energy_gap_L1": "Layer 1 energy gap (L1_E_c - L1_E_v)",
+    "energy_gap_L2": "Layer 2 energy gap (L2_E_c - L2_E_v)",
+    "energy_gap_L3": "Layer 3 energy gap (L3_E_c - L3_E_v)",
+    "band_offset_L1_L2": "Band offset between Layer 1 and Layer 2",
+    "band_offset_L2_L3": "Band offset between Layer 2 and Layer 3",
+    "conduction_band_offset": "Conduction band offset across device",
+    "valence_band_offset": "Valence band offset across device",
+    "doping_ratio_L1": "Layer 1 doping ratio (L1_N_D / L1_N_A)",
+    "doping_ratio_L2": "Layer 2 doping ratio (L2_N_D / L2_N_A)",
+    "doping_ratio_L3": "Layer 3 doping ratio (L3_N_D / L3_N_A)",
+    "total_donor_concentration": "Total donor concentration across device",
+    "total_acceptor_concentration": "Total acceptor concentration across device",
+    "average_energy_gap": "Average energy gap across all layers",
+    "energy_gap_variance": "Variance in energy gaps across layers",
+    "thickness_variance": "Variance in layer thicknesses",
+    "doping_variance": "Variance in doping concentrations"
+  },
+  "efficiency_targets": {
+    "MPP": "Maximum Power Point (W/cm\u00b2)",
+    "Jsc": "Short-circuit current density (A/cm\u00b2)",
+    "Voc": "Open-circuit voltage (V)",
+    "FF": "Fill Factor (dimensionless)",
+    "PCE": "Power Conversion Efficiency (%)"
+  },
+  "recombination_targets": {
+    "IntSRHn_mean": "Mean electron interfacial recombination rate",
+    "IntSRHn_std": "Standard deviation of electron recombination",
+    "IntSRHp_mean": "Mean hole interfacial recombination rate",
+    "IntSRHp_std": "Standard deviation of hole recombination",
+    "IntSRH_total": "Total interfacial recombination rate",
+    "IntSRH_ratio": "Ratio of electron to hole recombination"
+  },
+  "all_targets": {
+    "MPP": "Maximum Power Point (W/cm\u00b2)",
+    "Jsc": "Short-circuit current density (A/cm\u00b2)",
+    "Voc": "Open-circuit voltage (V)",
+    "FF": "Fill Factor (dimensionless)",
+    "PCE": "Power Conversion Efficiency (%)",
+    "IntSRHn_mean": "Mean electron interfacial recombination rate",
+    "IntSRHn_std": "Standard deviation of electron recombination",
+    "IntSRHp_mean": "Mean hole interfacial recombination rate",
+    "IntSRHp_std": "Standard deviation of hole recombination",
+    "IntSRH_total": "Total interfacial recombination rate",
+    "IntSRH_ratio": "Ratio of electron to hole recombination"
+  },
+  "feature_categories": {
+    "primary_parameters": [
+      "L1_L",
+      "L1_E_c",
+      "L1_E_v",
+      "L1_N_D",
+      "L1_N_A",
+      "L2_L",
+      "L2_E_c",
+      "L2_E_v",
+      "L2_N_D",
+      "L2_N_A",
+      "L3_L",
+      "L3_E_c",
+      "L3_E_v",
+      "L3_N_D",
+      "L3_N_A"
+    ],
+    "derived_features": [
+      "total_thickness",
+      "thickness_ratio_L2",
+      "thickness_ratio_ETL",
+      "thickness_ratio_HTL",
+      "energy_gap_L1",
+      "energy_gap_L2",
+      "energy_gap_L3",
+      "band_offset_L1_L2",
+      "band_offset_L2_L3",
+      "conduction_band_offset",
+      "valence_band_offset",
+      "doping_ratio_L1",
+      "doping_ratio_L2",
+      "doping_ratio_L3",
+      "total_donor_concentration",
+      "total_acceptor_concentration",
+      "average_energy_gap",
+      "energy_gap_variance",
+      "thickness_variance",
+      "doping_variance"
+    ],
+    "efficiency_targets": [
+      "MPP",
+      "Jsc",
+      "Voc",
+      "FF",
+      "PCE"
+    ],
+    "recombination_targets": [
+      "IntSRHn_mean",
+      "IntSRHn_std",
+      "IntSRHp_mean",
+      "IntSRHp_std",
+      "IntSRH_total",
+      "IntSRH_ratio"
+    ],
+    "all_features": [
+      "L1_L",
+      "L1_E_c",
+      "L1_E_v",
+      "L1_N_D",
+      "L1_N_A",
+      "L2_L",
+      "L2_E_c",
+      "L2_E_v",
+      "L2_N_D",
+      "L2_N_A",
+      "L3_L",
+      "L3_E_c",
+      "L3_E_v",
+      "L3_N_D",
+      "L3_N_A",
+      "total_thickness",
+      "thickness_ratio_L2",
+      "thickness_ratio_ETL",
+      "thickness_ratio_HTL",
+      "energy_gap_L1",
+      "energy_gap_L2",
+      "energy_gap_L3",
+      "band_offset_L1_L2",
+      "band_offset_L2_L3",
+      "conduction_band_offset",
+      "valence_band_offset",
+      "doping_ratio_L1",
+      "doping_ratio_L2",
+      "doping_ratio_L3",
+      "total_donor_concentration",
+      "total_acceptor_concentration",
+      "average_energy_gap",
+      "energy_gap_variance",
+      "thickness_variance",
+      "doping_variance"
+    ],
+    "all_targets": [
+      "MPP",
+      "Jsc",
+      "Voc",
+      "FF",
+      "PCE",
+      "IntSRHn_mean",
+      "IntSRHn_std",
+      "IntSRHp_mean",
+      "IntSRHp_std",
+      "IntSRH_total",
+      "IntSRH_ratio"
+    ]
+  },
+  "parameter_bounds": {
+    "L1_L": [
+      20.0,
+      50.0
+    ],
+    "L1_E_c": [
+      3.7,
+      4.0
+    ],
+    "L1_E_v": [
+      5.7,
+      5.9
+    ],
+    "L1_N_D": [
+      1e+20,
+      1e+21
+    ],
+    "L1_N_A": [
+      1e+20,
+      1e+21
+    ],
+    "L2_L": [
+      200.0,
+      500.0
+    ],
+    "L2_E_c": [
+      4.4,
+      4.6
+    ],
+    "L2_E_v": [
+      5.6,
+      5.8
+    ],
+    "L2_N_D": [
+      1e+20,
+      1e+21
+    ],
+    "L2_N_A": [
+      1e+20,
+      1e+21
+    ],
+    "L3_L": [
+      20.0,
+      50.0
+    ],
+    "L3_E_c": [
+      3.4,
+      3.6
+    ],
+    "L3_E_v": [
+      5.3,
+      5.5
+    ],
+    "L3_N_D": [
+      1e+20,
+      1e+21
+    ],
+    "L3_N_A": [
+      1e+20,
+      1e+21
+    ]
+  }
+}

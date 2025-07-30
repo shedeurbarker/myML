@@ -48,8 +48,8 @@ sim/simulations/*
 *.csv
 
 # Results directory (but keep the directory structure)
-results/*
-!results/.gitkeep
+#results/*
+#!results/.gitkeep
 
 # Logs
 *.log

@@ -1,0 +1,105 @@
+{
+  "prediction_date": "2025-07-28T15:23:20.628792",
+  "example_predictions": {
+    "efficiency_MPP": [
+      87.81666719638716
+    ],
+    "efficiency_Jsc": [
+      -216.36986436446
+    ],
+    "efficiency_Voc": [
+      0.6963999999999997
+    ],
+    "efficiency_FF": [
+      2507.5772015558982
+    ],
+    "recombination_IntSRHn_mean": [
+      5.143826861071202e+56
+    ],
+    "recombination_IntSRHn_std": [
+      7.783643981213241e+58
+    ],
+    "recombination_IntSRHp_mean": [
+      9.985327096705007e+29
+    ],
+    "recombination_IntSRHp_std": [
+      1.2629706254224233e+32
+    ],
+    "recombination_IntSRH_total": [
+      5.143827828807806e+56
+    ],
+    "recombination_IntSRH_ratio": [
+      -8.715449109478031e+33
+    ]
+  },
+  "validation_summary": {
+    "efficiency_MPP": {
+      "r2_score": 0.9809688084734496,
+      "rmse": 134.8173908016487,
+      "mae": 44.639147875465646,
+      "sample_count": 9967
+    },
+    "efficiency_Jsc": {
+      "r2_score": 0.7203947271654533,
+      "rmse": 48.92860190141451,
+      "mae": 13.59763922032309,
+      "sample_count": 9967
+    },
+    "efficiency_Voc": {
+      "r2_score": 0.7127836004323831,
+      "rmse": 0.1395792214439325,
+      "mae": 0.04998635497140571,
+      "sample_count": 9967
+    },
+    "efficiency_FF": {
+      "r2_score": 0.3446726251875315,
+      "rmse": 102949.68120418869,
+      "mae": 17454.725009836195,
+      "sample_count": 9967
+    },
+    "recombination_IntSRHn_mean": {
+      "r2_score": 0.002372245247234561,
+      "rmse": 6.076431921797275e+39,
+      "mae": 4.737690384339519e+38,
+      "sample_count": 9967
+    },
+    "recombination_IntSRHn_std": {
+      "r2_score": 0.0026478146281447845,
+      "rmse": 5.915641567784141e+41,
+      "mae": 4.794612692823076e+40,
+      "sample_count": 9967
+    },
+    "recombination_IntSRHp_mean": {
+      "r2_score": 0.9217954355905652,
+      "rmse": 3.091194333132018e+31,
+      "mae": 8.495271998500704e+30,
+      "sample_count": 9967
+    },
+    "recombination_IntSRHp_std": {
+      "r2_score": 0.9224437241773675,
+      "rmse": 1.749901659868941e+33,
+      "mae": 4.88825104048989e+32,
+      "sample_count": 9967
+    },
+    "recombination_IntSRH_total": {
+      "r2_score": 0.002372245597647926,
+      "rmse": 6.076431921452269e+39,
+      "mae": 4.737690409408176e+38,
+      "sample_count": 9967
+    },
+    "recombination_IntSRH_ratio": {
+      "r2_score": 0.002648526119536143,
+      "rmse": 5.491686295871258e+16,
+      "mae": 3724201365012389.5,
+      "sample_count": 9967
+    }
+  },
+  "model_performance": {
+    "mean_r2": 0.46130997526193135,
+    "max_r2": 0.9809688084734496,
+    "min_r2": 0.002372245247234561,
+    "std_r2": 0.40996263769060665,
+    "total_targets": 10
+  },
+  "data_statistics": {}
+}

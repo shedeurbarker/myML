@@ -1,0 +1,70 @@
+{
+  "optimal_recombination_rates": {
+    "IntSRHn_std": {
+      "max_pce_rate": 9.273819271551952e+30,
+      "best_ratio_rate": 3.764029050336269e+23,
+      "max_pce_value": 627.86979082875,
+      "best_ratio_pce": 1.0753829994650002
+    },
+    "IntSRHp_mean": {
+      "max_pce_rate": 2.199903384178488e+29,
+      "best_ratio_rate": 2.587599646655358e+21,
+      "max_pce_value": 627.86979082875,
+      "best_ratio_pce": 0.92649346747
+    },
+    "IntSRHp_std": {
+      "max_pce_rate": 9.273813338376012e+30,
+      "best_ratio_rate": 1.2279123695655602e+23,
+      "max_pce_value": 627.86979082875,
+      "best_ratio_pce": 0.92649346747
+    },
+    "IntSRH_total": {
+      "max_pce_rate": 4.399806733899051e+29,
+      "best_ratio_rate": 3.68132113786782e+22,
+      "max_pce_value": 627.86979082875,
+      "best_ratio_pce": 1.0753829994650002
+    },
+    "IntSRH_ratio": {
+      "max_pce_rate": 0.9999999843366196,
+      "max_pce_value": 627.86979082875
+    }
+  },
+  "recombination_analysis": {
+    "IntSRHn_std": {
+      "correlation_with_pce": -0.010658716492871518,
+      "mean_rate": 1.2811917002177966e+40,
+      "std_rate": 6.12821840116604e+41,
+      "min_rate": 3.764029050336269e+23,
+      "max_rate": 5.112034159999043e+43
+    },
+    "IntSRHp_mean": {
+      "correlation_with_pce": -0.051652640048548755,
+      "mean_rate": 2.8806902246442384e+31,
+      "std_rate": 1.1143320804515025e+32,
+      "min_rate": 2.587599646655358e+21,
+      "max_rate": 2.3130771986484983e+33
+    },
+    "IntSRHp_std": {
+      "correlation_with_pce": -0.04427615702650731,
+      "mean_rate": 1.7858811173001127e+33,
+      "std_rate": 6.390787067170827e+33,
+      "min_rate": 1.2279123695655602e+23,
+      "max_rate": 9.890193239054228e+34
+    },
+    "IntSRH_total": {
+      "correlation_with_pce": -0.010486383451673154,
+      "mean_rate": 1.2942259160434895e+38,
+      "std_rate": 6.292263378645281e+39,
+      "min_rate": 3.68132113786782e+22,
+      "max_rate": 5.049587381726624e+41
+    },
+    "IntSRH_ratio": {
+      "correlation_with_pce": -0.005292339406893694,
+      "mean_rate": 590218549018712.0,
+      "std_rate": 5.692426781126814e+16,
+      "min_rate": 0.3150584812001124,
+      "max_rate": 5.490167836191982e+18
+    }
+  },
+  "data_points": 9302
+}

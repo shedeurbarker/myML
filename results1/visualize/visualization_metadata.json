@@ -1,0 +1,20 @@
+{
+  "visualization_date": "2025-07-27T23:09:43.958546",
+  "optimization_results_available": true,
+  "validation_metrics_available": false,
+  "visualizations_created": [
+    "comprehensive_dashboard.png",
+    "efficiency_vs_recombination_optimal.png",
+    "optimal_parameters.png",
+    "shap_importance_efficiency.png",
+    "shap_importance_recombination.png"
+  ],
+  "data_summary": {
+    "optimization": {
+      "optimal_efficiency": 101.9974984435722,
+      "optimal_recombination": 1.0584553484650047e+52,
+      "optimization_method": "L-BFGS-B",
+      "parameter_count": 35
+    }
+  }
+}
