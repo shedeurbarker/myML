@@ -50,7 +50,7 @@ import pandas as pd
 SCRIPT_DIR = os.path.dirname(__file__)  # scripts folder
 PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)  # project root
 SIM_DIR = os.path.join(PROJECT_ROOT, 'sim')  # sim folder
-RESULTS_DIR = os.path.join(PROJECT_ROOT, 'results', 'generate_enhanced')
+RESULTS_DIR = os.path.join(PROJECT_ROOT, 'results', 'generated_simulations')
 
 # Configure logging
 os.makedirs(RESULTS_DIR, exist_ok=True)
@@ -59,7 +59,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler(os.path.join(RESULTS_DIR, 'simulation_enhanced.log')),
+        logging.FileHandler(os.path.join(RESULTS_DIR, 'generated_simulations.log')),
         logging.StreamHandler()
     ]
 )

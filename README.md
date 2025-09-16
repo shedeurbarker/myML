@@ -139,13 +139,23 @@ python scripts/3_extract_simulation_data.py
 #### Step 4: Prepare ML Data
 
 ```bash
-python scripts/4_prepare_ml_data.py
+python scripts/4_prepare_ml_data.py [--remove-outliers] [--enhanced-features]
 ```
 
--   Creates derived features from primary parameters
--   Handles missing values and outliers
+-   Creates enhanced physics-based derived features from primary parameters
+-   Validates physics constraints (energy gaps, thicknesses, doping concentrations)
+-   Handles missing values and outliers with enhanced detection
 -   Prepares train/test splits for ML models
+-   Creates inverse optimization dataset for parameter prediction
 -   Output: `results/prepare_ml_data/`
+
+**Enhanced Features Added:**
+
+-   Physics-based features: recombination_efficiency_ratio, interface_quality_index
+-   Carrier transport features: conduction_band_alignment_quality, valence_band_alignment_quality
+-   Thickness optimization: thickness_balance_quality, transport_layer_balance
+-   Doping optimization: average_doping_ratio, doping_consistency
+-   Energy level features: energy_gap_progression, energy_gap_uniformity
 
 #### Step 5: Train Optimization Models
 
@@ -196,6 +206,28 @@ python scripts/8_visualize_example_fixed.py
 -   **Location**: `results/generate_enhanced/combined_output_with_efficiency.csv`
 -   **Contains**: Device parameters, efficiency metrics (MPP, Jsc, Voc, FF), recombination rates
 -   **How to generate**: Run `2_generate_simulations_enhanced.py` to produce simulation outputs, then run `3_extract_simulation_data.py` to extract and combine the data
+
+### ML Data Preparation
+
+-   **Location**: `results/prepare_ml_data/`
+-   **Files**:
+    -   `X_train_efficiency.csv`: Training features for efficiency prediction
+    -   `X_test_efficiency.csv`: Test features for efficiency prediction
+    -   `y_train_efficiency.csv`: Training targets for efficiency prediction
+    -   `y_test_efficiency.csv`: Test targets for efficiency prediction
+    -   `X_train_recombination.csv`: Training features for recombination prediction
+    -   `X_test_recombination.csv`: Test features for recombination prediction
+    -   `y_train_recombination.csv`: Training targets for recombination prediction
+    -   `y_test_recombination.csv`: Test targets for recombination prediction
+    -   `X_train_inverse.csv`: Training features for inverse optimization
+    -   `X_test_inverse.csv`: Test features for inverse optimization
+    -   `y_train_inverse.csv`: Training targets for inverse optimization
+    -   `y_test_inverse.csv`: Test targets for inverse optimization
+    -   `X_full.csv`: Full feature dataset for optimization
+    -   `y_efficiency_full.csv`: Full efficiency targets
+    -   `y_recombination_full.csv`: Full recombination targets
+    -   `dataset_metadata.json`: Enhanced dataset information and statistics
+-   **Enhanced Features**: Physics-based features for recombination-efficiency relationship, carrier transport optimization, and device parameter optimization
 
 ### Trained Models
 

@@ -17,14 +17,11 @@ INPUT FILES:
 - output_Var.dat (for recombination metrics)
 - parameters.json (for device parameters)
 
-NOTE:
-- No use of output_scPars.dat. All efficiency data is calculated from the J-V curve.
-
 USAGE:
 python scripts/3_extract_simulation_data.py
 
-AUTHOR: ML Solar Cell Optimization Pipeline
-DATE: 2024
+AUTHOR: Anthony Barker
+DATE: 2025
 """
 
 import os
@@ -142,7 +139,7 @@ def extract_recombination_data(sim_dir):
                     'IntSRHp_mean': intsrhp_data.mean(),
                     'IntSRHp_std': intsrhp_data.std(),
                     'IntSRH_total': intsrhn_data.mean() + intsrhp_data.mean(),
-                    'IntSRH_ratio': intsrhn_data.mean() / (intsrhp_data.mean() + 1e-30)
+                    'IntSRH_ratio': intsrhn_data.mean() / (intsrhp_data.mean())
                 }
         
         logging.warning(f"No interfacial recombination data found in {sim_dir}")
@@ -238,15 +235,15 @@ def main():
     logging.info(f"Found {len(sim_dirs)} simulation directories")
     
     # Initialize CSV file with headers
-    output_file = os.path.join(log_dir, 'combined_output_with_efficiency.csv')
+    output_file = os.path.join(log_dir, 'extracted_simulation_data.csv')
     
     # Delete existing files if they exist
-    try:
-        if os.path.exists(output_file):
-            os.remove(output_file)
-            logging.info(f"Deleted existing CSV file: {output_file}")
-    except Exception as e:
-        logging.warning(f"Could not delete existing CSV file: {e}")
+    # try:
+    #     if os.path.exists(output_file):
+    #         os.remove(output_file)
+    #         logging.info(f"Deleted existing CSV file: {output_file}")
+    # except Exception as e:
+    #     logging.warning(f"Could not delete existing CSV file: {e}")
     
     try:
         log_file = os.path.join(log_dir, 'extraction.log')
@@ -271,12 +268,19 @@ def main():
         'simulation_id', 'extraction_timestamp'
     ]
     
-    # Create CSV file with headers
-    with open(output_file, 'w', newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=headers)
-        writer.writeheader()
+    # Create CSV file with headers (if not already created)
+    write_header = True
+    if os.path.exists(output_file):
+        with open(output_file, 'r', newline='') as csvfile:
+            first_line = csvfile.readline()
+            if first_line.strip() == ','.join(headers):
+                write_header = False
+    if write_header:
+        with open(output_file, 'w', newline='') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=headers)
+            writer.writeheader()
     
-    logging.info(f"Created output file: {output_file}")
+    logging.info(f"Created output file: {output_file} with headers: {headers}")
     
     # Process each simulation directory and write immediately
     successful = 0
@@ -321,12 +325,6 @@ def main():
     print(f"Failed extractions: {failed}")
     print(f"Data points extracted: {successful}")
     print(f"Output file: {output_file}")
-    
-    # Show sample of extracted data
-    if successful > 0:
-        print(f"\nSample of extracted data (first 5 rows):")
-        df_sample = pd.read_csv(output_file, nrows=5)
-        print(df_sample.to_string(index=False))
 
 if __name__ == "__main__":
     main() 

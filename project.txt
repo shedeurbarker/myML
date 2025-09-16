@@ -5,7 +5,7 @@ at the critical interfaces within the device stack and the overall efficiency of
 devices. The goal is to go beyond simply classifying dominant loss mechanisms to precise, 
 continuous predictions of loss values and their relationship with device performance. By 
 understanding the interplay between interfacial SRH recombination and overall device efficiency, 
-the model aims to identify the optional balance of device parameters and material
+the model aims to identify the optimal balance of device parameters and material
  configurations that yield the highest possible efficiency, considering key 
  contributing factors.
 

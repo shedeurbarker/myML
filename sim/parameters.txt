@@ -1,7 +1,7 @@
 # Parameter ranges for simulation sweep
 # Format: parameter_name = [min_value, max_value, num_points, log_scale]
 
-# Layer 1 (PCBM) parameters
+# Layer 1 (PCBM) parameters - ETL
 Layer 1
 L = [20E-9, 50E-9, 5, True]
 E_c = [3.7, 4.0, 3, False]
@@ -20,7 +20,7 @@ E_v = [5.6, 5.8, 3, False]
 N_D = [1E20, 1E21, 3, True]
 N_A = [1E20, 1E21, 3, True]
 
-# Layer 3 (PEDOT) parameters
+# Layer 3 (PEDOT:PSS) parameters - HTL
 Layer 3
 L = [20E-9, 50E-9, 5, True]
 E_c = [3.4, 3.6, 3, False]
