@@ -50,7 +50,23 @@ PRIMARY_PARAMETERS = {**L1_PARAMETERS, **L2_PARAMETERS, **L3_PARAMETERS}
 # DERIVED FEATURES (Calculated from primary parameters)
 # =============================================================================
 
-DERIVED_FEATURES = {
+# Option 1: Keep only the most physically meaningful derived features
+DERIVED_FEATURES_MINIMAL = {
+    # Energy gap features (most important for device physics)
+    'energy_gap_L1': 'Layer 1 energy gap (L1_E_c - L1_E_v)',
+    'energy_gap_L2': 'Layer 2 energy gap (L2_E_c - L2_E_v)', 
+    'energy_gap_L3': 'Layer 3 energy gap (L3_E_c - L3_E_v)',
+    
+    # Band alignment features (critical for carrier transport)
+    'band_offset_L1_L2': 'Band offset between Layer 1 and Layer 2',
+    'band_offset_L2_L3': 'Band offset between Layer 2 and Layer 3',
+}
+
+# Option 2: No derived features at all (use only 15 primary parameters)
+DERIVED_FEATURES_NONE = {}
+
+# Option 3: Full set (current approach)
+DERIVED_FEATURES_FULL = {
     # Thickness features
     'total_thickness': 'Total device thickness (L1_L + L2_L + L3_L)',
     'thickness_ratio_L2': 'Active layer thickness ratio (L2_L / total_thickness)',
@@ -82,25 +98,19 @@ DERIVED_FEATURES = {
     'doping_variance': 'Variance in doping concentrations'
 }
 
+# Choose which set to use (change this to experiment)
+DERIVED_FEATURES = DERIVED_FEATURES_MINIMAL  # Change to _MINIMAL or _NONE to test
+
 # =============================================================================
 # TARGET VARIABLES (What we want to predict/optimize)
 # =============================================================================
 
 EFFICIENCY_TARGETS = {
-    'MPP': 'Maximum Power Point (W/cm²)',
-    'Jsc': 'Short-circuit current density (A/cm²)',
-    'Voc': 'Open-circuit voltage (V)',
-    'FF': 'Fill Factor (dimensionless)',
-    'PCE': 'Power Conversion Efficiency (%)'
+    'MPP': 'Maximum Power Point (W/cm²)'
 }
 
 RECOMBINATION_TARGETS = {
-    'IntSRHn_mean': 'Mean electron interfacial recombination rate',
-    'IntSRHn_std': 'Standard deviation of electron recombination',
-    'IntSRHp_mean': 'Mean hole interfacial recombination rate',
-    'IntSRHp_std': 'Standard deviation of hole recombination',
-    'IntSRH_total': 'Total interfacial recombination rate',
-    'IntSRH_ratio': 'Ratio of electron to hole recombination'
+    'IntSRHn_mean': 'Mean electron interfacial recombination rate'
 }
 
 # Combine all targets

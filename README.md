@@ -32,8 +32,8 @@ This project implements a **machine learning-driven optimization pipeline** to f
 
 ### Primary Optimization Targets
 
--   **Optimal IntSRHn**: Electron recombination rate for maximum efficiency
--   **Optimal Efficiency**: Predicted maximum power point (MPP)
+-   **Optimal Efficiency**: Maximum power point (MPP) in W/cm²
+-   **Optimal Recombination**: Mean electron interfacial recombination rate (IntSRHn_mean)
 -   **Optimal Device Parameters**: Layer thicknesses, energy levels, doping concentrations
 
 ### Device Parameters (Optimization Variables)
@@ -93,15 +93,14 @@ This runs only the ML and optimization portion (scripts 4-8), assuming data prep
 
 **Prerequisites:** Scripts 1-3 must be run first.
 
-### 3. Important Note on PCE Calculation
+### 3. Important Note on Target Variables
 
-The Power Conversion Efficiency (PCE) is calculated as:
+The optimization focuses on two key targets:
 
-```
-PCE = (MPP / 1000 W/m²) × 100
-```
+-   **MPP (Maximum Power Point)**: The fundamental efficiency metric in W/cm²
+-   **IntSRHn_mean**: Mean electron interfacial recombination rate
 
-where MPP is the Maximum Power Point in W/m² and 1000 W/m² is the standard AM1.5G solar irradiance.
+PCE can be calculated from MPP when needed: `PCE = (MPP / 1000) × 100`
 
 ### 4. Run Individual Steps
 
@@ -204,7 +203,7 @@ python scripts/8_visualize_example_fixed.py
 ### Enhanced Simulation Data
 
 -   **Location**: `results/generate_enhanced/combined_output_with_efficiency.csv`
--   **Contains**: Device parameters, efficiency metrics (MPP, Jsc, Voc, FF), recombination rates
+-   **Contains**: Device parameters, efficiency metric (MPP), recombination rate (IntSRHn_mean)
 -   **How to generate**: Run `2_generate_simulations_enhanced.py` to produce simulation outputs, then run `3_extract_simulation_data.py` to extract and combine the data
 
 ### ML Data Preparation
@@ -312,13 +311,13 @@ The optimization reveals that **minimum recombination does not always lead to ma
 
 ### Efficiency Prediction
 
--   **Target**: MPP (Maximum Power Point)
+-   **Target**: MPP (Maximum Power Point) in W/cm²
 -   **Accuracy**: R² > 0.8 typically achieved
 -   **Features**: All device parameters (thickness, energy levels, doping)
 
 ### Recombination Prediction
 
--   **Target**: IntSRHn_mean (Average electron recombination)
+-   **Target**: IntSRHn_mean (Mean electron interfacial recombination rate)
 -   **Accuracy**: R² > 0.7 typically achieved
 -   **Features**: Device parameters affecting interface recombination
 

@@ -8,7 +8,7 @@ This script extracts device parameters, efficiency metrics, and recombination da
 
 WHAT THIS SCRIPT DOES:
 1. Reads device parameters from parameters.json
-2. Calculates all efficiency metrics (MPP, Jsc, Voc, FF, PCE, Jmpp, Vmpp) directly from the J-V curve in output_JV.dat
+2. Calculates efficiency metric (MPP) directly from the J-V curve in output_JV.dat
 3. Extracts recombination metrics from output_Var.dat
 4. Writes combined results to a CSV for ML
 
@@ -98,13 +98,7 @@ def extract_jv_curve_data(sim_dir):
         pce = (mpp_data['P'] / 1000) * 100
         
         return {
-            'MPP': mpp_data['P'],
-            'Jsc': jsc,
-            'Voc': voc,
-            'FF': ff,
-            'PCE': pce,
-            'Jmpp': mpp_data['J'],
-            'Vmpp': mpp_data['V']
+            'MPP': mpp_data['P']
         }
         
     except Exception as e:
@@ -134,12 +128,7 @@ def extract_recombination_data(sim_dir):
             
             if len(intsrhn_data) > 0 and len(intsrhp_data) > 0:
                 return {
-                    'IntSRHn_mean': intsrhn_data.mean(),
-                    'IntSRHn_std': intsrhn_data.std(),
-                    'IntSRHp_mean': intsrhp_data.mean(),
-                    'IntSRHp_std': intsrhp_data.std(),
-                    'IntSRH_total': intsrhn_data.mean() + intsrhp_data.mean(),
-                    'IntSRH_ratio': intsrhn_data.mean() / (intsrhp_data.mean())
+                    'IntSRHn_mean': intsrhn_data.mean()
                 }
         
         logging.warning(f"No interfacial recombination data found in {sim_dir}")
@@ -202,9 +191,7 @@ def process_simulation_directory(sim_dir):
     recombination_data = extract_recombination_data(sim_dir)
     if recombination_data is None:
         recombination_data = {
-            'IntSRHn_mean': np.nan, 'IntSRHn_std': np.nan,
-            'IntSRHp_mean': np.nan, 'IntSRHp_std': np.nan,
-            'IntSRH_total': np.nan, 'IntSRH_ratio': np.nan
+            'IntSRHn_mean': np.nan
         }
     
     # Combine all data
@@ -259,11 +246,10 @@ def main():
         'L1_L', 'L1_E_c', 'L1_E_v', 'L1_N_D', 'L1_N_A',
         'L2_L', 'L2_E_c', 'L2_E_v', 'L2_N_D', 'L2_N_A', 
         'L3_L', 'L3_E_c', 'L3_E_v', 'L3_N_D', 'L3_N_A',
-        # Efficiency metrics (7)
-        'MPP', 'Jsc', 'Voc', 'FF', 'PCE', 'Jmpp', 'Vmpp',
-        # Recombination data (6)
-        'IntSRHn_mean', 'IntSRHn_std', 'IntSRHp_mean', 'IntSRHp_std', 
-        'IntSRH_total', 'IntSRH_ratio',
+        # Efficiency metrics (1)
+        'MPP',
+        # Recombination data (1)
+        'IntSRHn_mean',
         # Metadata
         'simulation_id', 'extraction_timestamp'
     ]

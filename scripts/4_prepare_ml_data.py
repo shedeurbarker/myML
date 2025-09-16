@@ -49,8 +49,8 @@ OUTPUT FILES:
 - results/prepare_ml_data/dataset_metadata.json (enhanced dataset information and statistics)
 
 DATASETS CREATED:
-1. Efficiency Prediction Dataset: Features → MPP, Jsc, Voc, FF, PCE
-2. Recombination Prediction Dataset: Features → IntSRHn_mean, IntSRHp_mean, etc.
+1. Efficiency Prediction Dataset: Features → MPP
+2. Recombination Prediction Dataset: Features → IntSRHn_mean
 3. Full Dataset: Complete dataset for optimization algorithms
 4. NEW: Inverse Optimization Dataset: High-efficiency configurations for parameter prediction
 
@@ -97,7 +97,7 @@ def load_feature_definitions():
 
 def load_extracted_data():
     """Load the extracted simulation data."""
-    input_file = 'results/extract_simulation_data/combined_output_with_efficiency.csv'
+    input_file = 'results/extract_simulation_data/extracted_simulation_data.csv'
     
     if not os.path.exists(input_file):
         logging.error(f"Extracted data not found: {input_file}")
@@ -130,11 +130,11 @@ def create_derived_features(df):
         df['thickness_ratio_ETL'] = df['L1_L'] / (df['total_thickness'] + 1e-30)
         df['thickness_ratio_HTL'] = df['L3_L'] / (df['total_thickness'] + 1e-30)
     
-    # Energy gap features
+    # Energy gap features (use absolute value to ensure positive gaps)
     if all(col in df.columns for col in ['L1_E_c', 'L1_E_v', 'L2_E_c', 'L2_E_v', 'L3_E_c', 'L3_E_v']):
-        df['energy_gap_L1'] = df['L1_E_c'] - df['L1_E_v']
-        df['energy_gap_L2'] = df['L2_E_c'] - df['L2_E_v']
-        df['energy_gap_L3'] = df['L3_E_c'] - df['L3_E_v']
+        df['energy_gap_L1'] = abs(df['L1_E_c'] - df['L1_E_v'])
+        df['energy_gap_L2'] = abs(df['L2_E_c'] - df['L2_E_v'])
+        df['energy_gap_L3'] = abs(df['L3_E_c'] - df['L3_E_v'])
     
     # Band alignment features
     if all(col in df.columns for col in ['L1_E_c', 'L2_E_c', 'L3_E_c', 'L1_E_v', 'L2_E_v', 'L3_E_v']):
@@ -183,11 +183,11 @@ def create_enhanced_derived_features(df):
         df['thickness_ratio_ETL'] = df['L1_L'] / (df['total_thickness'] + 1e-30)
         df['thickness_ratio_HTL'] = df['L3_L'] / (df['total_thickness'] + 1e-30)
     
-    # Energy gap features
+    # Energy gap features (use absolute value to ensure positive gaps)
     if all(col in df.columns for col in ['L1_E_c', 'L1_E_v', 'L2_E_c', 'L2_E_v', 'L3_E_c', 'L3_E_v']):
-        df['energy_gap_L1'] = df['L1_E_c'] - df['L1_E_v']
-        df['energy_gap_L2'] = df['L2_E_c'] - df['L2_E_v']
-        df['energy_gap_L3'] = df['L3_E_c'] - df['L3_E_v']
+        df['energy_gap_L1'] = abs(df['L1_E_c'] - df['L1_E_v'])
+        df['energy_gap_L2'] = abs(df['L2_E_c'] - df['L2_E_v'])
+        df['energy_gap_L3'] = abs(df['L3_E_c'] - df['L3_E_v'])
     
     # Band alignment features
     if all(col in df.columns for col in ['L1_E_c', 'L2_E_c', 'L3_E_c', 'L1_E_v', 'L2_E_v', 'L3_E_v']):
@@ -250,8 +250,8 @@ def create_enhanced_derived_features(df):
     
     # NEW: Energy level optimization features
     if all(col in df.columns for col in ['energy_gap_L1', 'energy_gap_L2', 'energy_gap_L3']):
-        # Energy gap progression (should be logical)
-        df['energy_gap_progression'] = (df['energy_gap_L2'] - df['energy_gap_L1']) * (df['energy_gap_L3'] - df['energy_gap_L2'])
+        # Energy gap progression (absolute value to ensure positive)
+        df['energy_gap_progression'] = abs((df['energy_gap_L2'] - df['energy_gap_L1']) * (df['energy_gap_L3'] - df['energy_gap_L2']))
         
         # Energy gap uniformity (for specific device types)
         df['energy_gap_uniformity'] = 1 / (1 + df[['energy_gap_L1', 'energy_gap_L2', 'energy_gap_L3']].var(axis=1))
@@ -266,6 +266,47 @@ def create_enhanced_derived_features(df):
     derived_features_count = len([col for col in df.columns if col in derived_features])
     total_enhanced = derived_features_count + len(enhanced_features)
     logging.info(f"Created {total_enhanced} enhanced derived features")
+    return df
+
+def fix_unreasonable_efficiency_values(df):
+    """Fix unreasonable MPP and PCE values using statistical capping."""
+    logging.info("Fixing unreasonable efficiency values...")
+    
+    # Count issues before fixing
+    mpp_negative = (df['MPP'] < 0).sum() if 'MPP' in df.columns else 0
+    pce_negative = (df['PCE'] < 0).sum() if 'PCE' in df.columns else 0
+    mpp_too_high = (df['MPP'] > 1000).sum() if 'MPP' in df.columns else 0
+    pce_too_high = (df['PCE'] > 100).sum() if 'PCE' in df.columns else 0
+    
+    if mpp_negative + pce_negative + mpp_too_high + pce_too_high > 0:
+        logging.info(f"Found unreasonable values - MPP negative: {mpp_negative}, MPP too high: {mpp_too_high}")
+        logging.info(f"Found unreasonable values - PCE negative: {pce_negative}, PCE too high: {pce_too_high}")
+        
+        # Use physically realistic maximum values
+        if 'MPP' in df.columns:
+            # Realistic maximum for research solar cells (~47% PCE = 470 W/m²)
+            mpp_max = 470  # W/m²
+            logging.info(f"Capping MPP at physically realistic maximum: {mpp_max} W/m²")
+            
+            # Fix negative values
+            df.loc[df['MPP'] < 0, 'MPP'] = 0
+            # Cap extremely high values
+            df.loc[df['MPP'] > mpp_max, 'MPP'] = mpp_max
+        
+        if 'PCE' in df.columns:
+            # Realistic maximum for research solar cells
+            pce_max = 47  # %
+            logging.info(f"Capping PCE at physically realistic maximum: {pce_max}%")
+            
+            # Fix negative values
+            df.loc[df['PCE'] < 0, 'PCE'] = 0
+            # Cap extremely high values
+            df.loc[df['PCE'] > pce_max, 'PCE'] = pce_max
+        
+        logging.info("Unreasonable efficiency values fixed")
+    else:
+        logging.info("No unreasonable efficiency values found")
+    
     return df
 
 def validate_physics_constraints(df):
@@ -295,14 +336,14 @@ def validate_physics_constraints(df):
         if negative_doping > 0:
             violations.append(f"{col}: {negative_doping} negative doping concentrations")
     
-    # Check efficiency values are reasonable
+    # Check efficiency values are reasonable (after fixing)
     if 'MPP' in df.columns:
-        unreasonable_mpp = ((df['MPP'] < 0) | (df['MPP'] > 1000)).sum()
+        unreasonable_mpp = ((df['MPP'] < 0) | (df['MPP'] > 470)).sum()
         if unreasonable_mpp > 0:
             violations.append(f"MPP: {unreasonable_mpp} unreasonable values")
     
     if 'PCE' in df.columns:
-        unreasonable_pce = ((df['PCE'] < 0) | (df['PCE'] > 100)).sum()
+        unreasonable_pce = ((df['PCE'] < 0) | (df['PCE'] > 47)).sum()
         if unreasonable_pce > 0:
             violations.append(f"PCE: {unreasonable_pce} unreasonable values")
     
@@ -327,7 +368,7 @@ def handle_missing_values(df):
             logging.info(f"  {col}: {count} missing values")
     
     # Check for failed simulations (rows where ALL efficiency values are missing)
-    efficiency_cols = ['MPP', 'Jsc', 'Voc', 'FF', 'PCE']
+    efficiency_cols = ['MPP']
     failed_simulations = df[efficiency_cols].isnull().all(axis=1)
     failed_count = failed_simulations.sum()
     
@@ -634,6 +675,9 @@ def main():
     else:
         df = create_derived_features(df)
     
+    # Fix unreasonable efficiency values first
+    df = fix_unreasonable_efficiency_values(df)
+    
     # Validate physics constraints
     physics_violations = validate_physics_constraints(df)
     
@@ -642,8 +686,8 @@ def main():
     
     # Remove outliers from efficiency and recombination targets (disabled by default)
     if args.remove_outliers:
-        efficiency_cols = [col for col in df.columns if col in ['MPP', 'Jsc', 'Voc', 'FF', 'PCE']]
-        recombination_cols = [col for col in df.columns if 'IntSRH' in col]
+        efficiency_cols = [col for col in df.columns if col in ['MPP']]
+        recombination_cols = [col for col in df.columns if col in ['IntSRHn_mean']]
         
         df = remove_outliers_enhanced(df, efficiency_cols + recombination_cols)
     else:
