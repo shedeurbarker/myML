@@ -1,20 +1,25 @@
 """
 ===============================================================================
-EXTRACT SIMULATION DATA FOR ML (NO output_scPars.dat)
+EXTRACT SIMULATION DATA FOR ML - MPP and IntSRHn_mean ONLY
 ===============================================================================
 
 PURPOSE:
-This script extracts device parameters, efficiency metrics, and recombination data from simulation results for ML workflows.
+This script extracts device parameters and the two target variables (MPP and IntSRHn_mean) 
+from simulation results for ML workflows, based on the definitions in script 1.
 
 WHAT THIS SCRIPT DOES:
 1. Reads device parameters from parameters.json
-2. Calculates efficiency metric (MPP) directly from the J-V curve in output_JV.dat
-3. Extracts recombination metrics from output_Var.dat
+2. Calculates MPP (Maximum Power Point) from the J-V curve in output_JV.dat
+3. Extracts IntSRHn_mean (mean electron interfacial recombination rate) from output_Var.dat
 4. Writes combined results to a CSV for ML
 
+TARGET VARIABLES (as defined in script 1):
+- MPP: Maximum Power Point (W/cm²) - efficiency target
+- IntSRHn_mean: Mean electron interfacial recombination rate - recombination target
+
 INPUT FILES:
-- output_JV.dat (for all efficiency metrics)
-- output_Var.dat (for recombination metrics)
+- output_JV.dat (for MPP calculation)
+- output_Var.dat (for IntSRHn_mean extraction)
 - parameters.json (for device parameters)
 
 USAGE:
@@ -55,7 +60,7 @@ def load_feature_definitions():
         return None
 
 def extract_jv_curve_data(sim_dir):
-    """Extract J-V curve data and calculate efficiency metrics."""
+    """Extract J-V curve data and calculate MPP (Maximum Power Point) only."""
     jv_file = os.path.join(sim_dir, 'output_JV.dat')
     
     if not os.path.exists(jv_file):
@@ -71,31 +76,12 @@ def extract_jv_curve_data(sim_dir):
             logging.warning(f"Empty J-V data in {sim_dir}")
             return None
         
-        # Calculate efficiency metrics
-        # Power = V * J
+        # Calculate power: P = V * J
         jv_data['P'] = jv_data['V'] * jv_data['J']
         
-        # Find maximum power point (MPP)
+        # Find maximum power point (MPP) - this is our only efficiency target
         mpp_idx = jv_data['P'].idxmax()
         mpp_data = jv_data.loc[mpp_idx]
-        
-        # Find short-circuit current (J at V ≈ 0)
-        sc_idx = jv_data['V'].abs().idxmin()
-        jsc = jv_data.loc[sc_idx, 'J']
-        
-        # Find open-circuit voltage (V at J ≈ 0)
-        oc_idx = jv_data['J'].abs().idxmin()
-        voc = jv_data.loc[oc_idx, 'V']
-        
-        # Calculate fill factor
-        if abs(jsc) > 1e-10 and abs(voc) > 1e-10:
-            ff = abs(mpp_data['P'] / (jsc * voc))
-        else:
-            ff = 0.0
-        
-        # Calculate power conversion efficiency (assuming 1 sun illumination)
-        # PCE = (MPP / 1000) * 100, where P_in = 1000 W/m² (AM1.5G)
-        pce = (mpp_data['P'] / 1000) * 100
         
         return {
             'MPP': mpp_data['P']
@@ -106,7 +92,7 @@ def extract_jv_curve_data(sim_dir):
         return None
 
 def extract_recombination_data(sim_dir):
-    """Extract interfacial recombination data from simulation results."""
+    """Extract IntSRHn_mean (mean electron interfacial recombination rate) only."""
     var_file = os.path.join(sim_dir, 'output_Var.dat')
     
     if not os.path.exists(var_file):
@@ -121,17 +107,16 @@ def extract_recombination_data(sim_dir):
             logging.warning(f"Empty variable data in {sim_dir}")
             return None
         
-        # Extract interfacial recombination data
-        if 'IntSRHn' in var_data.columns and 'IntSRHp' in var_data.columns:
+        # Extract only IntSRHn (electron interfacial recombination) - our only recombination target
+        if 'IntSRHn' in var_data.columns:
             intsrhn_data = var_data['IntSRHn'].dropna()
-            intsrhp_data = var_data['IntSRHp'].dropna()
             
-            if len(intsrhn_data) > 0 and len(intsrhp_data) > 0:
+            if len(intsrhn_data) > 0:
                 return {
                     'IntSRHn_mean': intsrhn_data.mean()
                 }
         
-        logging.warning(f"No interfacial recombination data found in {sim_dir}")
+        logging.warning(f"No IntSRHn data found in {sim_dir}")
         return None
         
     except Exception as e:

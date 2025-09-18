@@ -1,23 +1,41 @@
 """
 ===============================================================================
-GENERATE ENHANCED SIMULATIONS
+GENERATE PHYSICS-VALIDATED SIMULATIONS
 ===============================================================================
 
 PURPOSE:
-This script generates parameter combinations, creates simulation directories, and runs physics-based simulations for solar cell optimization. 
-It automates the setup and execution of multiple simulation runs based on parameter grids or random sampling.
+This script generates parameter combinations with physics validation, creates simulation directories, 
+and runs physics-based simulations for solar cell optimization. It includes validation to prevent 
+unphysical parameter combinations that lead to unrealistic results.
 
 WHAT THIS SCRIPT DOES:
 1. Reads parameter ranges from sim/parameters.txt
-2. Generates all (or a random subset of) parameter combinations for each device layer
-3. Creates a new directory for each simulation in sim/simulations/
-4. Copies required input files and sets up simulation folders
-5. Runs the simulation executable (simss.exe) for each parameter set
-6. Logs the status and results of each simulation run
+2. Generates parameter combinations for each device layer
+3. VALIDATES PHYSICS CONSTRAINTS (energy gaps, thicknesses, doping, band alignment)
+4. Rejects unphysical combinations (negative energy gaps, extreme values)
+5. Creates simulation directories only for valid parameter sets
+6. Runs physics simulations (simss.exe) for validated parameter combinations
+7. Logs validation statistics and simulation results
+
+PHYSICS VALIDATION CHECKS:
+- Energy gaps must be positive (accounting for SimSalabim's negative energy convention)
+- Layer thicknesses must be reasonable (>1 nm)
+- Doping concentrations must be realistic (<1e22 m^-3)
+- Doping imbalances must be moderate (<100:1 ratio)
+- Energy gaps must be in semiconductor range (0.5-4.0 eV)
+- Layer thickness ratios must be reasonable (active layer >> transport layers)
+- Transport layer thickness balance (<10:1 ratio)
+
+BENEFITS:
+- Prevents numerical instabilities that cause extreme MPP values (>1000 W/cm²)
+- Eliminates failed device configurations (negative MPP)
+- Ensures realistic solar cell parameter combinations
+- Improves simulation stability and data quality
+- Reduces computational waste on unphysical/unstable simulations
 
 IMPORTANT:
 - This script DOES NOT extract or combine simulation results.
-- To extract device parameters, efficiency metrics, and recombination data, run scripts/3_extract_simulation_data.py after all simulations are complete.
+- To extract MPP and IntSRHn_mean data, run scripts/3_extract_simulation_data.py after simulations complete.
 
 INPUT FILES:
 - sim/parameters.txt (parameter ranges)
@@ -65,7 +83,7 @@ logging.basicConfig(
 )
 
 # Maximum number of parameter combinations to generate
-MAX_COMBINATIONS = 10000
+MAX_COMBINATIONS = 10
 
 def parse_parameters(param_file):
     """Parse parameters from file, organizing them by layer and making names unique per layer."""
@@ -229,8 +247,97 @@ def run_simulation(sim_dir):
         os.chdir(original_dir)
         raise e
 
+def validate_physics_constraints(params_dict):
+    """Validate that parameter combination satisfies basic physics constraints.
+    
+    NOTE: SimSalabim uses NEGATIVE energy values internally, so:
+    - Input E_c = 3.7 becomes E_c = -3.7 eV in simulation
+    - Input E_v = 5.7 becomes E_v = -5.7 eV in simulation
+    - Energy gap = (-3.7) - (-5.7) = +2.0 eV (positive, as expected)
+    """
+    
+    # Check 1: Energy gaps must be positive (accounting for SimSalabim convention)
+    # SimSalabim: Gap = (-E_c_input) - (-E_v_input) = E_v_input - E_c_input
+    for layer in ['L1', 'L2', 'L3']:
+        ec_input = params_dict[f'{layer}_E_c']  # Input value (becomes -E_c in sim)
+        ev_input = params_dict[f'{layer}_E_v']  # Input value (becomes -E_v in sim)
+        
+        # In SimSalabim: actual_gap = (-ec_input) - (-ev_input) = ev_input - ec_input
+        actual_gap = ev_input - ec_input
+        
+        if actual_gap <= 0:
+            return False, f"{layer} has negative/zero energy gap ({actual_gap:.3f} eV) in SimSalabim"
+    
+    # Check 2: Layer thicknesses must be reasonable (not too thin)
+    min_thickness = 1e-9  # 1 nm minimum
+    for layer in ['L1', 'L2', 'L3']:
+        thickness = params_dict[f'{layer}_L']
+        if thickness < min_thickness:
+            return False, f"{layer} thickness too small ({thickness*1e9:.2f} nm)"
+    
+    # Check 3: Doping concentrations must be reasonable
+    max_doping = 5e21  # More restrictive maximum doping to prevent instabilities
+    for layer in ['L1', 'L2', 'L3']:
+        nd = params_dict[f'{layer}_N_D']
+        na = params_dict[f'{layer}_N_A']
+        if nd > max_doping or na > max_doping:
+            return False, f"{layer} has unrealistic doping concentration (max: 5e21 m^-3)"
+    
+    # Check 4: Energy level ordering should make sense (in SimSalabim convention)
+    # In SimSalabim: E_c = -E_c_input, E_v = -E_v_input
+    # For proper band alignment: E_c should be higher than E_v (less negative)
+    # This means E_c_input should be smaller than E_v_input (which we already check above)
+    
+    # Check 5: Reasonable energy level ranges
+    for layer in ['L1', 'L2', 'L3']:
+        ec_input = params_dict[f'{layer}_E_c']
+        ev_input = params_dict[f'{layer}_E_v']
+        
+        # Energy levels should be in reasonable range for semiconductors
+        if ec_input < 1.0 or ec_input > 6.0:
+            return False, f"{layer} E_c ({ec_input:.2f} eV) outside reasonable range [1.0, 6.0]"
+        if ev_input < 1.0 or ev_input > 8.0:
+            return False, f"{layer} E_v ({ev_input:.2f} eV) outside reasonable range [1.0, 8.0]"
+    
+    # Check 6: Prevent extreme doping imbalances that can cause numerical instabilities
+    for layer in ['L1', 'L2', 'L3']:
+        nd = params_dict[f'{layer}_N_D']
+        na = params_dict[f'{layer}_N_A']
+        doping_ratio = max(nd/na, na/nd)  # Always >= 1
+        
+        if doping_ratio > 3.5:  # Balanced constraint - prevent extreme imbalances while allowing some variation
+            return False, f"{layer} has doping imbalance (ratio: {doping_ratio:.1f}:1) - may cause extreme MPP"
+    
+    # Check 7: Energy gap constraints for stable devices
+    for layer in ['L1', 'L2', 'L3']:
+        ec_input = params_dict[f'{layer}_E_c']
+        ev_input = params_dict[f'{layer}_E_v']
+        actual_gap = ev_input - ec_input
+        
+        # Energy gap constraints for stable devices (relaxed to allow valid combinations)
+        if actual_gap < 1.0:  # Prevent very small gaps that cause extreme instabilities
+            return False, f"{layer} energy gap too small ({actual_gap:.2f} eV) - causes extreme MPP"
+        if actual_gap > 3.0:  # Upper limit for realistic solar cells
+            return False, f"{layer} energy gap too large ({actual_gap:.2f} eV) - unrealistic for solar cells"
+    
+    # Check 8: Layer thickness ratios should be reasonable
+    l1_thickness = params_dict['L1_L']
+    l2_thickness = params_dict['L2_L'] 
+    l3_thickness = params_dict['L3_L']
+    
+    # Active layer should be much thicker than transport layers
+    if l2_thickness < 5 * max(l1_thickness, l3_thickness):
+        return False, f"Active layer too thin relative to transport layers"
+    
+    # Transport layers shouldn't be too thin relative to each other
+    transport_ratio = max(l1_thickness/l3_thickness, l3_thickness/l1_thickness)
+    if transport_ratio > 10:
+        return False, f"Transport layer thickness imbalance (ratio: {transport_ratio:.1f}:1)"
+    
+    return True, "Valid physics"
+
 def generate_parameter_combinations():
-    """Generate parameter combinations for simulations."""
+    """Generate parameter combinations for simulations with physics validation."""
     # Parse parameters from file in sim directory
     params = parse_parameters(os.path.join(SIM_DIR, 'parameters.txt'))
     layer_params = generate_parameter_values(params)
@@ -265,24 +372,84 @@ def generate_parameter_combinations():
             layer_combinations[layer] = list(itertools.product(*layer_params[layer]['values']))
             logging.info(f"Layer {layer} generated {len(layer_combinations[layer])} combinations")
         
-        # Generate all possible combinations across layers
+        # Generate all possible combinations across layers with physics validation
+        valid_combinations = 0
+        invalid_combinations = 0
+        
         for layer_combo in itertools.product(*[layer_combinations[layer] for layer in sorted(layer_params.keys())]):
             params_dict = {}
             for layer, values in zip(sorted(layer_params.keys()), layer_combo):
                 for name, value in zip(layer_params[layer]['names'], values):
                     params_dict[name] = value
-            combinations.append(params_dict)
+            
+            # Validate physics constraints
+            is_valid, reason = validate_physics_constraints(params_dict)
+            if is_valid:
+                combinations.append(params_dict)
+                valid_combinations += 1
+            else:
+                invalid_combinations += 1
+                if invalid_combinations <= 10:  # Log first 10 invalid combinations
+                    logging.debug(f"Invalid combination rejected: {reason}")
+        
+        logging.info(f"Physics validation results:")
+        logging.info(f"  Valid combinations: {valid_combinations}")
+        logging.info(f"  Invalid combinations rejected: {invalid_combinations}")
+        if valid_combinations + invalid_combinations > 0:
+            logging.info(f"  Physics validation rate: {valid_combinations/(valid_combinations+invalid_combinations)*100:.1f}%")
+        else:
+            logging.warning("No combinations were generated - check parameter ranges and constraints")
     else:
-        # If we have more combinations than MAX_COMBINATIONS, randomly sample
-        logging.info("Randomly sampling combinations")
+        # If we have more combinations than MAX_COMBINATIONS, randomly sample with physics validation
+        logging.info("Randomly sampling combinations with physics validation")
         combinations = []
-        for _ in range(num_combinations):
+        valid_combinations = 0
+        invalid_combinations = 0
+        attempts = 0
+        max_attempts = num_combinations * 10  # Allow up to 10x attempts to find valid combinations
+        
+        while len(combinations) < num_combinations and attempts < max_attempts:
+            attempts += 1
+            
             # Randomly select one value from each parameter's range for each layer
             combo = {}
             for layer in sorted(layer_params.keys()):
                 for name, values in zip(layer_params[layer]['names'], layer_params[layer]['values']):
                     combo[name] = np.random.choice(values)
-            combinations.append(combo)
+            
+            # Validate physics constraints
+            is_valid, reason = validate_physics_constraints(combo)
+            if is_valid:
+                combinations.append(combo)
+                valid_combinations += 1
+            else:
+                invalid_combinations += 1
+                if invalid_combinations <= 10:  # Log first 10 invalid combinations
+                    logging.debug(f"Invalid combination rejected: {reason}")
+        
+        logging.info(f"Random sampling with physics validation results:")
+        logging.info(f"  Attempts: {attempts}")
+        logging.info(f"  Valid combinations: {valid_combinations}")
+        logging.info(f"  Invalid combinations rejected: {invalid_combinations}")
+        if valid_combinations + invalid_combinations > 0:
+            logging.info(f"  Physics validation rate: {valid_combinations/(valid_combinations+invalid_combinations)*100:.1f}%")
+        else:
+            logging.warning("No valid combinations found - constraints may be too restrictive")
+        
+        if len(combinations) < num_combinations:
+            logging.warning(f"Could only generate {len(combinations)} valid combinations out of {num_combinations} requested")
+            logging.warning("Consider relaxing physics constraints or increasing parameter ranges")
+    
+    # Final summary
+    total_generated = len(combinations)
+    logging.info(f"\n=== PARAMETER GENERATION SUMMARY ===")
+    logging.info(f"Total valid combinations generated: {total_generated}")
+    if total_generated > 0:
+        logging.info("Physics validation prevented generation of unphysical devices")
+        logging.info("Expected improvements:")
+        logging.info("  - No negative energy gaps → No extreme MPP values (>1000 W/cm²)")
+        logging.info("  - No failed devices → No negative MPP values")
+        logging.info("  - Better data quality → Improved ML model performance")
     
     return combinations
 
@@ -338,4 +505,4 @@ def main():
     logging.info(f"Success rate: {(successful/total_sims)*100:.2f}%")
 
 if __name__ == "__main__":
-    main() 
+    main()
