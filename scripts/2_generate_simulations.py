@@ -83,7 +83,7 @@ logging.basicConfig(
 )
 
 # Maximum number of parameter combinations to generate
-MAX_COMBINATIONS = 10
+MAX_COMBINATIONS = 10000
 
 def parse_parameters(param_file):
     """Parse parameters from file, organizing them by layer and making names unique per layer."""
@@ -100,20 +100,26 @@ def parse_parameters(param_file):
                 continue
             if current_layer is not None:
                 try:
-                    name, values_str = line.split('=')
-                    name = name.strip()
-                    # Add layer number to parameter name to make it unique
-                    name = f"L{current_layer}_{name}"
-                    values = eval(values_str.strip())
-                    param = {
-                        'layer': current_layer,
-                        'name': name,
-                        'min': float(values[0]),
-                        'max': float(values[1]),
-                        'points': int(values[2]),
-                        'log_scale': bool(values[3])
-                    }
-                    params.append(param)
+                    # Split on '=' and handle inline comments
+                    if '=' in line:
+                        name, rest = line.split('=', 1)  # Split only on first '='
+                        name = name.strip()
+                        
+                        # Extract values part (before any comment)
+                        values_str = rest.split('#')[0].strip()  # Remove inline comments
+                        
+                        # Add layer number to parameter name to make it unique
+                        name = f"L{current_layer}_{name}"
+                        values = eval(values_str)
+                        param = {
+                            'layer': current_layer,
+                            'name': name,
+                            'min': float(values[0]),
+                            'max': float(values[1]),
+                            'points': int(values[2]),
+                            'log_scale': bool(values[3])
+                        }
+                        params.append(param)
                 except (ValueError, SyntaxError) as e:
                     logging.error(f"Error parsing line '{line}': {e}")
     return params
@@ -165,6 +171,7 @@ def update_layer_file(layer_file, param_values, layer_num):
             logging.info(f"Updated {param_name} in L{layer_num}_parameters.txt to {formatted_value}")
     with open(layer_file, 'w') as f:
         f.writelines(lines)
+
 
 def create_simulation_directory(sim_id, param_values):
     """Create a directory for a simulation and copy necessary files."""
@@ -248,93 +255,140 @@ def run_simulation(sim_dir):
         raise e
 
 def validate_physics_constraints(params_dict):
-    """Validate that parameter combination satisfies basic physics constraints.
+    """Validate that parameter combination satisfies comprehensive solar cell physics constraints.
     
-    NOTE: SimSalabim uses NEGATIVE energy values internally, so:
+    Device Structure (ETL/Active/HTL):
+    - L1: Electron Transport Layer (PCBM) - n-type, facilitates electron transport
+    - L2: Active Layer (MAPI) - intrinsic/undoped, light absorption  
+    - L3: Hole Transport Layer (PEDOT:PSS) - p-type, facilitates hole transport
+    
+    SimSalabim Energy Convention:
     - Input E_c = 3.7 becomes E_c = -3.7 eV in simulation
     - Input E_v = 5.7 becomes E_v = -5.7 eV in simulation
     - Energy gap = (-3.7) - (-5.7) = +2.0 eV (positive, as expected)
     """
     
-    # Check 1: Energy gaps must be positive (accounting for SimSalabim convention)
-    # SimSalabim: Gap = (-E_c_input) - (-E_v_input) = E_v_input - E_c_input
-    for layer in ['L1', 'L2', 'L3']:
-        ec_input = params_dict[f'{layer}_E_c']  # Input value (becomes -E_c in sim)
-        ev_input = params_dict[f'{layer}_E_v']  # Input value (becomes -E_v in sim)
-        
-        # In SimSalabim: actual_gap = (-ec_input) - (-ev_input) = ev_input - ec_input
-        actual_gap = ev_input - ec_input
-        
-        if actual_gap <= 0:
-            return False, f"{layer} has negative/zero energy gap ({actual_gap:.3f} eV) in SimSalabim"
+    # Extract parameters for clarity
+    # L1 = ETL (Electron Transport Layer - PCBM)
+    etl_thickness = params_dict['L1_L']
+    etl_ec = params_dict['L1_E_c']  # Will become -E_c in SimSalabim
+    etl_ev = params_dict['L1_E_v']  # Will become -E_v in SimSalabim
+    etl_nd = params_dict['L1_N_D']
+    etl_na = params_dict['L1_N_A']
     
-    # Check 2: Layer thicknesses must be reasonable (not too thin)
-    min_thickness = 1e-9  # 1 nm minimum
-    for layer in ['L1', 'L2', 'L3']:
-        thickness = params_dict[f'{layer}_L']
-        if thickness < min_thickness:
-            return False, f"{layer} thickness too small ({thickness*1e9:.2f} nm)"
+    # L2 = Active Layer (MAPI Perovskite)
+    active_thickness = params_dict['L2_L']
+    active_ec = params_dict['L2_E_c']
+    active_ev = params_dict['L2_E_v']
+    active_nd = params_dict['L2_N_D']
+    active_na = params_dict['L2_N_A']
     
-    # Check 3: Doping concentrations must be reasonable
-    max_doping = 5e21  # More restrictive maximum doping to prevent instabilities
-    for layer in ['L1', 'L2', 'L3']:
-        nd = params_dict[f'{layer}_N_D']
-        na = params_dict[f'{layer}_N_A']
-        if nd > max_doping or na > max_doping:
-            return False, f"{layer} has unrealistic doping concentration (max: 5e21 m^-3)"
+    # L3 = HTL (Hole Transport Layer - PEDOT:PSS)
+    htl_thickness = params_dict['L3_L']
+    htl_ec = params_dict['L3_E_c']
+    htl_ev = params_dict['L3_E_v']
+    htl_nd = params_dict['L3_N_D']
+    htl_na = params_dict['L3_N_A']
     
-    # Check 4: Energy level ordering should make sense (in SimSalabim convention)
-    # In SimSalabim: E_c = -E_c_input, E_v = -E_v_input
-    # For proper band alignment: E_c should be higher than E_v (less negative)
-    # This means E_c_input should be smaller than E_v_input (which we already check above)
+    # CONSTRAINT 1: ENERGY BAND ALIGNMENT
+    # In SimSalabim: E_CB = -E_c_input, E_VB = -E_v_input
     
-    # Check 5: Reasonable energy level ranges
-    for layer in ['L1', 'L2', 'L3']:
-        ec_input = params_dict[f'{layer}_E_c']
-        ev_input = params_dict[f'{layer}_E_v']
-        
-        # Energy levels should be in reasonable range for semiconductors
-        if ec_input < 1.0 or ec_input > 6.0:
-            return False, f"{layer} E_c ({ec_input:.2f} eV) outside reasonable range [1.0, 6.0]"
-        if ev_input < 1.0 or ev_input > 8.0:
-            return False, f"{layer} E_v ({ev_input:.2f} eV) outside reasonable range [1.0, 8.0]"
+    # 1a. Internal consistency: E_CB > E_VB for each layer (positive bandgap)
+    for layer, ec, ev in [('ETL', etl_ec, etl_ev), ('Active', active_ec, active_ev), ('HTL', htl_ec, htl_ev)]:
+        bandgap = ev - ec  # In SimSalabim: (-E_v) - (-E_c) = E_c - E_v = -(E_v - E_c)
+        if bandgap <= 0:
+            return False, f"{layer} has non-positive bandgap ({bandgap:.3f} eV)"
+        if bandgap < 1.0 or bandgap > 4.0:
+            return False, f"{layer} bandgap ({bandgap:.2f} eV) outside realistic range [1.0, 4.0] eV"
     
-    # Check 6: Prevent extreme doping imbalances that can cause numerical instabilities
-    for layer in ['L1', 'L2', 'L3']:
-        nd = params_dict[f'{layer}_N_D']
-        na = params_dict[f'{layer}_N_A']
-        doping_ratio = max(nd/na, na/nd)  # Always >= 1
-        
-        if doping_ratio > 3.5:  # Balanced constraint - prevent extreme imbalances while allowing some variation
-            return False, f"{layer} has doping imbalance (ratio: {doping_ratio:.1f}:1) - may cause extreme MPP"
+    # 1b. Electron transport: E_CB_ETL ≤ E_CB_Active (downhill for electrons)
+    # In SimSalabim: -etl_ec ≤ -active_ec → etl_ec ≥ active_ec
+    if etl_ec < active_ec:
+        return False, f"Poor electron alignment: ETL E_c ({etl_ec:.2f}) < Active E_c ({active_ec:.2f}), blocks electrons"
     
-    # Check 7: Energy gap constraints for stable devices
-    for layer in ['L1', 'L2', 'L3']:
-        ec_input = params_dict[f'{layer}_E_c']
-        ev_input = params_dict[f'{layer}_E_v']
-        actual_gap = ev_input - ec_input
-        
-        # Energy gap constraints for stable devices (relaxed to allow valid combinations)
-        if actual_gap < 1.0:  # Prevent very small gaps that cause extreme instabilities
-            return False, f"{layer} energy gap too small ({actual_gap:.2f} eV) - causes extreme MPP"
-        if actual_gap > 3.0:  # Upper limit for realistic solar cells
-            return False, f"{layer} energy gap too large ({actual_gap:.2f} eV) - unrealistic for solar cells"
+    # 1c. Hole transport: E_VB_HTL ≥ E_VB_Active (downhill for holes)
+    # In SimSalabim: -htl_ev ≥ -active_ev → htl_ev ≤ active_ev
+    if htl_ev > active_ev:
+        return False, f"Poor hole alignment: HTL E_v ({htl_ev:.2f}) > Active E_v ({active_ev:.2f}), blocks holes"
     
-    # Check 8: Layer thickness ratios should be reasonable
-    l1_thickness = params_dict['L1_L']
-    l2_thickness = params_dict['L2_L'] 
-    l3_thickness = params_dict['L3_L']
+    # CONSTRAINT 2: DOPING AND CARRIER TYPE
     
-    # Active layer should be much thicker than transport layers
-    if l2_thickness < 5 * max(l1_thickness, l3_thickness):
-        return False, f"Active layer too thin relative to transport layers"
+    # 2a. ETL (L1) must be n-type: N_D >> N_A
+    if etl_nd <= etl_na:
+        return False, f"ETL must be n-type: N_D ({etl_nd:.2e}) ≤ N_A ({etl_na:.2e})"
+    etl_n_ratio = etl_nd / etl_na
+    if etl_n_ratio < 10:  # Strong n-type requirement
+        return False, f"ETL not sufficiently n-type: N_D/N_A ratio ({etl_n_ratio:.1f}) < 10"
     
-    # Transport layers shouldn't be too thin relative to each other
-    transport_ratio = max(l1_thickness/l3_thickness, l3_thickness/l1_thickness)
-    if transport_ratio > 10:
-        return False, f"Transport layer thickness imbalance (ratio: {transport_ratio:.1f}:1)"
+    # 2b. Active Layer (L2) should be intrinsic/undoped: low doping levels
+    max_active_doping = 1e18  # Much lower than transport layers
+    if active_nd > max_active_doping or active_na > max_active_doping:
+        return False, f"Active layer over-doped: N_D ({active_nd:.2e}) or N_A ({active_na:.2e}) > {max_active_doping:.2e}"
     
-    return True, "Valid physics"
+    # 2c. HTL (L3) must be p-type: N_A >> N_D
+    if htl_na <= htl_nd:
+        return False, f"HTL must be p-type: N_A ({htl_na:.2e}) ≤ N_D ({htl_nd:.2e})"
+    htl_p_ratio = htl_na / htl_nd
+    if htl_p_ratio < 10:  # Strong p-type requirement
+        return False, f"HTL not sufficiently p-type: N_A/N_D ratio ({htl_p_ratio:.1f}) < 10"
+    
+    # CONSTRAINT 3: LAYER THICKNESS
+    
+    # 3a. ETL thickness: 10-50 nm (thin for low resistance)
+    etl_thickness_nm = etl_thickness * 1e9
+    if etl_thickness_nm < 10 or etl_thickness_nm > 50:
+        return False, f"ETL thickness ({etl_thickness_nm:.1f} nm) outside realistic range [10, 50] nm"
+    
+    # 3b. Active layer thickness: 200-600 nm (thick for light absorption, relaxed minimum)
+    active_thickness_nm = active_thickness * 1e9
+    if active_thickness_nm < 200 or active_thickness_nm > 600:
+        return False, f"Active layer thickness ({active_thickness_nm:.1f} nm) outside realistic range [200, 600] nm"
+    
+    # 3c. HTL thickness: 10-50 nm (thin for low resistance)
+    htl_thickness_nm = htl_thickness * 1e9
+    if htl_thickness_nm < 10 or htl_thickness_nm > 50:
+        return False, f"HTL thickness ({htl_thickness_nm:.1f} nm) outside realistic range [10, 50] nm"
+    
+    # ADDITIONAL SAFETY CHECKS
+    
+    # 4. Reasonable doping concentrations
+    max_transport_doping = 1e22  # Maximum for transport layers
+    min_doping = 1e16  # Minimum to avoid numerical issues
+    
+    for layer, nd, na in [('ETL', etl_nd, etl_na), ('HTL', htl_nd, htl_na)]:
+        if nd < min_doping or na < min_doping:
+            return False, f"{layer} doping too low: N_D ({nd:.2e}) or N_A ({na:.2e}) < {min_doping:.2e}"
+        if nd > max_transport_doping or na > max_transport_doping:
+            return False, f"{layer} doping too high: N_D ({nd:.2e}) or N_A ({na:.2e}) > {max_transport_doping:.2e}"
+    
+    # 5. Energy level ranges (realistic for common materials)
+    for layer, ec, ev in [('ETL', etl_ec, etl_ev), ('Active', active_ec, active_ev), ('HTL', htl_ec, htl_ev)]:
+        if ec < 2.0 or ec > 6.0:
+            return False, f"{layer} E_c ({ec:.2f} eV) outside realistic range [2.0, 6.0] eV"
+        if ev < 4.0 or ev > 8.0:
+            return False, f"{layer} E_v ({ev:.2f} eV) outside realistic range [4.0, 8.0] eV"
+    
+    # 6. Electrode work function compatibility
+    # Fixed electrode work functions from simulation_setup.txt
+    W_L = 4.05  # eV, left electrode work function
+    W_R = 5.2   # eV, right electrode work function
+    
+    # Physics constraint: W_L must be >= E_c of leftmost layer (ETL)
+    if W_L < etl_ec:
+        return False, f"Left electrode work function ({W_L:.2f} eV) < ETL conduction band ({etl_ec:.2f} eV)"
+    
+    # Physics constraint: W_R must be <= E_v of rightmost layer (HTL)  
+    if W_R > htl_ev:
+        return False, f"Right electrode work function ({W_R:.2f} eV) > HTL valence band ({htl_ev:.2f} eV)"
+    
+    # Additional electrode alignment checks for reasonable energy differences
+    if W_L - etl_ec > 0.5:  # Too large energy barrier for electron injection
+        return False, f"Left electrode barrier too high: W_L - E_c(ETL) = {W_L - etl_ec:.2f} eV > 0.5 eV"
+    
+    if htl_ev - W_R > 0.5:  # Too large energy barrier for hole injection
+        return False, f"Right electrode barrier too high: E_v(HTL) - W_R = {htl_ev - W_R:.2f} eV > 0.5 eV"
+    
+    return True, "Valid solar cell physics"
 
 def generate_parameter_combinations():
     """Generate parameter combinations for simulations with physics validation."""
@@ -390,7 +444,7 @@ def generate_parameter_combinations():
             else:
                 invalid_combinations += 1
                 if invalid_combinations <= 10:  # Log first 10 invalid combinations
-                    logging.debug(f"Invalid combination rejected: {reason}")
+                    logging.info(f"Invalid combination rejected: {reason}")
         
         logging.info(f"Physics validation results:")
         logging.info(f"  Valid combinations: {valid_combinations}")
@@ -425,7 +479,7 @@ def generate_parameter_combinations():
             else:
                 invalid_combinations += 1
                 if invalid_combinations <= 10:  # Log first 10 invalid combinations
-                    logging.debug(f"Invalid combination rejected: {reason}")
+                    logging.info(f"Invalid combination rejected: {reason}")
         
         logging.info(f"Random sampling with physics validation results:")
         logging.info(f"  Attempts: {attempts}")

@@ -27,7 +27,7 @@ INPUT FILES:
 - results/train_optimization_models/models/efficiency_MPP.joblib (MPP prediction model)
 - results/train_optimization_models/models/recombination_IntSRHn_mean.joblib (recombination model)
 - results/train_optimization_models/models/*_scalers.joblib (feature and target scalers)
-- results/feature_definitions.json (parameter bounds and definitions)
+- results/features/feature_definitions.json (parameter bounds and definitions)
 
 OUTPUT FILES:
 - results/optimize_efficiency/reports/optimization_report.json (detailed results)
@@ -98,7 +98,7 @@ def load_optimization_models():
         training_metadata = json.load(f)
     
     # Load feature definitions for parameter bounds
-    feature_defs_path = 'results/feature_definitions.json'
+    feature_defs_path = 'results/features/feature_definitions.json'
     if not os.path.exists(feature_defs_path):
         raise FileNotFoundError(f"Feature definitions not found: {feature_defs_path}. Run Script 1 first.")
     
@@ -281,7 +281,7 @@ def get_parameter_bounds(metadata):
     """Get parameter bounds for optimization."""
     # Load feature definitions for bounds
     try:
-        with open('results/feature_definitions.json', 'r') as f:
+        with open('results/features/feature_definitions.json', 'r') as f:
             feature_definitions = json.load(f)
         parameter_bounds = feature_definitions['parameter_bounds']
     except FileNotFoundError:

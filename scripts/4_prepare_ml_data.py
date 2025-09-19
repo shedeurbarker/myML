@@ -30,7 +30,7 @@ ENHANCED DERIVED FEATURES CREATED:
 
 INPUT FILES:
 - results/extract_simulation_data/extracted_simulation_data.csv (from script 3)
-- results/feature_definitions.json (from script 1)
+- results/features/feature_definitions.json (from script 1)
 
 OUTPUT FILES:
 - results/prepare_ml_data/X_train_efficiency.csv (training features for efficiency prediction)
@@ -89,7 +89,7 @@ logging.basicConfig(
 def load_feature_definitions():
     """Load feature definitions from the JSON file."""
     try:
-        with open('results/feature_definitions.json', 'r') as f:
+        with open('results/features/feature_definitions.json', 'r') as f:
             return json.load(f)
     except FileNotFoundError:
         logging.error("Feature definitions not found. Run 1_create_feature_names.py first.")

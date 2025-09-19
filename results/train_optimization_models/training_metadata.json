@@ -1,0 +1,151 @@
+{
+  "training_date": "2025-09-19T16:29:32.751764",
+  "efficiency_models": {
+    "MPP": {
+      "best_model": "XGBoost",
+      "all_scores": {
+        "RandomForest": {
+          "cv_mean": 0.9843831857553352,
+          "cv_std": 0.008279952622319675,
+          "test_metrics": {
+            "r2": 0.9927743976372757,
+            "rmse": 0.099065244993095,
+            "mae": 0.045491270157484755,
+            "rmse_relative": 11.489301575011739,
+            "mae_relative": 5.275946391755297,
+            "mape": 21.149285286508114
+          }
+        },
+        "XGBoost": {
+          "cv_mean": 0.9867417302021618,
+          "cv_std": 0.009647269317982873,
+          "test_metrics": {
+            "r2": 0.9955618541202759,
+            "rmse": 0.07763991934126646,
+            "mae": 0.044156452557477355,
+            "rmse_relative": 9.004454060892625,
+            "mae_relative": 5.121138093898795,
+            "mape": 56.98188692900295
+          }
+        }
+      },
+      "feature_names": [
+        "L1_L",
+        "L1_E_c",
+        "L1_E_v",
+        "L1_N_D",
+        "L1_N_A",
+        "L2_L",
+        "L2_E_c",
+        "L2_E_v",
+        "L2_N_D",
+        "L2_N_A",
+        "L3_L",
+        "L3_E_c",
+        "L3_E_v",
+        "L3_N_D",
+        "L3_N_A",
+        "energy_gap_L1",
+        "energy_gap_L2",
+        "energy_gap_L3",
+        "band_offset_L1_L2",
+        "band_offset_L2_L3",
+        "thickness_ratio_L2",
+        "thickness_ratio_ETL",
+        "thickness_ratio_HTL",
+        "doping_ratio_L1",
+        "doping_ratio_L2",
+        "doping_ratio_L3",
+        "total_donor_concentration",
+        "total_acceptor_concentration",
+        "recombination_efficiency_ratio",
+        "interface_quality_index",
+        "conduction_band_alignment_quality",
+        "valence_band_alignment_quality",
+        "thickness_balance_quality",
+        "transport_layer_balance",
+        "average_doping_ratio",
+        "doping_consistency",
+        "energy_gap_progression",
+        "energy_gap_uniformity"
+      ]
+    }
+  },
+  "recombination_models": {
+    "IntSRHn_mean": {
+      "best_model": "RandomForest",
+      "all_scores": {
+        "RandomForest": {
+          "cv_mean": 0.9797867964564807,
+          "cv_std": 0.01059123430291332,
+          "test_metrics": {
+            "r2": 0.9700033126871803,
+            "rmse": 14.948105342605764,
+            "mae": 3.892976817536406,
+            "rmse_relative": 58.48823792256894,
+            "mae_relative": 15.23225513283832,
+            "mape": 26.215496672265164
+          }
+        },
+        "XGBoost": {
+          "cv_mean": 0.9757768341290018,
+          "cv_std": 0.011776446304353665,
+          "test_metrics": {
+            "r2": 0.9454284745177844,
+            "rmse": 20.161950716247617,
+            "mae": 4.750211355293411,
+            "rmse_relative": 78.88872492180568,
+            "mae_relative": 18.586401792272753,
+            "mape": 94.33655654689879
+          }
+        }
+      },
+      "feature_names": [
+        "L1_L",
+        "L1_E_c",
+        "L1_E_v",
+        "L1_N_D",
+        "L1_N_A",
+        "L2_L",
+        "L2_E_c",
+        "L2_E_v",
+        "L2_N_D",
+        "L2_N_A",
+        "L3_L",
+        "L3_E_c",
+        "L3_E_v",
+        "L3_N_D",
+        "L3_N_A",
+        "energy_gap_L1",
+        "energy_gap_L2",
+        "energy_gap_L3",
+        "band_offset_L1_L2",
+        "band_offset_L2_L3",
+        "thickness_ratio_L2",
+        "thickness_ratio_ETL",
+        "thickness_ratio_HTL",
+        "doping_ratio_L1",
+        "doping_ratio_L2",
+        "doping_ratio_L3",
+        "total_donor_concentration",
+        "total_acceptor_concentration",
+        "recombination_efficiency_ratio",
+        "interface_quality_index",
+        "conduction_band_alignment_quality",
+        "valence_band_alignment_quality",
+        "thickness_balance_quality",
+        "transport_layer_balance",
+        "average_doping_ratio",
+        "doping_consistency",
+        "energy_gap_progression",
+        "energy_gap_uniformity"
+      ]
+    }
+  },
+  "improvements": {
+    "target_scaling": "RobustScaler for both features and targets",
+    "cross_validation": "5-fold CV for model selection",
+    "outlier_handling": "99th percentile clipping",
+    "comprehensive_evaluation": "Multiple metrics beyond R\u00b2"
+  }
+}

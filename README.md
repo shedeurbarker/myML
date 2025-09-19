@@ -82,10 +82,10 @@ python scripts/1_create_feature_names.py
 
 **Output files**:
 
--   `results/feature_definitions.json` - Complete feature definitions
--   `results/primary_parameters.json` - List of the 15 optimization variables
--   `results/parameter_bounds.json` - Min/max bounds for each parameter
--   `results/target_variables.json` - Target variables (MPP and IntSRHn_mean)
+-   `results/features/feature_definitions.json` - Complete feature definitions
+-   `results/features/primary_parameters.json` - List of the 15 optimization variables
+-   `results/features/parameter_bounds.json` - Min/max bounds for each parameter
+-   `results/features/target_variables.json` - Target variables (MPP and IntSRHn_mean)
 
 ### Step 2: Generate Physics-Validated Simulations
 
@@ -93,24 +93,50 @@ python scripts/1_create_feature_names.py
 python scripts/2_generate_simulations.py
 ```
 
-**Purpose**: Runs physics-based drift-diffusion simulations with built-in validation to ensure only realistic device configurations are simulated.
+**Purpose**: Runs physics-based drift-diffusion simulations with comprehensive solar cell physics validation to ensure only realistic device structures are simulated.
 
 **What it does**:
 
--   Reads parameter ranges from `sim/parameters.txt`
+-   Reads physics-compliant parameter ranges from `sim/parameters.txt`
 -   Generates parameter combinations (grid sampling or random sampling)
--   **VALIDATES PHYSICS CONSTRAINTS** before running simulations
--   Rejects unphysical combinations (extreme doping, poor thickness ratios, etc.)
+-   **VALIDATES COMPREHENSIVE SOLAR CELL PHYSICS** before running simulations
+-   Rejects unphysical combinations based on rigorous device physics constraints
+-   **ENFORCES ELECTRODE WORK FUNCTION COMPATIBILITY** during parameter validation
 -   Creates simulation directories only for validated parameter sets
 -   Executes physics simulations (`simss.exe`) for valid configurations only
 -   Logs validation statistics and simulation progress
 
-**Physics validation prevents**:
+**Comprehensive Physics Validation**:
 
--   Extreme doping imbalances that cause numerical instabilities
--   Poor layer thickness ratios that lead to unrealistic results
--   Energy gap combinations outside semiconductor ranges (0.5-4.0 eV)
--   Parameter combinations that would produce MPP > 1000 W/cm² or negative MPP
+### 1. Energy Band Alignment
+
+-   **Electron Transport**: ETL conduction band ≥ Active layer conduction band (downhill energy cascade)
+-   **Hole Transport**: HTL valence band ≤ Active layer valence band (downhill energy cascade)
+-   **Internal Consistency**: Positive bandgaps (1.0-4.0 eV) for all layers
+
+### 2. Doping and Carrier Type
+
+-   **ETL (L1)**: n-type semiconductor (N_D >> N_A, ratio ≥ 10:1)
+-   **Active Layer (L2)**: Intrinsic/undoped (very low doping < 1e18 m⁻³)
+-   **HTL (L3)**: p-type semiconductor (N_A >> N_D, ratio ≥ 10:1)
+
+### 3. Layer Thickness
+
+-   **Transport Layers (ETL/HTL)**: 10-50 nm (thin for low resistance)
+-   **Active Layer**: 300-600 nm (thick for light absorption)
+
+### 4. Electrode Work Function Compatibility
+
+-   **Left Electrode (W_L)**: Fixed at 4.05 eV (ITO electrode)
+-   **Right Electrode (W_R)**: Fixed at 5.2 eV (Au electrode)
+-   **Physics Constraint**: Parameter ranges constrained to ensure W_L ≥ E_c(ETL) and W_R ≤ E_v(HTL)
+-   **Implementation**: Validation during parameter generation rejects incompatible combinations
+
+**Device Structure**: ETL/Active/HTL (PCBM/MAPI/PEDOT:PSS)
+
+-   L1: Electron Transport Layer (PCBM) - n-type
+-   L2: Active Layer (MAPI Perovskite) - intrinsic
+-   L3: Hole Transport Layer (PEDOT:PSS) - p-type
 
 **Input files**:
 
@@ -149,7 +175,7 @@ python scripts/3_extract_simulation_data.py
 -   `sim/simulations/sim_XXXX/output_JV.dat` - J-V curve data
 -   `sim/simulations/sim_XXXX/output_Var.dat` - Recombination rate data
 -   `sim/simulations/sim_XXXX/parameters.json` - Device parameters
--   `results/feature_definitions.json` - Feature definitions from Step 1
+-   `results/features/feature_definitions.json` - Feature definitions from Step 1
 
 **Output files**:
 
@@ -188,7 +214,7 @@ python scripts/4_prepare_ml_data.py [--remove-outliers] [--enhanced-features]
 **Input files**:
 
 -   `results/extract_simulation_data/extracted_simulation_data.csv` - From Step 3
--   `results/feature_definitions.json` - From Step 1
+-   `results/features/feature_definitions.json` - From Step 1
 
 **Output files**:
 
@@ -239,6 +265,16 @@ python scripts/5_train_models.py
 -   5-fold cross-validation for model selection
 -   Comprehensive evaluation metrics (R², MAE, RMSE)
 -   Automatic best model selection for each target variable
+-   **NEW**: Comprehensive training visualizations and performance analysis
+
+**Training Visualizations Created**:
+
+-   `model_performance_comparison.png` - Algorithm R² and error comparison charts
+-   `detailed_metrics_heatmap.png` - Performance metrics heatmap for all algorithms
+-   `cross_validation_stability.png` - Cross-validation stability analysis
+-   `best_models_summary.png` - Best model selection summary with performance thresholds
+-   `error_analysis.png` - Detailed error breakdown (MAE, RMSE, MAPE)
+-   `training_summary_report.png` - Complete training report with methodology and results
 
 **Input files**:
 
@@ -253,6 +289,7 @@ python scripts/5_train_models.py
 -   `results/train_optimization_models/scalers/` - Feature and target scalers
 -   `results/train_optimization_models/training_metadata.json` - Training statistics
 -   `results/train_optimization_models/training.log` - Detailed training log
+-   `results/train_optimization_models/plots/` - **NEW**: Comprehensive training visualizations
 
 ## Quick Start
 

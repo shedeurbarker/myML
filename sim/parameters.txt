@@ -1,26 +1,31 @@
-# Parameter ranges for simulation sweep
+# Parameter ranges for simulation sweep - PHYSICS-COMPLIANT SOLAR CELL
 # Format: parameter_name = [min_value, max_value, num_points, log_scale]
 
-# Layer 1 (PCBM) parameters - ETL
+# Device structure: ETL/Active/HTL (PCBM/MAPI/PEDOT:PSS)
+# Energy alignment: ETL_Ec >= Active_Ec (electron transport)
+#                   HTL_Ev <= Active_Ev (hole transport)
+# Doping: ETL n-type (ND>>NA), Active intrinsic (low doping), HTL p-type (NA>>ND)
+
+# Layer 1 (PCBM) parameters - ETL (Electron Transport Layer)
 Layer 1
-L = [20E-9, 80E-9, 5, True]
-E_c = [3.7, 4.0, 3, False]
-E_v = [5.7, 5.9, 3, False]
-N_D = [1E20, 1E21, 3, True]
-N_A = [1E20, 1E21, 3, True]
+L = [20E-9, 50E-9, 3, True]           # Thickness: 20-50 nm (thin transport layer)
+E_c = [3.8, 4.0, 3, False]             # Conduction band: compatible with W_L=4.05 eV
+E_v = [5.8, 6.0, 3, False]             # Valence band: gives 1.8-2.2 eV bandgap
+N_D = [5E20, 1E21, 3, True]            # Donor doping: high for n-type
+N_A = [1E19, 5E19, 3, True]            # Acceptor doping: low (n-type: ND >> NA)
 
-# Layer 2 (MAPI) parameters
+# Layer 2 (MAPI) parameters - Active Layer (Perovskite)
 Layer 2
-L = [210E-9, 300E-9, 5, True]
-E_c = [4.4, 4.6, 3, False]
-E_v = [5.6, 5.8, 3, False]
-N_D = [1E20, 1E21, 3, True]
-N_A = [1E20, 1E21, 3, True]
+L = [210E-9, 350E-9, 3, False]         # Thickness: 300-500 nm (thick for light absorption)
+E_c = [3.6, 3.8, 3, False]             # Conduction band: lower than ETL for electron flow
+E_v = [5.4, 5.6, 3, False]             # Valence band: higher than HTL for hole flow
+N_D = [1E16, 1E17, 3, True]            # Donor doping: very low (intrinsic)
+N_A = [1E16, 1E17, 3, True]            # Acceptor doping: very low (intrinsic)
 
-# Layer 3 (PEDOT:PSS) parameters - HTL
+# Layer 3 (PEDOT:PSS) parameters - HTL (Hole Transport Layer)
 Layer 3
-L = [20E-9, 50E-9, 5, True]
-E_c = [3.4, 3.6, 3, False]
-E_v = [5.3, 5.5, 3, False]
-N_D = [1E20, 1E21, 3, True]
-N_A = [1E20, 1E21, 3, True]
+L = [20E-9, 50E-9, 3, True]           # Thickness: 20-50 nm (thin transport layer)
+E_c = [2.8, 3.2, 3, False]             # Conduction band: gives 1.8-2.4 eV bandgap
+E_v = [5.0, 5.2, 3, False]             # Valence band: compatible with W_R=5.2 eV
+N_D = [1E19, 5E19, 3, True]            # Donor doping: low (p-type: NA >> ND)
+N_A = [5E20, 1E21, 3, True]            # Acceptor doping: high for p-type

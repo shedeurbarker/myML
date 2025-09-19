@@ -53,7 +53,7 @@ logging.basicConfig(
 def load_feature_definitions():
     """Load feature definitions from the JSON file."""
     try:
-        with open('results/feature_definitions.json', 'r') as f:
+        with open('results/features/feature_definitions.json', 'r') as f:
             return json.load(f)
     except FileNotFoundError:
         logging.error("Feature definitions not found. Run 1_create_feature_names.py first.")
@@ -208,14 +208,6 @@ def main():
     
     # Initialize CSV file with headers
     output_file = os.path.join(log_dir, 'extracted_simulation_data.csv')
-    
-    # Delete existing files if they exist
-    # try:
-    #     if os.path.exists(output_file):
-    #         os.remove(output_file)
-    #         logging.info(f"Deleted existing CSV file: {output_file}")
-    # except Exception as e:
-    #     logging.warning(f"Could not delete existing CSV file: {e}")
     
     try:
         log_file = os.path.join(log_dir, 'extraction.log')
