@@ -46,6 +46,7 @@ sim/simulations/*
 # Generated data files
 *.npy
 *.csv
+*.joblib
 
 # Results directory (but keep the directory structure)
 #results/*

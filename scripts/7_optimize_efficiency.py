@@ -35,7 +35,7 @@ OUTPUT FILES:
 - results/optimize_efficiency/optimization.log (optimization process log)
 
 USAGE:
-python scripts/6_optimize_efficiency.py
+python scripts/7_optimize_efficiency.py
 
 PREREQUISITES:
 1. Run scripts/1_create_feature_names.py
@@ -153,7 +153,7 @@ def load_optimization_models():
     return mpp_models, mpp_scalers, recombination_models, recombination_scalers, metadata
 
 def create_derived_features(primary_params):
-    """Create derived features from 15 primary device parameters."""
+    """Create derived features from 15 primary device parameters - EXACTLY matching Script 4."""
     # Convert to dict for easier access
     param_dict = {
         'L1_L': primary_params[0], 'L1_E_c': primary_params[1], 'L1_E_v': primary_params[2],
@@ -164,57 +164,74 @@ def create_derived_features(primary_params):
         'L3_N_D': primary_params[13], 'L3_N_A': primary_params[14]
     }
     
-    # Calculate derived features (same as in Script 4)
-    derived = {}
+    # Initialize feature array with primary parameters
+    features = list(primary_params)
     
-    # Energy gap features
-    derived['energy_gap_L1'] = param_dict['L1_E_c'] - param_dict['L1_E_v']
-    derived['energy_gap_L2'] = param_dict['L2_E_c'] - param_dict['L2_E_v']
-    derived['energy_gap_L3'] = param_dict['L3_E_c'] - param_dict['L3_E_v']
-    
-    # Band offset features
-    derived['band_offset_L1_L2'] = param_dict['L2_E_c'] - param_dict['L1_E_c']
-    derived['band_offset_L2_L3'] = param_dict['L3_E_c'] - param_dict['L2_E_c']
-    
-    # Thickness features
+    # Thickness features (EXACTLY as in Script 4)
     total_thickness = param_dict['L1_L'] + param_dict['L2_L'] + param_dict['L3_L']
-    derived['thickness_ratio_L2'] = param_dict['L2_L'] / total_thickness
-    derived['thickness_ratio_ETL'] = param_dict['L1_L'] / total_thickness
-    derived['thickness_ratio_HTL'] = param_dict['L3_L'] / total_thickness
+    features.append(total_thickness)  # total_thickness
+    features.append(param_dict['L2_L'] / (total_thickness + 1e-30))  # thickness_ratio_L2
+    features.append(param_dict['L1_L'] / (total_thickness + 1e-30))  # thickness_ratio_ETL
+    features.append(param_dict['L3_L'] / (total_thickness + 1e-30))  # thickness_ratio_HTL
     
-    # Doping features
-    derived['doping_ratio_L1'] = param_dict['L1_N_D'] / param_dict['L1_N_A']
-    derived['doping_ratio_L2'] = param_dict['L2_N_D'] / param_dict['L2_N_A']
-    derived['doping_ratio_L3'] = param_dict['L3_N_D'] / param_dict['L3_N_A']
-    derived['total_donor_concentration'] = param_dict['L1_N_D'] + param_dict['L2_N_D'] + param_dict['L3_N_D']
-    derived['total_acceptor_concentration'] = param_dict['L1_N_A'] + param_dict['L2_N_A'] + param_dict['L3_N_A']
+    # Energy gap features (EXACTLY as in Script 4 - use absolute value)
+    energy_gap_L1 = abs(param_dict['L1_E_c'] - param_dict['L1_E_v'])
+    energy_gap_L2 = abs(param_dict['L2_E_c'] - param_dict['L2_E_v'])
+    energy_gap_L3 = abs(param_dict['L3_E_c'] - param_dict['L3_E_v'])
+    features.extend([energy_gap_L1, energy_gap_L2, energy_gap_L3])
     
-    # Physics-based features (simplified versions)
-    derived['recombination_efficiency_ratio'] = 1.0  # Placeholder
-    derived['interface_quality_index'] = 1.0  # Placeholder
-    derived['conduction_band_alignment_quality'] = abs(derived['band_offset_L1_L2']) + abs(derived['band_offset_L2_L3'])
-    derived['valence_band_alignment_quality'] = abs((param_dict['L2_E_v'] - param_dict['L1_E_v']) + (param_dict['L3_E_v'] - param_dict['L2_E_v']))
-    derived['thickness_balance_quality'] = 1.0 - abs(derived['thickness_ratio_L2'] - 0.5)
-    derived['transport_layer_balance'] = abs(derived['thickness_ratio_ETL'] - derived['thickness_ratio_HTL'])
-    derived['average_doping_ratio'] = (derived['doping_ratio_L1'] + derived['doping_ratio_L2'] + derived['doping_ratio_L3']) / 3
-    derived['doping_consistency'] = np.std([derived['doping_ratio_L1'], derived['doping_ratio_L2'], derived['doping_ratio_L3']])
-    derived['energy_gap_progression'] = derived['energy_gap_L2'] - (derived['energy_gap_L1'] + derived['energy_gap_L3']) / 2
-    derived['energy_gap_uniformity'] = 1.0 / (1.0 + np.std([derived['energy_gap_L1'], derived['energy_gap_L2'], derived['energy_gap_L3']]))
+    # Band alignment features (EXACTLY as in Script 4)
+    band_offset_L1_L2 = param_dict['L2_E_c'] - param_dict['L1_E_c']
+    band_offset_L2_L3 = param_dict['L3_E_c'] - param_dict['L2_E_c']
+    conduction_band_offset = param_dict['L3_E_c'] - param_dict['L1_E_c']
+    valence_band_offset = param_dict['L3_E_v'] - param_dict['L1_E_v']
+    features.extend([band_offset_L1_L2, band_offset_L2_L3, conduction_band_offset, valence_band_offset])
     
-    # Combine primary and derived features in correct order
-    all_features = list(primary_params) + [derived[key] for key in [
-        'energy_gap_L1', 'energy_gap_L2', 'energy_gap_L3', 'band_offset_L1_L2', 'band_offset_L2_L3',
-        'thickness_ratio_L2', 'thickness_ratio_ETL', 'thickness_ratio_HTL',
-        'doping_ratio_L1', 'doping_ratio_L2', 'doping_ratio_L3',
-        'total_donor_concentration', 'total_acceptor_concentration',
-        'recombination_efficiency_ratio', 'interface_quality_index',
-        'conduction_band_alignment_quality', 'valence_band_alignment_quality',
-        'thickness_balance_quality', 'transport_layer_balance',
-        'average_doping_ratio', 'doping_consistency',
-        'energy_gap_progression', 'energy_gap_uniformity'
-    ]]
+    # Doping features (EXACTLY as in Script 4)
+    doping_ratio_L1 = param_dict['L1_N_D'] / (param_dict['L1_N_A'] + 1e-30)
+    doping_ratio_L2 = param_dict['L2_N_D'] / (param_dict['L2_N_A'] + 1e-30)
+    doping_ratio_L3 = param_dict['L3_N_D'] / (param_dict['L3_N_A'] + 1e-30)
+    total_donor_concentration = param_dict['L1_N_D'] + param_dict['L2_N_D'] + param_dict['L3_N_D']
+    total_acceptor_concentration = param_dict['L1_N_A'] + param_dict['L2_N_A'] + param_dict['L3_N_A']
+    features.extend([doping_ratio_L1, doping_ratio_L2, doping_ratio_L3, total_donor_concentration, total_acceptor_concentration])
     
-    return np.array(all_features)
+    # Material property features (EXACTLY as in Script 4)
+    average_energy_gap = (energy_gap_L1 + energy_gap_L2 + energy_gap_L3) / 3
+    energy_gap_variance = np.var([energy_gap_L1, energy_gap_L2, energy_gap_L3])
+    thickness_variance = np.var([param_dict['L1_L'], param_dict['L2_L'], param_dict['L3_L']])
+    doping_variance = np.var([param_dict['L1_N_D'], param_dict['L2_N_D'], param_dict['L3_N_D']])
+    features.extend([average_energy_gap, energy_gap_variance, thickness_variance, doping_variance])
+    
+    # Physics-based features for recombination-efficiency relationship (EXACTLY as in Script 4)
+    # Use default values since we don't have MPP and IntSRHn_mean during optimization
+    recombination_efficiency_ratio = 1e28  # Default typical value
+    interface_quality_index = 1e-28  # Default typical value
+    features.extend([recombination_efficiency_ratio, interface_quality_index])
+    
+    # Carrier transport efficiency features (EXACTLY as in Script 4)
+    conduction_band_alignment_quality = 1 / (1 + abs(band_offset_L1_L2) + abs(band_offset_L2_L3))
+    valence_band_alignment_quality = 1 / (1 + abs(valence_band_offset))
+    features.extend([conduction_band_alignment_quality, valence_band_alignment_quality])
+    
+    # Thickness optimization features (EXACTLY as in Script 4)
+    thickness_ratio_L2 = features[16]  # Already calculated above
+    thickness_ratio_ETL = features[17]  # Already calculated above
+    thickness_ratio_HTL = features[18]  # Already calculated above
+    thickness_balance_quality = thickness_ratio_L2 / (thickness_ratio_ETL + thickness_ratio_HTL + 1e-30)
+    transport_layer_balance = 1 / (1 + abs(thickness_ratio_ETL - thickness_ratio_HTL))
+    features.extend([thickness_balance_quality, transport_layer_balance])
+    
+    # Doping optimization features (EXACTLY as in Script 4)
+    average_doping_ratio = (doping_ratio_L1 + doping_ratio_L2 + doping_ratio_L3) / 3
+    doping_consistency = 1 / (1 + np.var([doping_ratio_L1, doping_ratio_L2, doping_ratio_L3]))
+    features.extend([average_doping_ratio, doping_consistency])
+    
+    # Energy level optimization features (EXACTLY as in Script 4)
+    energy_gap_progression = abs((energy_gap_L2 - energy_gap_L1) * (energy_gap_L3 - energy_gap_L2))
+    energy_gap_uniformity = 1 / (1 + np.var([energy_gap_L1, energy_gap_L2, energy_gap_L3]))
+    features.extend([energy_gap_progression, energy_gap_uniformity])
+    
+    return np.array(features)
 
 def predict_mpp(device_params, mpp_models, mpp_scalers, target='MPP'):
     """Predict MPP (Maximum Power Point) for given device parameters."""
