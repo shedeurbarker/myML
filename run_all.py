@@ -51,8 +51,8 @@ def main():
         #'scripts/3_extract_simulation_data.py',
         'scripts/4_prepare_ml_data.py',
         'scripts/5_train_models.py',
-        #'scripts/6_predict_optimization_models.py',
-        #'scripts/7_visualize_optimization_models.py'
+        'scripts/6_predict.py',
+        'scripts/7_optimize_efficiency.py'
     ]
     
     # Run each script

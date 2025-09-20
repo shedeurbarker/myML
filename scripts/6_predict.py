@@ -29,6 +29,7 @@ INPUT FILES:
 - results/train_optimization_models/models/recombination_IntSRHn_mean.joblib (recombination model)
 - results/train_optimization_models/models/*_scalers.joblib (feature and target scalers)
 - results/extract_simulation_data/extracted_simulation_data.csv (data for validation)
+- example_device_parameters.json (configurable example device parameters)
 
 OUTPUT FILES:
 - results/predict/predicted_values.txt (example predictions)
@@ -86,14 +87,22 @@ log_dir = 'results/predict'
 os.makedirs(log_dir, exist_ok=True)
 log_file = os.path.join(log_dir, 'predictions.log')
 
+# Clear any existing handlers to avoid conflicts
+for handler in logging.root.handlers[:]:
+    logging.root.removeHandler(handler)
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler(log_file, mode='a'),
+        logging.FileHandler(log_file, mode='w'),  # Use 'w' mode to overwrite
         logging.StreamHandler()
     ]
 )
+
+# Test logging to ensure it's working
+logging.info("Script 6 - Prediction and Validation - Logging initialized")
+logging.info(f"Log file: {log_file}")
 
 def calculate_efficiency(mpp, pin=1000):
     """
@@ -256,11 +265,11 @@ def calculate_derived_features(df):
         df['thickness_ratio_ETL'] = df['L1_L'] / (df['total_thickness'] + 1e-30)
         df['thickness_ratio_HTL'] = df['L3_L'] / (df['total_thickness'] + 1e-30)
     
-    # Energy gap features
+    # Energy gap features (use absolute value to ensure positive gaps)
     if all(col in df.columns for col in ['L1_E_c', 'L1_E_v', 'L2_E_c', 'L2_E_v', 'L3_E_c', 'L3_E_v']):
-        df['energy_gap_L1'] = df['L1_E_c'] - df['L1_E_v']
-        df['energy_gap_L2'] = df['L2_E_c'] - df['L2_E_v']
-        df['energy_gap_L3'] = df['L3_E_c'] - df['L3_E_v']
+        df['energy_gap_L1'] = abs(df['L1_E_c'] - df['L1_E_v'])
+        df['energy_gap_L2'] = abs(df['L2_E_c'] - df['L2_E_v'])
+        df['energy_gap_L3'] = abs(df['L3_E_c'] - df['L3_E_v'])
     
     # Band alignment features
     if all(col in df.columns for col in ['L1_E_c', 'L2_E_c', 'L3_E_c', 'L1_E_v', 'L2_E_v', 'L3_E_v']):
@@ -288,7 +297,63 @@ def calculate_derived_features(df):
     if 'L1_N_D' in df.columns and 'L2_N_D' in df.columns and 'L3_N_D' in df.columns:
         df['doping_variance'] = df[['L1_N_D', 'L2_N_D', 'L3_N_D']].var(axis=1)
     
-    logging.info(f"Calculated derived features. Total features: {len([col for col in df.columns if col not in ['L1_L', 'L1_E_c', 'L1_E_v', 'L1_N_D', 'L1_N_A', 'L2_L', 'L2_E_c', 'L2_E_v', 'L2_N_D', 'L2_N_A', 'L3_L', 'L3_E_c', 'L3_E_v', 'L3_N_D', 'L3_N_A']])}")
+    # NEW: Physics-based features for recombination-efficiency relationship
+    if 'MPP' in df.columns and 'IntSRHn_mean' in df.columns:
+        # Recombination efficiency ratio (how much recombination affects efficiency)
+        df['recombination_efficiency_ratio'] = df['IntSRHn_mean'] / (df['MPP'] + 1e-30)
+        
+        # Interface quality index (lower recombination relative to efficiency = better interface)
+        df['interface_quality_index'] = df['MPP'] / (df['IntSRHn_mean'] + 1e-30)
+    else:
+        # For prediction mode where we don't have target values, use default values
+        df['recombination_efficiency_ratio'] = 1e28  # Default typical value
+        df['interface_quality_index'] = 1e-28  # Default typical value
+    
+    # NEW: Carrier transport efficiency features
+    if all(col in df.columns for col in ['L1_E_c', 'L2_E_c', 'L3_E_c', 'L1_E_v', 'L2_E_v', 'L3_E_v']):
+        # Conduction band alignment quality (how well aligned for electron transport)
+        cb_alignment_L1_L2 = np.exp(-abs(df['L1_E_c'] - df['L2_E_c']) / 0.1)  # Exponential decay with misalignment
+        cb_alignment_L2_L3 = np.exp(-abs(df['L2_E_c'] - df['L3_E_c']) / 0.1)
+        df['conduction_band_alignment_quality'] = (cb_alignment_L1_L2 + cb_alignment_L2_L3) / 2
+        
+        # Valence band alignment quality (how well aligned for hole transport)
+        vb_alignment_L1_L2 = np.exp(-abs(df['L1_E_v'] - df['L2_E_v']) / 0.1)
+        vb_alignment_L2_L3 = np.exp(-abs(df['L2_E_v'] - df['L3_E_v']) / 0.1)
+        df['valence_band_alignment_quality'] = (vb_alignment_L1_L2 + vb_alignment_L2_L3) / 2
+    
+    # NEW: Device structure optimization features
+    if all(col in df.columns for col in ['L1_L', 'L2_L', 'L3_L']):
+        # Thickness balance quality (penalize extreme thickness ratios)
+        ideal_etl_ratio = 0.1  # ~10% of total thickness for ETL
+        ideal_htl_ratio = 0.1  # ~10% of total thickness for HTL
+        ideal_active_ratio = 0.8  # ~80% of total thickness for active layer
+        
+        etl_balance = np.exp(-abs(df['thickness_ratio_ETL'] - ideal_etl_ratio) / 0.05)
+        htl_balance = np.exp(-abs(df['thickness_ratio_HTL'] - ideal_htl_ratio) / 0.05)
+        active_balance = np.exp(-abs(df['thickness_ratio_L2'] - ideal_active_ratio) / 0.1)
+        
+        df['thickness_balance_quality'] = (etl_balance + htl_balance + active_balance) / 3
+        
+        # Transport layer balance (ETL and HTL should be similar thickness)
+        df['transport_layer_balance'] = np.exp(-abs(df['L1_L'] - df['L3_L']) / (df['L1_L'] + df['L3_L'] + 1e-30))
+    
+    # NEW: Doping optimization features
+    if all(col in df.columns for col in ['doping_ratio_L1', 'doping_ratio_L2', 'doping_ratio_L3']):
+        # Average doping ratio (measure of overall doping level)
+        df['average_doping_ratio'] = df[['doping_ratio_L1', 'doping_ratio_L2', 'doping_ratio_L3']].mean(axis=1)
+        
+        # Doping consistency across layers
+        df['doping_consistency'] = 1 / (1 + df[['doping_ratio_L1', 'doping_ratio_L2', 'doping_ratio_L3']].var(axis=1))
+    
+    # NEW: Energy level optimization features
+    if all(col in df.columns for col in ['energy_gap_L1', 'energy_gap_L2', 'energy_gap_L3']):
+        # Energy gap progression (absolute value to ensure positive)
+        df['energy_gap_progression'] = abs((df['energy_gap_L2'] - df['energy_gap_L1']) * (df['energy_gap_L3'] - df['energy_gap_L2']))
+        
+        # Energy gap uniformity (for specific device types)
+        df['energy_gap_uniformity'] = 1 / (1 + df[['energy_gap_L1', 'energy_gap_L2', 'energy_gap_L3']].var(axis=1))
+    
+    logging.info(f"Calculated all derived features including enhanced physics-based features")
     return df
 
 def prepare_input_data(input_data, feature_names):
@@ -538,12 +603,43 @@ def validate_predictions_with_experimental_data():
     
     return predictions
 
-def create_example_predictions():
-    """Create example predictions for demonstration using models."""
-    logging.info("\n=== Creating Example Predictions ===")
+def load_example_parameters():
+    """Load example device parameters from configuration file."""
+    config_file = 'example_device_parameters.json'
     
-    # Create example input data with all basic parameters
-    example_data = pd.DataFrame({
+    try:
+        with open(config_file, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+        
+        # Extract parameters and convert to DataFrame format
+        params = config['parameters']
+        example_data = pd.DataFrame({key: [value] for key, value in params.items()})
+        
+        logging.info(f"Loaded example parameters from {config_file}")
+        logging.info(f"Device type: {config.get('device_type', 'Unknown')}")
+        
+        # Log parameter values for transparency
+        for param, value in params.items():
+            if 'L' in param and param.endswith('_L'):
+                logging.info(f"  {param}: {value:.2e} m ({config['layer_descriptions'].get(param.split('_')[0], 'Unknown layer')})")
+            elif 'E_' in param:
+                logging.info(f"  {param}: {value:.2f} eV")
+            elif 'N_' in param:
+                logging.info(f"  {param}: {value:.2e} cm^-3")
+        
+        return example_data
+        
+    except FileNotFoundError:
+        logging.warning(f"Configuration file {config_file} not found. Using default parameters.")
+        return create_default_example_parameters()
+    except Exception as e:
+        logging.error(f"Error loading example parameters: {e}. Using default parameters.")
+        return create_default_example_parameters()
+
+def create_default_example_parameters():
+    """Create default example parameters as fallback."""
+    logging.info("Using default hardcoded example parameters")
+    return pd.DataFrame({
         'L1_L': [30.0e-9],  # PCBM thickness
         'L1_E_c': [3.8],  # PCBM conduction band
         'L1_E_v': [5.8],  # PCBM valence band
@@ -560,6 +656,13 @@ def create_example_predictions():
         'L3_N_D': [1e20],  # PEDOT donor concentration
         'L3_N_A': [1e20],  # PEDOT acceptor concentration
     })
+
+def create_example_predictions():
+    """Create example predictions for demonstration using models."""
+    logging.info("\n=== Creating Example Predictions ===")
+    
+    # Load example parameters from configuration file
+    example_data = load_example_parameters()
     
     try:
         predictions, target_names = make_predictions_all_models(example_data)
@@ -613,9 +716,17 @@ def plot_predictions(predictions, save_dir='results/predict'):
             
             # Add metrics text box with relative errors
             if 'rmse_relative' in data and 'mae_relative' in data:
-                metrics_text = f'R² = {data["r2"]:.4f}\nRMSE = {data["rmse"]:.4f} ({data["rmse_relative"]:.1f}%)\nMAE = {data["mae"]:.4f} ({data["mae_relative"]:.1f}%)\nMAPE = {data["mape"]:.1f}%'
+                # Format large numbers in scientific notation for readability
+                if abs(data["rmse"]) >= 1e6 or abs(data["mae"]) >= 1e6:
+                    metrics_text = f'R² = {data["r2"]:.4f}\nRMSE = {data["rmse"]:.2e} ({data["rmse_relative"]:.1f}%)\nMAE = {data["mae"]:.2e} ({data["mae_relative"]:.1f}%)\nMAPE = {data["mape"]:.1f}%'
+                else:
+                    metrics_text = f'R² = {data["r2"]:.4f}\nRMSE = {data["rmse"]:.4f} ({data["rmse_relative"]:.1f}%)\nMAE = {data["mae"]:.4f} ({data["mae_relative"]:.1f}%)\nMAPE = {data["mape"]:.1f}%'
             else:
-                metrics_text = f'R² = {data["r2"]:.4f}\nRMSE = {data["rmse"]:.4f}\nMAE = {data["mae"]:.4f}'
+                # Format large numbers in scientific notation for readability
+                if abs(data["rmse"]) >= 1e6 or abs(data["mae"]) >= 1e6:
+                    metrics_text = f'R² = {data["r2"]:.4f}\nRMSE = {data["rmse"]:.2e}\nMAE = {data["mae"]:.2e}'
+                else:
+                    metrics_text = f'R² = {data["r2"]:.4f}\nRMSE = {data["rmse"]:.4f}\nMAE = {data["mae"]:.4f}'
             
             ax1.text(0.05, 0.95, metrics_text, 
                     transform=ax1.transAxes, fontsize=11,
@@ -631,10 +742,14 @@ def plot_predictions(predictions, save_dir='results/predict'):
             ax2.set_title('Residual Plot', fontsize=12)
             ax2.grid(True, alpha=0.3)
             
-            # Add residual statistics
+            # Add residual statistics with proper formatting
             residual_std = np.std(residuals)
             residual_mean = np.mean(residuals)
-            residual_text = f'Mean Residual: {residual_mean:.4f}\nStd Residual: {residual_std:.4f}'
+            # Format large numbers in scientific notation for readability
+            if abs(residual_mean) >= 1e6 or abs(residual_std) >= 1e6:
+                residual_text = f'Mean Residual: {residual_mean:.2e}\nStd Residual: {residual_std:.2e}'
+            else:
+                residual_text = f'Mean Residual: {residual_mean:.4f}\nStd Residual: {residual_std:.4f}'
             ax2.text(0.05, 0.95, residual_text, 
                     transform=ax2.transAxes, fontsize=10,
                     verticalalignment='top', 
@@ -688,10 +803,14 @@ def plot_predictions(predictions, save_dir='results/predict'):
         ax2.set_title('Efficiency Residual Plot', fontsize=12)
         ax2.grid(True, alpha=0.3)
         
-        # Add efficiency residual statistics
+        # Add efficiency residual statistics with proper formatting
         eff_residual_std = np.std(eff_residuals)
         eff_residual_mean = np.mean(eff_residuals)
-        eff_residual_text = f'Mean Residual: {eff_residual_mean:.4f}%\nStd Residual: {eff_residual_std:.4f}%'
+        # Format efficiency residuals (usually not extremely large, but just in case)
+        if abs(eff_residual_mean) >= 1e6 or abs(eff_residual_std) >= 1e6:
+            eff_residual_text = f'Mean Residual: {eff_residual_mean:.2e}%\nStd Residual: {eff_residual_std:.2e}%'
+        else:
+            eff_residual_text = f'Mean Residual: {eff_residual_mean:.4f}%\nStd Residual: {eff_residual_std:.4f}%'
         ax2.text(0.05, 0.95, eff_residual_text, 
                 transform=ax2.transAxes, fontsize=10,
                 verticalalignment='top', 

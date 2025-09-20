@@ -5,7 +5,7 @@
     "full_dataset",
     "inverse_optimization"
   ],
-  "total_samples": 919,
+  "total_samples": 10000,
   "feature_count": 38,
   "efficiency_targets": [
     "MPP"

@@ -15,7 +15,7 @@ WHAT THIS SCRIPT DOES:
 3. Handles missing values using median/mode imputation
 4. Removes outliers from efficiency and recombination targets using IQR method
 5. Creates separate datasets for efficiency prediction and recombination prediction
-6. Prepares data for inverse optimization (predicting optimal parameters for target efficiency)
+6. Prepares data for inverse optimization (training models on high-efficiency devices only)
 7. Splits data into train/test sets (80/20 split)
 8. Saves ML-ready datasets to results/prepare_ml_data/
 
@@ -52,7 +52,7 @@ DATASETS CREATED:
 1. Efficiency Prediction Dataset: Features → MPP
 2. Recombination Prediction Dataset: Features → IntSRHn_mean
 3. Full Dataset: Complete dataset for optimization algorithms
-4. NEW: Inverse Optimization Dataset: High-efficiency configurations for parameter prediction
+4. NEW: Inverse Optimization Dataset: High-efficiency configurations for focused model training
 
 PREREQUISITES:
 - Run 1_create_feature_names.py to define feature structure
@@ -435,10 +435,10 @@ def remove_outliers_enhanced(df, columns, method='iqr'):
     return df_clean
 
 def prepare_inverse_optimization_data(df):
-    """Prepare data for inverse optimization (predicting optimal parameters for target efficiency)."""
+    """Prepare data for inverse optimization (training models on high-efficiency devices only)."""
     logging.info("Preparing inverse optimization dataset...")
     
-    # Select high-efficiency configurations for inverse optimization
+    # Select high-efficiency configurations for focused training
     if 'MPP' in df.columns:
         # Get top 20% efficient configurations
         efficiency_threshold = df['MPP'].quantile(0.8)
@@ -547,9 +547,10 @@ def prepare_ml_datasets(df):
     # 4. NEW: Inverse optimization dataset
     df_inverse = prepare_inverse_optimization_data(df)
     if df_inverse is not None:
-        # For inverse optimization, we predict device parameters from efficiency
-        inverse_features = available_efficiency_targets
-        inverse_targets = available_features
+        # For inverse optimization, we use high-efficiency devices to train models
+        # Features: device parameters, Targets: efficiency (same as regular prediction)
+        inverse_features = available_features
+        inverse_targets = available_efficiency_targets
         
         # Only use features that exist in the inverse dataset
         available_inverse_features = [f for f in inverse_features if f in df_inverse.columns]
