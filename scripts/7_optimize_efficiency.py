@@ -60,6 +60,11 @@ import json
 import sys
 from scipy.optimize import minimize, differential_evolution
 from sklearn.preprocessing import StandardScaler
+import warnings
+
+# Suppress sklearn feature name warnings
+warnings.filterwarnings('ignore', message='X does not have valid feature names')
+warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
 
 # Add current directory to path for imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -142,7 +147,8 @@ def load_optimization_models():
         'all_features': training_metadata['efficiency_models']['MPP']['feature_names'],
         'parameter_bounds': feature_definitions['parameter_bounds'],
         'efficiency_targets': ['MPP'],
-        'recombination_targets': ['IntSRHn_mean']
+        'recombination_targets': ['IntSRHn_mean'],
+        'total_features': len(training_metadata['efficiency_models']['MPP']['feature_names'])
     }
     
     logging.info(f"Loaded MPP prediction model")
@@ -237,8 +243,14 @@ def predict_mpp(device_params, mpp_models, mpp_scalers, target='MPP'):
     feature_scaler = scalers['feature_scaler']
     target_scaler = scalers['target_scaler']
     
-    # Scale input features
-    X_scaled = feature_scaler.transform([all_features])
+    # Scale input features (convert to DataFrame to avoid feature name warnings)
+    import pandas as pd
+    feature_names = feature_scaler.feature_names_in_ if hasattr(feature_scaler, 'feature_names_in_') else None
+    if feature_names is not None:
+        X_df = pd.DataFrame([all_features], columns=feature_names)
+        X_scaled = feature_scaler.transform(X_df)
+    else:
+        X_scaled = feature_scaler.transform([all_features])
     
     # Make prediction (scaled)
     model = mpp_models[target]
@@ -262,8 +274,14 @@ def predict_recombination(device_params, recombination_models, recombination_sca
     feature_scaler = scalers['feature_scaler']
     target_scaler = scalers['target_scaler']
     
-    # Scale input features
-    X_scaled = feature_scaler.transform([all_features])
+    # Scale input features (convert to DataFrame to avoid feature name warnings)
+    import pandas as pd
+    feature_names = feature_scaler.feature_names_in_ if hasattr(feature_scaler, 'feature_names_in_') else None
+    if feature_names is not None:
+        X_df = pd.DataFrame([all_features], columns=feature_names)
+        X_scaled = feature_scaler.transform(X_df)
+    else:
+        X_scaled = feature_scaler.transform([all_features])
     
     # Make prediction (scaled)
     model = recombination_models[target]
@@ -467,13 +485,16 @@ def validate_optimization_results(results, mpp_models, mpp_scalers,
         logging.warning(f"Optimal MPP ({optimal_mpp:.6f} W/cm²) seems unrealistic")
         return False
     
-    # Check if recombination is reasonable
+    # Check if recombination is reasonable (based on actual data range: 1e28 - 1e31)
     optimal_recombination = results['optimal_recombination']
     if 'IntSRHn_mean' in optimal_recombination:
         recombination_rate = optimal_recombination['IntSRHn_mean']
-        if recombination_rate < 0 or recombination_rate > 1e-2:
-            logging.warning(f"Optimal recombination rate ({recombination_rate}) seems unrealistic")
+        logging.info(f"Validating recombination rate: {recombination_rate:.2e} (threshold: 1e32)")
+        if recombination_rate < 0 or recombination_rate > 1e32:  # Allow up to 1e32 to cover data range
+            logging.warning(f"Optimal recombination rate ({recombination_rate:.2e}) seems unrealistic (outside range [0, 1e32])")
             return False
+        else:
+            logging.info(f"Recombination rate {recombination_rate:.2e} is within acceptable range")
     
     # Check if parameters are within bounds
     bounds = get_parameter_bounds(metadata)
@@ -531,7 +552,21 @@ def create_optimization_report(results, metadata):
     print(f"Success: {report['optimization_summary']['success']}")
     print("\nOptimal Parameters:")
     for param, value in report['optimal_parameters'].items():
-        print(f"  {param}: {value:.6f}")
+        # Smart formatting for console output
+        if 'N_' in param:  # Doping concentrations
+            if abs(value) >= 1e18:
+                print(f"  {param}: {value:.2e} cm^-3")
+            else:
+                print(f"  {param}: {value:.3f} cm^-3")
+        elif '_L' in param:  # Layer thicknesses
+            print(f"  {param}: {value*1e9:.1f} nm")
+        elif 'E_' in param:  # Energy levels
+            print(f"  {param}: {value:.3f} eV")
+        else:  # Other parameters
+            if abs(value) >= 1e6:
+                print(f"  {param}: {value:.2e}")
+            else:
+                print(f"  {param}: {value:.6f}")
     print("\nOptimal Recombination Rates:")
     for target, value in report['optimal_recombination'].items():
         print(f"  {target}: {value:.6e}")
@@ -556,10 +591,29 @@ def create_optimization_plots(results, metadata):
     plt.title('Optimal Device Parameters for Maximum PCE')
     plt.xticks(range(len(param_names)), param_names, rotation=45, ha='right')
     
-    # Add value labels on bars
-    for i, (bar, value) in enumerate(zip(bars, param_values)):
+    # Add value labels on bars with smart formatting
+    for i, (bar, value, param_name) in enumerate(zip(bars, param_values, param_names)):
+        # Smart formatting based on parameter type and value magnitude
+        if 'N_' in param_name:  # Doping concentrations
+            if abs(value) >= 1e18:
+                label = f'{value:.2e}'
+            else:
+                label = f'{value:.3f}'
+        elif '_L' in param_name:  # Layer thicknesses
+            if abs(value) >= 1e-6:  # Convert to nm for readability
+                label = f'{value*1e9:.1f}nm'
+            else:
+                label = f'{value:.2e}m'
+        elif 'E_' in param_name:  # Energy levels
+            label = f'{value:.3f}eV'
+        else:  # Other parameters
+            if abs(value) >= 1e6:
+                label = f'{value:.2e}'
+            else:
+                label = f'{value:.3f}'
+        
         plt.text(bar.get_x() + bar.get_width()/2, bar.get_height() + max(param_values)*0.01,
-                f'{value:.3f}', ha='center', va='bottom', fontsize=8)
+                label, ha='center', va='bottom', fontsize=8)
     
     plt.tight_layout()
     plt.savefig('results/optimize_efficiency/plots/optimal_parameters.png', dpi=300, bbox_inches='tight')

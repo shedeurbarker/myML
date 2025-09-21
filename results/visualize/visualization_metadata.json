@@ -1,0 +1,28 @@
+{
+  "visualization_date": "2025-09-20T22:56:30.286155",
+  "optimization_results_available": true,
+  "validation_metrics_available": true,
+  "visualizations_created": [
+    "comprehensive_dashboard.png",
+    "model_performance_comparison.png",
+    "optimized_doping.png",
+    "optimized_energy_levels.png",
+    "optimized_thickness.png",
+    "parameter_descriptions.png"
+  ],
+  "data_summary": {
+    "optimization": {
+      "optimal_efficiency": 0,
+      "optimal_recombination": {
+        "IntSRHn_mean": 1.9113400547554774e+30
+      },
+      "optimization_method": "Unknown",
+      "parameter_count": 15
+    },
+    "validation": {
+      "total_targets": 2,
+      "mean_accuracy": 99.84636947212125,
+      "best_model": "RandomForest"
+    }
+  }
+}

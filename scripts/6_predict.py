@@ -631,31 +631,10 @@ def load_example_parameters():
         
     except FileNotFoundError:
         logging.warning(f"Configuration file {config_file} not found. Using default parameters.")
-        return create_default_example_parameters()
+        return example_data
     except Exception as e:
         logging.error(f"Error loading example parameters: {e}. Using default parameters.")
-        return create_default_example_parameters()
-
-def create_default_example_parameters():
-    """Create default example parameters as fallback."""
-    logging.info("Using default hardcoded example parameters")
-    return pd.DataFrame({
-        'L1_L': [30.0e-9],  # PCBM thickness
-        'L1_E_c': [3.8],  # PCBM conduction band
-        'L1_E_v': [5.8],  # PCBM valence band
-        'L1_N_D': [1e20],  # PCBM donor concentration
-        'L1_N_A': [1e20],  # PCBM acceptor concentration
-        'L2_L': [300.0e-9],  # MAPI thickness
-        'L2_E_c': [4.5],  # MAPI conduction band
-        'L2_E_v': [5.7],  # MAPI valence band
-        'L2_N_D': [1e20],  # MAPI donor concentration
-        'L2_N_A': [1e20],  # MAPI acceptor concentration
-        'L3_L': [30.0e-9],  # PEDOT thickness
-        'L3_E_c': [3.5],  # PEDOT conduction band
-        'L3_E_v': [5.4],  # PEDOT valence band
-        'L3_N_D': [1e20],  # PEDOT donor concentration
-        'L3_N_A': [1e20],  # PEDOT acceptor concentration
-    })
+        return example_data
 
 def create_example_predictions():
     """Create example predictions for demonstration using models."""
