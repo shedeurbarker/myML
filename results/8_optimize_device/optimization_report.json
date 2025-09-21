@@ -1,0 +1,72 @@
+{
+  "optimization_summary": {
+    "success": true,
+    "method": "both",
+    "optimization_date": "2025-09-21T15:03:35.594382",
+    "original_device": "Optimized Perovskite Solar Cell"
+  },
+  "performance_comparison": {
+    "original": {
+      "MPP": 207.913822530876,
+      "PCE": 20.791382253087598,
+      "IntSRHn_mean": 1.9031027028771162e+30
+    },
+    "optimized": {
+      "MPP": 207.913822530876,
+      "PCE": 20.791382253087598,
+      "IntSRHn_mean": 1.9031027028771162e+30
+    },
+    "improvements": {
+      "MPP_improvement_percent": 0.0,
+      "PCE_improvement_percent": 0.0,
+      "recombination_change_percent": 0.0
+    }
+  },
+  "parameter_changes": {
+    "original": {
+      "L1_L": 2.0000000000000004e-08,
+      "L1_E_c": 3.8,
+      "L1_E_v": 5.899998412836029,
+      "L1_N_D": 1e+21,
+      "L1_N_A": 4.999999999999999e+19,
+      "L2_L": 3.4999777797044133e-07,
+      "L2_E_c": 3.799996825672059,
+      "L2_E_v": 5.4,
+      "L2_N_D": 3.162277660168379e+16,
+      "L2_N_A": 3.162277660168379e+16,
+      "L3_L": 2.0000000000000004e-08,
+      "L3_E_c": 3.000003174327941,
+      "L3_E_v": 5.2,
+      "L3_N_D": 2.2360679774997897e+19,
+      "L3_N_A": 7.071067811865475e+20
+    },
+    "optimized": {
+      "L1_L": 2.0000000000000004e-08,
+      "L1_E_c": 3.8,
+      "L1_E_v": 5.899998412836029,
+      "L1_N_D": 1e+21,
+      "L1_N_A": 4.999999999999999e+19,
+      "L2_L": 3.4999777797044133e-07,
+      "L2_E_c": 3.799996825672059,
+      "L2_E_v": 5.4,
+      "L2_N_D": 3.162277660168379e+16,
+      "L2_N_A": 3.162277660168379e+16,
+      "L3_L": 2.0000000000000004e-08,
+      "L3_E_c": 3.000003174327941,
+      "L3_E_v": 5.2,
+      "L3_N_D": 2.2360679774997897e+19,
+      "L3_N_A": 7.071067811865475e+20
+    }
+  },
+  "physics_validation": {
+    "status": "VALID",
+    "message": "All physics constraints satisfied"
+  },
+  "recommendations": [
+    "Efficiency improved by +0.00%",
+    "MPP increased by +0.00%",
+    "Recombination rate changed by +0.00%",
+    "All physics constraints maintained",
+    "Device remains manufacturable with optimized parameters"
+  ]
+}

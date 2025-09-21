@@ -1,5 +1,5 @@
 {
-  "prediction_date": "2025-09-21T13:49:14.365533",
+  "prediction_date": "2025-09-21T15:01:02.258186",
   "device_type": "Optimized Perovskite Solar Cell",
   "experimental_parameters": {
     "L1_L": 2.0000000000000004e-08,
@@ -19,8 +19,8 @@
     "L3_N_A": 7.071067811865475e+20
   },
   "predictions": {
-    "MPP": 207.91294867813198,
-    "PCE": 207.91294867813198,
+    "MPP": 207.912948678132,
+    "PCE": 20.7912948678132,
     "IntSRHn_mean": 1.9304550932338843e+30
   },
   "physics_validation": {
@@ -44,8 +44,8 @@
   },
   "performance_summary": {
     "efficiency": {
-      "MPP_W_per_cm2": 207.91294867813198,
-      "PCE_percent": 207.91294867813198,
+      "MPP_W_per_cm2": 207.912948678132,
+      "PCE_percent": 20.7912948678132,
       "efficiency_category": "High"
     },
     "recombination": {

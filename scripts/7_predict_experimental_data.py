@@ -205,6 +205,35 @@ def calculate_derived_features(df):
     logging.info(f"Calculated derived features. Total features: {len(df.columns)}")
     return df
 
+def validate_shockley_queisser_limit(pce_pred, parameters):
+    """Validate PCE prediction against Shockley-Queisser limit."""
+    try:
+        # Shockley-Queisser theoretical maximum for single-junction solar cells
+        SQ_LIMIT = 33.7  # % (theoretical maximum efficiency)
+        
+        # Calculate active layer bandgap for reference
+        active_bandgap = abs(parameters['L2_E_v'] - parameters['L2_E_c'])
+        
+        # Simple comparison against S-Q limit
+        if pce_pred > SQ_LIMIT:
+            logging.warning(f"PCE prediction ({pce_pred:.2f}%) exceeds Shockley-Queisser limit ({SQ_LIMIT}%)")
+            logging.warning(f"Active layer bandgap: {active_bandgap:.2f} eV")
+            logging.warning("This suggests unrealistic simulation data or model predictions")
+            
+            # Option 1: Cap at S-Q limit (conservative)
+            # pce_pred = SQ_LIMIT
+            
+            # Option 2: Add warning but keep original prediction (current approach)
+            logging.info(f"Keeping original prediction but flagging as potentially unrealistic")
+        else:
+            logging.info(f"PCE prediction ({pce_pred:.2f}%) is within S-Q limit ({SQ_LIMIT}%) [VALID]")
+        
+        return pce_pred
+        
+    except Exception as e:
+        logging.warning(f"Error validating S-Q limit: {e}")
+        return pce_pred
+
 def predict_device_performance(parameters, models_data):
     """Predict comprehensive device performance."""
     # Create DataFrame with parameters
@@ -242,16 +271,21 @@ def predict_device_performance(parameters, models_data):
         # Inverse transform the scaled prediction back to original scale
         mpp_pred = target_scaler.inverse_transform([[mpp_pred_scaled]])[0][0]
         
-        # Calculate PCE (Power Conversion Efficiency) from MPP
-        # Note: The exact relationship depends on simulation units and normalization
-        # For now, treat PCE as proportional to MPP (common in simulation workflows)
-        pce_pred = mpp_pred  # Assuming MPP values are already in appropriate units
+        # Calculate PCE (Power Conversion Efficiency) from MPP using physics equation
+        # PCE = (MPP / Incident_Power) × 100%
+        # From simulation: MPP is in W/m² (V × J where J is in A/m²)
+        # Standard solar conditions: 1000 W/m² incident power
+        incident_power_W_per_m2 = 1000.0  # W/m² (AM1.5G standard)
+        pce_pred = (mpp_pred / incident_power_W_per_m2) * 100  # Physics-based PCE calculation
+        
+        # Validate against Shockley-Queisser limit
+        pce_pred = validate_shockley_queisser_limit(pce_pred, parameters)
         
         predictions['MPP'] = mpp_pred
         predictions['PCE'] = pce_pred
         
         logging.info(f"Efficiency Predictions:")
-        logging.info(f"  MPP: {mpp_pred:.4f} W/cm²")
+        logging.info(f"  MPP: {mpp_pred:.4f} W/m² (simulation units)")
         logging.info(f"  PCE: {pce_pred:.2f}%")
     
     # Predict recombination
@@ -1028,7 +1062,7 @@ def main():
         if predictions:
             logging.info("\n=== PREDICTED PERFORMANCE ===")
             if 'MPP' in predictions:
-                logging.info(f"MPP: {predictions['MPP']:.4f} W/cm²")
+                logging.info(f"MPP: {predictions['MPP']:.4f} W/m² (simulation units)")
             if 'PCE' in predictions:
                 logging.info(f"PCE: {predictions['PCE']:.2f}%")
             if 'IntSRHn_mean' in predictions:
