@@ -1,0 +1,17 @@
+{
+  "L1_L": "Layer 1 thickness (nm)",
+  "L1_E_c": "Layer 1 conduction band energy (eV)",
+  "L1_E_v": "Layer 1 valence band energy (eV)",
+  "L1_N_D": "Layer 1 donor concentration (m\u207b\u00b3)",
+  "L1_N_A": "Layer 1 acceptor concentration (m\u207b\u00b3)",
+  "L2_L": "Layer 2 thickness (nm)",
+  "L2_E_c": "Layer 2 conduction band energy (eV)",
+  "L2_E_v": "Layer 2 valence band energy (eV)",
+  "L2_N_D": "Layer 2 donor concentration (m\u207b\u00b3)",
+  "L2_N_A": "Layer 2 acceptor concentration (m\u207b\u00b3)",
+  "L3_L": "Layer 3 thickness (nm)",
+  "L3_E_c": "Layer 3 conduction band energy (eV)",
+  "L3_E_v": "Layer 3 valence band energy (eV)",
+  "L3_N_D": "Layer 3 donor concentration (m\u207b\u00b3)",
+  "L3_N_A": "Layer 3 acceptor concentration (m\u207b\u00b3)"
+}

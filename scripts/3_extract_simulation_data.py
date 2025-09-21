@@ -38,7 +38,7 @@ from datetime import datetime
 import csv # Added for writing CSV files incrementally
 
 # Set up logging
-log_dir = 'results/extract_simulation_data'
+log_dir = 'results/3_extract_simulation_data'
 os.makedirs(log_dir, exist_ok=True)
 
 logging.basicConfig(
@@ -53,7 +53,7 @@ logging.basicConfig(
 def load_feature_definitions():
     """Load feature definitions from the JSON file."""
     try:
-        with open('results/features/feature_definitions.json', 'r') as f:
+        with open('results/1_feature/feature_definitions.json', 'r') as f:
             return json.load(f)
     except FileNotFoundError:
         logging.error("Feature definitions not found. Run 1_create_feature_names.py first.")

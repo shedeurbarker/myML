@@ -10,14 +10,14 @@ machine learning model training and optimization. Enhanced for solar cell optimi
 with focus on interfacial SRH recombination and efficiency prediction.
 
 WHAT THIS SCRIPT DOES:
-1. Loads extracted data from results/extract_simulation_data/extracted_simulation_data.csv
+1. Loads extracted data from results/3_extract_simulation_data/extracted_simulation_data.csv
 2. Creates enhanced derived features from 15 primary parameters (thickness ratios, energy gaps, etc.)
 3. Handles missing values using median/mode imputation
 4. Removes outliers from efficiency and recombination targets using IQR method
 5. Creates separate datasets for efficiency prediction and recombination prediction
 6. Prepares data for inverse optimization (training models on high-efficiency devices only)
 7. Splits data into train/test sets (80/20 split)
-8. Saves ML-ready datasets to results/prepare_ml_data/
+8. Saves ML-ready datasets to results/4_prepare_ml_data/
 
 ENHANCED DERIVED FEATURES CREATED:
 - Thickness features: total_thickness, thickness_ratio_L2, thickness_ratio_ETL, thickness_ratio_HTL
@@ -29,24 +29,24 @@ ENHANCED DERIVED FEATURES CREATED:
 - NEW: Optimization features: efficiency_recombination_tradeoff, optimal_parameter_indicators
 
 INPUT FILES:
-- results/extract_simulation_data/extracted_simulation_data.csv (from script 3)
-- results/features/feature_definitions.json (from script 1)
+- results/3_extract_simulation_data/extracted_simulation_data.csv (from script 3)
+- results/1_feature/feature_definitions.json (from script 1)
 
 OUTPUT FILES:
-- results/prepare_ml_data/X_train_efficiency.csv (training features for efficiency prediction)
-- results/prepare_ml_data/X_test_efficiency.csv (test features for efficiency prediction)
-- results/prepare_ml_data/y_train_efficiency.csv (training targets for efficiency prediction)
-- results/prepare_ml_data/y_test_efficiency.csv (test targets for efficiency prediction)
-- results/prepare_ml_data/X_train_recombination.csv (training features for recombination prediction)
-- results/prepare_ml_data/X_test_recombination.csv (test features for recombination prediction)
-- results/prepare_ml_data/y_train_recombination.csv (training targets for recombination prediction)
-- results/prepare_ml_data/y_test_recombination.csv (test targets for recombination prediction)
-- results/prepare_ml_data/X_full.csv (full feature dataset for optimization)
-- results/prepare_ml_data/y_efficiency_full.csv (full efficiency targets)
-- results/prepare_ml_data/y_recombination_full.csv (full recombination targets)
-- results/prepare_ml_data/X_inverse_optimization.csv (features for inverse optimization)
-- results/prepare_ml_data/y_inverse_optimization.csv (targets for inverse optimization)
-- results/prepare_ml_data/dataset_metadata.json (enhanced dataset information and statistics)
+- results/4_prepare_ml_data/X_train_efficiency.csv (training features for efficiency prediction)
+- results/4_prepare_ml_data/X_test_efficiency.csv (test features for efficiency prediction)
+- results/4_prepare_ml_data/y_train_efficiency.csv (training targets for efficiency prediction)
+- results/4_prepare_ml_data/y_test_efficiency.csv (test targets for efficiency prediction)
+- results/4_prepare_ml_data/X_train_recombination.csv (training features for recombination prediction)
+- results/4_prepare_ml_data/X_test_recombination.csv (test features for recombination prediction)
+- results/4_prepare_ml_data/y_train_recombination.csv (training targets for recombination prediction)
+- results/4_prepare_ml_data/y_test_recombination.csv (test targets for recombination prediction)
+- results/4_prepare_ml_data/X_full.csv (full feature dataset for optimization)
+- results/4_prepare_ml_data/y_efficiency_full.csv (full efficiency targets)
+- results/4_prepare_ml_data/y_recombination_full.csv (full recombination targets)
+- results/4_prepare_ml_data/X_inverse_optimization.csv (features for inverse optimization)
+- results/4_prepare_ml_data/y_inverse_optimization.csv (targets for inverse optimization)
+- results/4_prepare_ml_data/dataset_metadata.json (enhanced dataset information and statistics)
 
 DATASETS CREATED:
 1. Efficiency Prediction Dataset: Features → MPP
@@ -74,7 +74,7 @@ from sklearn.model_selection import train_test_split
 import logging
 
 # Set up logging
-log_dir = 'results/prepare_ml_data'
+log_dir = 'results/4_prepare_ml_data'
 os.makedirs(log_dir, exist_ok=True)
 
 logging.basicConfig(
@@ -89,7 +89,7 @@ logging.basicConfig(
 def load_feature_definitions():
     """Load feature definitions from the JSON file."""
     try:
-        with open('results/features/feature_definitions.json', 'r') as f:
+        with open('results/1_feature/feature_definitions.json', 'r') as f:
             return json.load(f)
     except FileNotFoundError:
         logging.error("Feature definitions not found. Run 1_create_feature_names.py first.")
@@ -97,7 +97,7 @@ def load_feature_definitions():
 
 def load_extracted_data():
     """Load the extracted simulation data."""
-    input_file = 'results/extract_simulation_data/extracted_simulation_data.csv'
+    input_file = 'results/3_extract_simulation_data/extracted_simulation_data.csv'
     
     if not os.path.exists(input_file):
         logging.error(f"Extracted data not found: {input_file}")
@@ -580,7 +580,7 @@ def save_ml_datasets(datasets):
     """Save ML-ready datasets to files."""
     logging.info("Saving ML datasets...")
     
-    output_dir = 'results/prepare_ml_data'
+    output_dir = 'results/4_prepare_ml_data'
     os.makedirs(output_dir, exist_ok=True)
     
     # Save efficiency prediction dataset
@@ -734,7 +734,7 @@ def main():
         print(f"Inverse optimization test samples: {len(datasets['inverse_optimization']['X_test'])}")
     
     print("\nEnhanced ML data preparation complete!")
-    print("Datasets saved to: results/prepare_ml_data/")
+    print("Datasets saved to: results/4_prepare_ml_data/")
 
 if __name__ == "__main__":
     main() 

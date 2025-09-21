@@ -45,7 +45,6 @@ INPUT FILES:
 
 OUTPUT FILES:
 - sim/simulations/sim_XXXX/ (simulation output folders)
-- results/generate_enhanced/simulation_enhanced.log (log file)
 
 USAGE:
 python scripts/2_generate_simulations_enhanced.py
@@ -68,7 +67,7 @@ import pandas as pd
 SCRIPT_DIR = os.path.dirname(__file__)  # scripts folder
 PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)  # project root
 SIM_DIR = os.path.join(PROJECT_ROOT, 'sim')  # sim folder
-RESULTS_DIR = os.path.join(PROJECT_ROOT, 'results', 'generated_simulations')
+RESULTS_DIR = os.path.join(PROJECT_ROOT, 'results', '2_generated_simulations')
 
 # Configure logging
 os.makedirs(RESULTS_DIR, exist_ok=True)

@@ -63,7 +63,9 @@ The solar cell consists of three layers with 5 parameters each (15 total optimiz
 -   **MPP**: Maximum Power Point (W/cm²) - efficiency optimization target
 -   **IntSRHn_mean**: Mean electron interfacial recombination rate - recombination control target
 
-## Workflow Steps
+## Simplified Workflow Steps
+
+**Clean 7-Step Process: Data → Training → Visualization → Optimization**
 
 ### Step 1: Define Feature Structure
 
@@ -82,10 +84,10 @@ python scripts/1_create_feature_names.py
 
 **Output files**:
 
--   `results/features/feature_definitions.json` - Complete feature definitions
--   `results/features/primary_parameters.json` - List of the 15 optimization variables
--   `results/features/parameter_bounds.json` - Min/max bounds for each parameter
--   `results/features/target_variables.json` - Target variables (MPP and IntSRHn_mean)
+-   `results/1_feature/feature_definitions.json` - Complete feature definitions
+-   `results/1_feature/primary_parameters.json` - List of the 15 optimization variables
+-   `results/1_feature/parameter_bounds.json` - Min/max bounds for each parameter
+-   `results/1_feature/target_variables.json` - Target variables (MPP and IntSRHn_mean)
 
 ### Step 2: Generate Physics-Validated Simulations
 
@@ -175,7 +177,7 @@ python scripts/3_extract_simulation_data.py
 -   `sim/simulations/sim_XXXX/output_JV.dat` - J-V curve data
 -   `sim/simulations/sim_XXXX/output_Var.dat` - Recombination rate data
 -   `sim/simulations/sim_XXXX/parameters.json` - Device parameters
--   `results/features/feature_definitions.json` - Feature definitions from Step 1
+-   `results/1_feature/feature_definitions.json` - Feature definitions from Step 1
 
 **Output files**:
 
@@ -214,7 +216,7 @@ python scripts/4_prepare_ml_data.py [--remove-outliers] [--enhanced-features]
 **Input files**:
 
 -   `results/extract_simulation_data/extracted_simulation_data.csv` - From Step 3
--   `results/features/feature_definitions.json` - From Step 1
+-   `results/1_feature/feature_definitions.json` - From Step 1
 
 **Output files**:
 
@@ -291,127 +293,95 @@ python scripts/5_train_models.py
 -   `results/train_optimization_models/training.log` - Detailed training log
 -   `results/train_optimization_models/plots/` - **NEW**: Comprehensive training visualizations
 
-### Step 6: Predict and Validate Models
+### Step 6: Model Performance Visualization
 
 ```bash
-python scripts/6_predict.py
+python scripts/6_model_performance_visualization.py
 ```
 
-**Purpose**: Uses trained ML models to make predictions and validate model performance against experimental data.
+**Purpose**: Creates comprehensive visualizations of trained ML model performance, validation metrics, and prediction accuracy analysis.
 
 **What it does**:
 
--   Loads trained MPP and IntSRHn_mean prediction models from Step 5
--   Creates example predictions using configurable device parameters
+-   Loads trained models and metadata from Step 5
 -   Validates model predictions against the full simulation dataset
--   Calculates comprehensive performance metrics (R², RMSE, MAE, MAPE)
--   Generates validation plots with proper number formatting
--   Provides model performance assessment for optimization readiness
+-   Creates comprehensive performance dashboards and visualizations
+-   Generates model comparison charts and accuracy analysis
+-   Builds interactive analysis of model performance and training metrics
+-   Saves detailed performance reports and summaries
 
 **Key features**:
 
--   **Configurable Example Parameters**: Uses external JSON file for easy parameter adjustment
--   **Comprehensive Validation**: Tests models against 10,000+ device simulations
--   **Professional Visualizations**: Clean plots with scientific notation for large numbers
--   **Performance Metrics**: R², RMSE, MAE, and MAPE for both efficiency and recombination models
--   **Error Analysis**: Residual plots and statistical analysis
+-   **Comprehensive Dashboard**: Single-view summary of all model performance metrics
+-   **Validation Analysis**: Tests models against 10,000+ device simulations
+-   **Training Metrics**: Visualizes cross-validation performance from Script 5
+-   **Error Analysis**: Residual plots, error distributions, and prediction accuracy
+-   **Performance Comparison**: Side-by-side algorithm comparison (RandomForest vs XGBoost)
 
 **Input files**:
 
--   `results/train_optimization_models/models/efficiency_MPP.joblib` - MPP prediction model
--   `results/train_optimization_models/models/recombination_IntSRHn_mean.joblib` - Recombination model
--   `results/train_optimization_models/models/*_scalers.joblib` - Feature and target scalers
+-   `results/train_optimization_models/` - Trained models, scalers, and metadata from Step 5
 -   `results/extract_simulation_data/extracted_simulation_data.csv` - Data for validation
--   `example_device_parameters.json` - **NEW**: Configurable example device parameters
 
 **Output files**:
 
--   `results/predict/predictions.log` - Detailed execution log with parameter loading
--   `results/predict/efficiency_MPP_validation.png` - MPP prediction accuracy plot
--   `results/predict/efficiency_PCE_validation.png` - Power conversion efficiency plot
--   `results/predict/recombination_IntSRHn_mean_validation.png` - Recombination prediction plot
+-   `results/model_performance/comprehensive_dashboard.png` - Complete performance dashboard
+-   `results/model_performance/model_comparison.png` - Algorithm comparison charts
+-   `results/model_performance/prediction_accuracy.png` - Prediction vs actual scatter plots
+-   `results/model_performance/error_analysis.png` - Error distribution and residual analysis
+-   `results/model_performance/performance_summary.json` - Complete performance metrics
+-   `results/model_performance/model_performance_log.txt` - Detailed execution log
 
-**Example device configuration** (`example_device_parameters.json`):
+**Typical Results**:
 
-```json
-{
-    "device_type": "Perovskite Solar Cell (PCBM/MAPI/PEDOT)",
-    "parameters": {
-        "L1_L": 3.0e-8, // ETL thickness (30 nm)
-        "L1_E_c": 3.8, // ETL conduction band (3.8 eV)
-        "L2_L": 3.0e-7, // Active layer thickness (300 nm)
-        "L2_E_c": 3.7, // Active conduction band (3.7 eV)
-        "L3_E_v": 5.3 // HTL valence band (5.3 eV)
-    }
-}
-```
+-   **MPP Model**: R² = 99.97%, RMSE = 0.021 (excellent predictive power)
+-   **Recombination Model**: R² = 99.80%, RMSE = 2.61 (excellent predictive power)
 
-**Validation Results** (typical performance on 10,000-device dataset):
-
--   **MPP Model**: R² = 80.46%, MAE = 14.7% (good predictive power)
--   **Recombination Model**: R² = 83.92%, MAE = 14.8% (good predictive power)
-
-### Step 7: Optimize Device Parameters
+### Step 7: Predict Experimental Device Performance
 
 ```bash
-python scripts/9_optimize_device_parameters.py [--maxiter 1000] [--popsize 15]
+python scripts/7_predict_experimental_data.py
 ```
 
-**Purpose**: Optimizes device parameters from `example_device_parameters.json` to maximize efficiency while controlling recombination, providing detailed before/after comparison.
+**Purpose**: Takes experimental device parameters from `example_device_parameters.json` and generates comprehensive performance predictions using trained ML models.
 
 **What it does**:
 
--   Loads device parameters from `example_device_parameters.json`
--   Predicts current performance using trained ML models from Step 5
--   Optimizes all 15 device parameters for maximum MPP efficiency
--   Applies physics constraints during optimization (energy alignment, work function compatibility)
--   Predicts optimized performance and calculates improvements
--   Creates comprehensive comparison visualizations and detailed analysis tables
+-   Loads experimental device parameters from `example_device_parameters.json`
+-   Validates parameters against physics constraints (energy alignment, work function compatibility)
+-   Calculates all derived features to match training data
+-   Predicts MPP, PCE, and recombination rates using trained models
+-   Creates comprehensive prediction visualizations and analysis charts
+-   Generates detailed prediction reports with recommendations
 
 **Key features**:
 
--   **Global Optimization**: Uses Differential Evolution for robust parameter optimization
--   **Physics Validation**: Ensures all optimized parameters satisfy solar cell physics constraints
--   **Performance Comparison**: Detailed before/after analysis with percentage improvements
--   **Professional Visualizations**: Side-by-side parameter comparisons and performance charts
--   **Comprehensive Reporting**: JSON reports with optimization details and recommendations
-
-**Optimization Process**:
-
-1. **Load Original Parameters**: Reads device configuration from `example_device_parameters.json`
-2. **Predict Current Performance**: Uses trained models to predict efficiency and recombination
-3. **Global Optimization**: Differential Evolution algorithm finds optimal parameter combination
-4. **Physics Validation**: Ensures energy alignment (ETL_Ec ≥ Active_Ec, Active_Ev ≥ HTL_Ev) and electrode compatibility
-5. **Performance Analysis**: Compares original vs optimized efficiency and recombination rates
-6. **Visualization Creation**: Generates comparison plots and improvement tables
+-   **Comprehensive Predictions**: MPP (W/cm²), PCE (%), and IntSRHn_mean recombination rates
+-   **Physics Validation**: Checks energy alignment and electrode compatibility constraints
+-   **Professional Visualizations**: Performance dashboard, efficiency charts, parameter analysis
+-   **Detailed Analysis**: Parameter breakdown, band alignment, doping ratios, energy gaps
+-   **Prediction Reports**: JSON reports with performance categories and recommendations
 
 **Input files**:
 
--   `example_device_parameters.json` - Device parameters to optimize
--   `results/train_optimization_models/efficiency_models.pkl` - Trained MPP prediction models
--   `results/train_optimization_models/recombination_models.pkl` - Trained recombination models
--   `results/train_optimization_models/efficiency_scalers.pkl` - Feature scalers for efficiency models
--   `results/train_optimization_models/recombination_scalers.pkl` - Feature scalers for recombination models
--   `results/features/parameter_bounds.json` - Parameter optimization bounds
+-   `example_device_parameters.json` - Experimental device parameters to predict
+-   `results/train_optimization_models/models/` - Trained models and scalers from Step 5
 
 **Output files**:
 
--   `results/optimize_device/optimization_comparison.png` - Side-by-side parameter comparison (thickness, energy, doping)
--   `results/optimize_device/performance_comparison.png` - Efficiency and recombination improvement summary
--   `results/optimize_device/parameter_changes_table.png` - Detailed parameter changes table with units
--   `results/optimize_device/optimization_report.json` - Complete optimization results and recommendations
--   `results/optimize_device/optimization_log.txt` - Detailed optimization process log
+-   `results/experimental_predictions/device_performance_summary.png` - Complete performance dashboard
+-   `results/experimental_predictions/efficiency_predictions.png` - MPP and PCE prediction charts
+-   `results/experimental_predictions/recombination_predictions.png` - Recombination rate predictions
+-   `results/experimental_predictions/parameter_analysis.png` - Device parameter analysis
+-   `results/experimental_predictions/prediction_report.json` - Detailed prediction results and recommendations
+-   `results/experimental_predictions/prediction_log.txt` - Detailed execution log
 
-**Command line options**:
+**Example prediction results**:
 
--   `--maxiter N`: Maximum iterations for optimization (default: 1000)
--   `--popsize N`: Population size for Differential Evolution (default: 15)
-
-**Example optimization results**:
-
--   **Efficiency Improvement**: +15.3% MPP increase (from 245.2 to 282.7 W/cm²)
--   **Recombination Control**: -8.2% reduction in IntSRHn_mean
--   **Parameter Changes**: Optimized layer thicknesses, improved energy alignment, balanced doping
+-   **MPP**: 155.08 W/cm² (15.5% efficiency)
+-   **PCE**: 15.51% power conversion efficiency
+-   **Recombination**: 2.14e+30 (moderate recombination rate)
+-   **Physics Status**: VALID (all constraints satisfied)
 
 ## Quick Start
 
@@ -433,11 +403,11 @@ python scripts/4_prepare_ml_data.py --enhanced-features
 # Step 5: Train machine learning models
 python scripts/5_train_models.py
 
-# Step 6: Predict and validate models
-python scripts/6_predict.py
+# Step 6: Model performance visualization
+python scripts/6_model_performance_visualization.py
 
-# Step 7: Optimize device parameters
-python scripts/9_optimize_device_parameters.py
+# Step 7: Predict experimental device performance
+python scripts/7_predict_experimental_data.py
 ```
 
 ### Verify Results
@@ -449,24 +419,24 @@ After running all steps, you should have:
 -   `results/train_optimization_models/models/` - Trained ML models for MPP and IntSRHn_mean prediction
 -   `results/train_optimization_models/scalers/` - Feature and target scalers
 -   `results/train_optimization_models/plots/` - Training performance visualizations
--   `results/predict/` - Model validation results and prediction plots
--   `results/optimize_device/` - Device parameter optimization results and comparisons
--   `example_device_parameters.json` - Configurable example device parameters
+-   `results/model_performance/` - Model validation results and performance visualizations
+-   `results/experimental_predictions/` - Experimental device performance predictions
+-   `example_device_parameters.json` - Configurable experimental device parameters
 -   Comprehensive logs in each results subdirectory
 
 ## Data Flow
 
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐    ┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐
-│  Script 1       │    │  Script 2        │    │  Script 3       │    │  Script 4        │    │  Script 5        │    │  Script 6        │    │  Script 9        │
+│  Script 1       │    │  Script 2        │    │  Script 3       │    │  Script 4        │    │  Script 5        │    │  Script 6        │    │  Script 7        │
 │                 │    │                  │    │                 │    │                  │    │                  │    │                  │    │                  │
-│ Define Features │───▶│ Generate Physics │───▶│ Extract Data    │───▶│ Prepare ML Data  │───▶│ Train ML Models  │───▶│ Predict & Validate│───▶│ Optimize Device  │
-│                 │    │  Simulations     │    │                 │    │                  │    │                  │    │                  │    │  Parameters      │
-│ • 15 parameters │    │ • Parameter      │    │ • MPP           │    │ • Enhanced       │    │ • MPP predictor  │    │ • Example preds  │    │ • Load example   │
-│ • 2 targets     │    │   combinations   │    │ • IntSRHn_mean  │    │   features       │    │ • IntSRHn_mean   │    │ • Model validation│    │ • Global optim   │
-│ • Bounds        │    │ • Physics sims   │    │ • Device params │    │ • Train/test     │    │   predictor      │    │ • Performance    │    │ • Before/after   │
-└─────────────────┘    └──────────────────┘    └─────────────────┘    │   splits         │    │ • Scalers        │    │   plots          │    │   comparison     │
-                                                                      └──────────────────┘    │ • Visualizations │    └──────────────────┘    └──────────────────┘
+│ Define Features │───▶│ Generate Physics │───▶│ Extract Data    │───▶│ Prepare ML Data  │───▶│ Train ML Models  │───▶│ Model Performance│───▶│ Predict Experimental│
+│                 │    │  Simulations     │    │                 │    │                  │    │                  │    │  Visualization   │    │  Device Performance │
+│ • 15 parameters │    │ • Parameter      │    │ • MPP           │    │ • Enhanced       │    │ • MPP predictor  │    │ • Dashboard      │    │ • Load experimental │
+│ • 2 targets     │    │   combinations   │    │ • IntSRHn_mean  │    │   features       │    │ • IntSRHn_mean   │    │ • Validation     │    │ • Predict MPP/PCE   │
+│ • Bounds        │    │ • Physics sims   │    │ • Device params │    │ • Train/test     │    │   predictor      │    │ • Accuracy plots │    │ • Predict recomb    │
+└─────────────────┘    └──────────────────┘    └─────────────────┘    │   splits         │    │ • Scalers        │    │ • Error analysis │    │ • Physics validation│
+                                                                      └──────────────────┘    │ • Training plots │    └──────────────────┘    └─────────────────────┘
                                                                                               └──────────────────┘
 ```
 
@@ -511,25 +481,25 @@ Enhanced features capture important physics relationships:
 ```
 myML/
 ├── scripts/
-│   ├── 1_create_feature_names.py     # Define features and parameters
-│   ├── 2_generate_simulations.py     # Run physics simulations
-│   ├── 3_extract_simulation_data.py  # Extract MPP and IntSRHn_mean
-│   ├── 4_prepare_ml_data.py          # Create ML-ready datasets
-│   ├── 5_train_models.py             # Train ML models
-│   ├── 6_predict.py                  # Predict and validate models
-│   └── 9_optimize_device_parameters.py # Optimize device parameters for efficiency
+│   ├── 1_create_feature_names.py              # Define features and parameters
+│   ├── 2_generate_simulations.py              # Run physics simulations
+│   ├── 3_extract_simulation_data.py           # Extract MPP and IntSRHn_mean
+│   ├── 4_prepare_ml_data.py                   # Create ML-ready datasets
+│   ├── 5_train_models.py                      # Train ML models
+│   ├── 6_model_performance_visualization.py   # Model performance visualization
+│   └── 7_predict_experimental_data.py         # Predict experimental device performance
 ├── sim/
 │   ├── parameters.txt                # Parameter bounds
 │   ├── simss.exe                     # Physics simulation executable
 │   ├── Data/                         # Material properties
 │   └── simulations/                  # Simulation results
 ├── results/
-│   ├── features/                     # Feature definitions from Script 1
+│   ├── 1_feature/                    # Feature definitions from Script 1
 │   ├── extract_simulation_data/      # Extracted simulation data
 │   ├── prepare_ml_data/              # ML-ready datasets
 │   ├── train_optimization_models/    # Trained ML models and scalers
-│   ├── predict/                      # Model validation and prediction results
-│   └── optimize_device/              # Device parameter optimization results
+│   ├── model_performance/            # Model performance visualizations and analysis
+│   └── experimental_predictions/     # Experimental device performance predictions
 ├── example_device_parameters.json    # Configurable example device parameters
 └── README.md                         # This file
 ```
@@ -543,13 +513,13 @@ myML/
 
 ## Next Steps
 
-After completing the full ML workflow (Steps 1-7), you can:
+After completing the simplified ML workflow (Steps 1-7), you can:
 
-1. **Customize Example Parameters**: Edit `example_device_parameters.json` to test different device configurations and run Script 9 to optimize them
-2. **Advanced Optimization**: Experiment with different optimization algorithms, constraints, and objective functions in Script 9
-3. **Multi-objective Optimization**: Extend Script 9 to balance efficiency, recombination, and other performance metrics
-4. **Batch Optimization**: Create scripts to optimize multiple device configurations automatically
-5. **Analyze Trade-offs**: Study the relationship between efficiency and recombination using the trained models and optimization results
+1. **Customize Experimental Parameters**: Edit `example_device_parameters.json` to test different device configurations and run Script 7 to predict their performance
+2. **Batch Predictions**: Create scripts to predict performance for multiple experimental device configurations
+3. **Parameter Optimization**: Develop optimization scripts to improve device performance based on Script 7 predictions
+4. **Experimental Validation**: Compare Script 7 predictions with actual experimental measurements
+5. **Trade-off Analysis**: Study the relationship between efficiency and recombination using the prediction results
 6. **Scale to New Materials**: Extend the workflow to other solar cell material systems
 7. **Deploy Models**: Use the trained models in production optimization systems
 

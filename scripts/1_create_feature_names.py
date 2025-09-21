@@ -249,9 +249,9 @@ PARAMETER_BOUNDS = load_parameter_bounds_from_sim()
 def save_feature_definitions():
     """Save all feature definitions to JSON files."""
     
-    # Create results/features directory if it doesn't exist
+    # Create results/1_feature directory if it doesn't exist
     import os
-    os.makedirs('results/features', exist_ok=True)
+    os.makedirs('results/1_feature', exist_ok=True)
     
     # Create feature definitions dictionary
     feature_definitions = {
@@ -265,22 +265,22 @@ def save_feature_definitions():
     }
     
     # Save to JSON file
-    with open('results/features/feature_definitions.json', 'w') as f:
+    with open('results/1_feature/feature_definitions.json', 'w') as f:
         json.dump(feature_definitions, f, indent=2)
     
-    print("Feature definitions saved to: results/features/feature_definitions.json")
+    print("Feature definitions saved to: results/1_feature/feature_definitions.json")
     
     # Also save individual files for easy access
-    with open('results/features/primary_parameters.json', 'w') as f:
+    with open('results/1_feature/primary_parameters.json', 'w') as f:
         json.dump(PRIMARY_PARAMETERS, f, indent=2)
     
-    with open('results/features/parameter_bounds.json', 'w') as f:
+    with open('results/1_feature/parameter_bounds.json', 'w') as f:
         json.dump(PARAMETER_BOUNDS, f, indent=2)
     
-    with open('results/features/target_variables.json', 'w') as f:
+    with open('results/1_feature/target_variables.json', 'w') as f:
         json.dump(ALL_TARGETS, f, indent=2)
     
-    print("Individual parameter files saved to results/features/")
+    print("Individual parameter files saved to results/1_feature/")
 
 def print_feature_summary():
     """Print a summary of all features."""

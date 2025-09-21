@@ -1,0 +1,33 @@
+{
+  "analysis_date": "2025-09-21T03:23:31.622149",
+  "validation_metrics": {
+    "MPP": {
+      "r2_score": 0.9997326220976142,
+      "rmse": 0.02089149215068159,
+      "mae": 0.0024139164226322984,
+      "mape": 1.6745111369804295
+    },
+    "IntSRHn_mean": {
+      "r2_score": 0.8966762700016219,
+      "rmse": 23.397915567769484,
+      "mae": 2.303312403922182,
+      "mape": 1100.7619854207105
+    }
+  },
+  "training_summary": {
+    "training_date": "2025-09-21T03:19:34.692782",
+    "efficiency_models": {
+      "MPP": {
+        "best_model": "RandomForest",
+        "cv_mean": 0.9997551331920631
+      }
+    },
+    "recombination_models": {
+      "IntSRHn_mean": {
+        "best_model": "XGBoost",
+        "cv_mean": 0.996018050067889
+      }
+    }
+  },
+  "model_info": {}
+}

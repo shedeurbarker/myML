@@ -1,0 +1,69 @@
+{
+  "best_model": "XGBoost",
+  "all_scores": {
+    "RandomForest": {
+      "cv_mean": 0.9945343421919584,
+      "cv_std": 0.0031635409570095322,
+      "test_metrics": {
+        "r2": 0.9980098553148204,
+        "rmse": 2.612821794693085,
+        "mae": 0.6082838827012262,
+        "rmse_relative": 17.190180098489204,
+        "mae_relative": 4.0019987263887,
+        "mape": 4.458209255171409
+      }
+    },
+    "XGBoost": {
+      "cv_mean": 0.996018050067889,
+      "cv_std": 0.002178743326664603,
+      "test_metrics": {
+        "r2": 0.9971947661388628,
+        "rmse": 3.1020729073900664,
+        "mae": 0.6110251158010491,
+        "rmse_relative": 20.409042845933207,
+        "mae_relative": 4.0200337453760655,
+        "mape": 1100.5242996292686
+      }
+    }
+  },
+  "feature_names": [
+    "L1_L",
+    "L1_E_c",
+    "L1_E_v",
+    "L1_N_D",
+    "L1_N_A",
+    "L2_L",
+    "L2_E_c",
+    "L2_E_v",
+    "L2_N_D",
+    "L2_N_A",
+    "L3_L",
+    "L3_E_c",
+    "L3_E_v",
+    "L3_N_D",
+    "L3_N_A",
+    "energy_gap_L1",
+    "energy_gap_L2",
+    "energy_gap_L3",
+    "band_offset_L1_L2",
+    "band_offset_L2_L3",
+    "thickness_ratio_L2",
+    "thickness_ratio_ETL",
+    "thickness_ratio_HTL",
+    "doping_ratio_L1",
+    "doping_ratio_L2",
+    "doping_ratio_L3",
+    "total_donor_concentration",
+    "total_acceptor_concentration",
+    "recombination_efficiency_ratio",
+    "interface_quality_index",
+    "conduction_band_alignment_quality",
+    "valence_band_alignment_quality",
+    "thickness_balance_quality",
+    "transport_layer_balance",
+    "average_doping_ratio",
+    "doping_consistency",
+    "energy_gap_progression",
+    "energy_gap_uniformity"
+  ]
+}

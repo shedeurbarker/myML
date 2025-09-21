@@ -9,7 +9,7 @@ two target variables defined in the workflow: MPP and IntSRHn_mean. Matches the
 workflow from scripts 1-4.
 
 WHAT THIS SCRIPT DOES:
-1. Loads ML-ready data from script 4 (prepare_ml_data.py)
+1. Loads ML-ready data from script 4 (4_prepare_ml_data.py)
 2. Trains models to predict MPP (Maximum Power Point) from device parameters
 3. Trains models to predict IntSRHn_mean (mean electron interfacial recombination rate)
 4. Uses robust scaling and cross-validation for reliable model performance
@@ -31,16 +31,16 @@ IMPROVEMENTS:
 - Proper model and scaler persistence
 
 INPUT FILES:
-- results/prepare_ml_data/X_full.csv (features from script 4)
-- results/prepare_ml_data/y_efficiency_full.csv (MPP targets)
-- results/prepare_ml_data/y_recombination_full.csv (IntSRHn_mean targets)
+- results/4_prepare_ml_data/X_full.csv (features from script 4)
+- results/4_prepare_ml_data/y_efficiency_full.csv (MPP targets)
+- results/4_prepare_ml_data/y_recombination_full.csv (IntSRHn_mean targets)
 
 OUTPUT FILES:
-- results/train_optimization_models/models/efficiency_MPP_*.joblib (MPP prediction models)
-- results/train_optimization_models/models/recombination_IntSRHn_mean_*.joblib (recombination models)
-- results/train_optimization_models/scalers/ (feature and target scalers)
-- results/train_optimization_models/training_metadata.json (training statistics)
-- results/train_optimization_models/training.log (detailed log)
+- results/5_train_optimization_models/models/efficiency_MPP_*.joblib (MPP prediction models)
+- results/5_train_optimization_models/models/recombination_IntSRHn_mean_*.joblib (recombination models)
+- results/5_train_optimization_models/scalers/ (feature and target scalers)
+- results/5_train_optimization_models/training_metadata.json (training statistics)
+- results/5_train_optimization_models/training.log (detailed log)
 
 USAGE:
 python scripts/5_train_models.py
@@ -119,7 +119,7 @@ else:
 # Linear Regression removed - focusing on ensemble methods only
 
 # Set up logging
-log_dir = 'results/train_optimization_models'
+log_dir = 'results/5_train_optimization_models'
 os.makedirs(log_dir, exist_ok=True)
 log_file = os.path.join(log_dir, 'training.log')
 
@@ -133,11 +133,11 @@ logging.basicConfig(
 )
 
 def load_enhanced_data():
-    """Load the ML-ready data prepared by the prepare_ml_data script."""
+    """Load the ML-ready data prepared by the 4_prepare_ml_data script."""
     # Load the full dataset prepared by script 4
-    X_path = 'results/prepare_ml_data/X_full.csv'
-    y_efficiency_path = 'results/prepare_ml_data/y_efficiency_full.csv'
-    y_recombination_path = 'results/prepare_ml_data/y_recombination_full.csv'
+    X_path = 'results/4_prepare_ml_data/X_full.csv'
+    y_efficiency_path = 'results/4_prepare_ml_data/y_efficiency_full.csv'
+    y_recombination_path = 'results/4_prepare_ml_data/y_recombination_full.csv'
     
     if not os.path.exists(X_path):
         logging.error(f"ML data not found at {X_path}")
@@ -334,7 +334,7 @@ def train_efficiency_predictor_improved(X, y_efficiency, all_features):
         }
         
         # Save model (create directories if they don't exist)
-        models_dir = 'results/train_optimization_models/models'
+        models_dir = 'results/5_train_optimization_models/models'
         os.makedirs(models_dir, exist_ok=True)
         
         model_path = f'{models_dir}/efficiency_{target}.joblib'
@@ -438,7 +438,7 @@ def train_recombination_predictor_improved(X, y_recombination, all_features):
         }
         
         # Save model (create directories if they don't exist)
-        models_dir = 'results/train_optimization_models/models'
+        models_dir = 'results/5_train_optimization_models/models'
         os.makedirs(models_dir, exist_ok=True)
         
         model_path = f'{models_dir}/recombination_{target}.joblib'
@@ -470,7 +470,7 @@ def save_training_metadata(efficiency_metadata, recombination_metadata):
     }
     
     # Create directory if it doesn't exist
-    results_dir = 'results/train_optimization_models'
+    results_dir = 'results/5_train_optimization_models'
     os.makedirs(results_dir, exist_ok=True)
     
     metadata_path = f'{results_dir}/training_metadata.json'
@@ -490,7 +490,7 @@ def create_training_visualizations(efficiency_metadata, recombination_metadata):
     sns.set_palette("husl")
     
     # Create results directory for plots
-    plots_dir = 'results/train_optimization_models/plots'
+    plots_dir = 'results/5_train_optimization_models/plots'
     os.makedirs(plots_dir, exist_ok=True)
     
     # 1. Model Comparison Plot
