@@ -1,67 +1,67 @@
-2025-09-21 15:00:57,749 - INFO - === EXPERIMENTAL DEVICE PERFORMANCE PREDICTION ===
-2025-09-21 15:00:57,749 - INFO - Log file: results/7_experimental_predictions/prediction_log.txt
-2025-09-21 15:00:57,749 - INFO - 
+2025-09-21 15:21:49,187 - INFO - === EXPERIMENTAL DEVICE PERFORMANCE PREDICTION ===
+2025-09-21 15:21:49,187 - INFO - Log file: results/7_experimental_predictions/prediction_log.txt
+2025-09-21 15:21:49,187 - INFO - 
 === Step 1: Loading Experimental Parameters ===
-2025-09-21 15:00:57,749 - INFO - Loaded experimental parameters from: example_device_parameters.json
-2025-09-21 15:00:57,749 - INFO - Device Type: Optimized Perovskite Solar Cell
-2025-09-21 15:00:57,749 - INFO - 
+2025-09-21 15:21:49,187 - INFO - Loaded experimental parameters from: example_device_parameters.json
+2025-09-21 15:21:49,187 - INFO - Device Type: Perovskite Solar Cell (PCBM/MAPI/PEDOT)
+2025-09-21 15:21:49,187 - INFO - 
 Experimental Device Parameters:
-2025-09-21 15:00:57,749 - INFO -   L1 thickness: 20.0 nm
-2025-09-21 15:00:57,749 - INFO -   L2 thickness: 350.0 nm
-2025-09-21 15:00:57,749 - INFO -   L3 thickness: 20.0 nm
-2025-09-21 15:00:57,749 - INFO -   L1 energy: E_c=3.80eV, E_v=5.90eV, Gap=2.10eV
-2025-09-21 15:00:57,749 - INFO -   L2 energy: E_c=3.80eV, E_v=5.40eV, Gap=1.60eV
-2025-09-21 15:00:57,749 - INFO -   L3 energy: E_c=3.00eV, E_v=5.20eV, Gap=2.20eV
-2025-09-21 15:00:57,749 - INFO -   L1 doping: N_D=1.0e+21, N_A=5.0e+19 cm^-3
-2025-09-21 15:00:57,749 - INFO -   L2 doping: N_D=3.2e+16, N_A=3.2e+16 cm^-3
-2025-09-21 15:00:57,749 - INFO -   L3 doping: N_D=2.2e+19, N_A=7.1e+20 cm^-3
-2025-09-21 15:00:57,749 - INFO - 
+2025-09-21 15:21:49,187 - INFO -   L1 thickness: 20.0 nm
+2025-09-21 15:21:49,187 - INFO -   L2 thickness: 210.0 nm
+2025-09-21 15:21:49,187 - INFO -   L3 thickness: 20.0 nm
+2025-09-21 15:21:49,187 - INFO -   L1 energy: E_c=4.00eV, E_v=5.96eV, Gap=1.96eV
+2025-09-21 15:21:49,187 - INFO -   L2 energy: E_c=3.60eV, E_v=5.60eV, Gap=2.00eV
+2025-09-21 15:21:49,187 - INFO -   L3 energy: E_c=2.89eV, E_v=5.16eV, Gap=2.27eV
+2025-09-21 15:21:49,187 - INFO -   L1 doping: N_D=7.9e+20, N_A=1.2e+19 cm^-3
+2025-09-21 15:21:49,187 - INFO -   L2 doping: N_D=6.2e+16, N_A=1.4e+16 cm^-3
+2025-09-21 15:21:49,187 - INFO -   L3 doping: N_D=2.4e+19, N_A=7.9e+20 cm^-3
+2025-09-21 15:21:49,187 - INFO - 
 === Step 2: Loading Trained Models ===
-2025-09-21 15:00:58,710 - INFO - Loaded MPP model and scalers
-2025-09-21 15:00:58,748 - INFO - Loaded recombination model and scalers
-2025-09-21 15:00:58,748 - INFO - Loaded training metadata
-2025-09-21 15:00:58,748 - INFO - 
+2025-09-21 15:21:50,196 - INFO - Loaded MPP model and scalers
+2025-09-21 15:21:50,225 - INFO - Loaded recombination model and scalers
+2025-09-21 15:21:50,225 - INFO - Loaded training metadata
+2025-09-21 15:21:50,225 - INFO - 
 === Step 3: Validating Parameters ===
-2025-09-21 15:00:58,748 - INFO - Validating experimental parameters...
-2025-09-21 15:00:58,748 - INFO - Physics validation: PASSED
-2025-09-21 15:00:58,748 - INFO - 
+2025-09-21 15:21:50,225 - INFO - Validating experimental parameters...
+2025-09-21 15:21:50,225 - INFO - Physics validation: PASSED
+2025-09-21 15:21:50,225 - INFO - 
 === Step 4: Predicting Device Performance ===
-2025-09-21 15:00:58,750 - INFO - Calculating derived features...
-2025-09-21 15:00:58,762 - INFO - Calculated derived features. Total features: 39
-2025-09-21 15:00:58,800 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:00:58,802 - INFO - Efficiency Predictions:
-2025-09-21 15:00:58,802 - INFO -   MPP: 207.9129 W/m� (simulation units)
-2025-09-21 15:00:58,802 - INFO -   PCE: 20.79%
-2025-09-21 15:00:58,805 - INFO - Recombination Predictions:
-2025-09-21 15:00:58,805 - INFO -   IntSRHn_mean: 1.93e+30
-2025-09-21 15:00:58,805 - INFO - 
+2025-09-21 15:21:50,227 - INFO - Calculating derived features...
+2025-09-21 15:21:50,239 - INFO - Calculated derived features. Total features: 39
+2025-09-21 15:21:50,278 - INFO - PCE prediction (14.51%) is within S-Q limit (33.7%) [VALID]
+2025-09-21 15:21:50,278 - INFO - Efficiency Predictions:
+2025-09-21 15:21:50,278 - INFO -   MPP: 145.0912 W/m� (simulation units)
+2025-09-21 15:21:50,278 - INFO -   PCE: 14.51%
+2025-09-21 15:21:50,282 - INFO - Recombination Predictions:
+2025-09-21 15:21:50,282 - INFO -   IntSRHn_mean: 1.51e+30
+2025-09-21 15:21:50,282 - INFO - 
 === Step 5: Creating Visualizations ===
-2025-09-21 15:00:59,539 - INFO - Created performance metrics summary: results/7_experimental_predictions/1_performance_metrics_summary.png
-2025-09-21 15:01:00,382 - INFO - Created parameter charts: thickness, energy, and doping
-2025-09-21 15:01:00,668 - INFO - Created physics validation summary: results/7_experimental_predictions/5_physics_validation.png
-2025-09-21 15:01:00,668 - INFO - Created separate performance summary charts
-2025-09-21 15:01:01,019 - INFO - Created efficiency chart: results/7_experimental_predictions/efficiency_predictions.png
-2025-09-21 15:01:01,423 - INFO - Created recombination chart: results/7_experimental_predictions/recombination_predictions.png
-2025-09-21 15:01:02,258 - INFO - Created parameter analysis: results/7_experimental_predictions/parameter_analysis.png
-2025-09-21 15:01:02,258 - INFO - All prediction visualizations created successfully!
-2025-09-21 15:01:02,258 - INFO - 
+2025-09-21 15:21:51,062 - INFO - Created performance metrics summary: results/7_experimental_predictions/1_performance_metrics_summary.png
+2025-09-21 15:21:51,865 - INFO - Created parameter charts: thickness, energy, and doping
+2025-09-21 15:21:52,138 - INFO - Created physics validation summary: results/7_experimental_predictions/5_physics_validation.png
+2025-09-21 15:21:52,154 - INFO - Created separate performance summary charts
+2025-09-21 15:21:52,523 - INFO - Created efficiency chart: results/7_experimental_predictions/efficiency_predictions.png
+2025-09-21 15:21:52,893 - INFO - Created recombination chart: results/7_experimental_predictions/recombination_predictions.png
+2025-09-21 15:21:53,660 - INFO - Created parameter analysis: results/7_experimental_predictions/parameter_analysis.png
+2025-09-21 15:21:53,660 - INFO - All prediction visualizations created successfully!
+2025-09-21 15:21:53,662 - INFO - 
 === Step 6: Saving Prediction Report ===
-2025-09-21 15:01:02,258 - INFO - Prediction report saved: results/7_experimental_predictions/prediction_report.json
-2025-09-21 15:01:02,258 - INFO - 
+2025-09-21 15:21:53,662 - INFO - Prediction report saved: results/7_experimental_predictions/prediction_report.json
+2025-09-21 15:21:53,662 - INFO - 
 === PREDICTION ANALYSIS COMPLETE ===
-2025-09-21 15:01:02,258 - INFO - Results saved to: results/7_experimental_predictions/
-2025-09-21 15:01:02,258 - INFO - Performance Metrics: 1_performance_metrics_summary.png
-2025-09-21 15:01:02,258 - INFO - Thickness: 2_thickness_parameters.png
-2025-09-21 15:01:02,258 - INFO - Energy: 3_energy_parameters.png
-2025-09-21 15:01:02,258 - INFO - Doping: 4_doping_parameters.png
-2025-09-21 15:01:02,258 - INFO - Physics: 5_physics_validation.png
-2025-09-21 15:01:02,258 - INFO - Efficiency: efficiency_predictions.png
-2025-09-21 15:01:02,258 - INFO - Recombination: recombination_predictions.png
-2025-09-21 15:01:02,258 - INFO - Parameters: parameter_analysis.png
-2025-09-21 15:01:02,258 - INFO - Report: prediction_report.json
-2025-09-21 15:01:02,258 - INFO - 
+2025-09-21 15:21:53,662 - INFO - Results saved to: results/7_experimental_predictions/
+2025-09-21 15:21:53,662 - INFO - Performance Metrics: 1_performance_metrics_summary.png
+2025-09-21 15:21:53,662 - INFO - Thickness: 2_thickness_parameters.png
+2025-09-21 15:21:53,662 - INFO - Energy: 3_energy_parameters.png
+2025-09-21 15:21:53,662 - INFO - Doping: 4_doping_parameters.png
+2025-09-21 15:21:53,662 - INFO - Physics: 5_physics_validation.png
+2025-09-21 15:21:53,662 - INFO - Efficiency: efficiency_predictions.png
+2025-09-21 15:21:53,662 - INFO - Recombination: recombination_predictions.png
+2025-09-21 15:21:53,662 - INFO - Parameters: parameter_analysis.png
+2025-09-21 15:21:53,662 - INFO - Report: prediction_report.json
+2025-09-21 15:21:53,662 - INFO - 
 === PREDICTED PERFORMANCE ===
-2025-09-21 15:01:02,258 - INFO - MPP: 207.9129 W/m� (simulation units)
-2025-09-21 15:01:02,258 - INFO - PCE: 20.79%
-2025-09-21 15:01:02,258 - INFO - Recombination: 1.93e+30
-2025-09-21 15:01:02,273 - INFO - Physics Status: VALID - Device is manufacturable
+2025-09-21 15:21:53,662 - INFO - MPP: 145.0912 W/m� (simulation units)
+2025-09-21 15:21:53,662 - INFO - PCE: 14.51%
+2025-09-21 15:21:53,662 - INFO - Recombination: 1.51e+30
+2025-09-21 15:21:53,662 - INFO - Physics Status: VALID - Device is manufacturable

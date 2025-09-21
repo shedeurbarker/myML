@@ -57,7 +57,7 @@ warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
 SHOW_PROGRESS_COUNTER = True        # Set to False to disable progress display
 PROGRESS_UPDATE_FREQUENCY = 5       # Show progress every N iterations (1=every iteration, 10=every 10th)
 SHOW_EXCEEDED_ITERATIONS = True     # Show when optimizer exceeds maxiter limit
-HARD_ITERATION_LIMIT = 2000         # HARD LIMIT: Force stop after this many iterations (prevents runaway)
+HARD_ITERATION_LIMIT = 500         # HARD LIMIT: Force stop after this many iterations (prevents runaway)
 
 def setup_logging():
     """Setup logging configuration."""
@@ -257,7 +257,11 @@ def calculate_derived_features(parameters):
 
 def calculate_derived_features_script7_compatible(df):
     """Calculate derived features EXACTLY like Script 7 for consistency."""
-    logging.info("Calculating derived features (Script 7 compatible)...")
+    # Only log during first few iterations to avoid log spam
+    if _iteration_counter <= 3:
+        logging.info("Calculating derived features (Script 7 compatible)...")
+    elif _iteration_counter % 50 == 0:  # Log every 50th iteration
+        logging.debug(f"Calculating derived features (iteration {_iteration_counter})...")
     
     # Basic thickness features
     if all(col in df.columns for col in ['L1_L', 'L2_L', 'L3_L']):
@@ -317,7 +321,11 @@ def calculate_derived_features_script7_compatible(df):
         df['energy_gap_progression'] = abs((df['energy_gap_L2'] - df['energy_gap_L1']) * (df['energy_gap_L3'] - df['energy_gap_L2']))
         df['energy_gap_uniformity'] = 1 / (1 + df[['energy_gap_L1', 'energy_gap_L2', 'energy_gap_L3']].var(axis=1))
     
-    logging.info(f"Calculated derived features (Script 7 compatible). Total features: {len(df.columns)}")
+    # Only log during first few iterations to avoid log spam
+    if _iteration_counter <= 3:
+        logging.info(f"Calculated derived features (Script 7 compatible). Total features: {len(df.columns)}")
+    elif _iteration_counter % 50 == 0:  # Log every 50th iteration
+        logging.debug(f"Calculated derived features (iteration {_iteration_counter}). Total features: {len(df.columns)}")
     return df
 
 def validate_shockley_queisser_limit(pce_pred, parameters):
@@ -341,7 +349,11 @@ def validate_shockley_queisser_limit(pce_pred, parameters):
             # Option 2: Add warning but keep original prediction (current approach)
             logging.info(f"Keeping original prediction but flagging as potentially unrealistic")
         else:
-            logging.info(f"PCE prediction ({pce_pred:.2f}%) is within S-Q limit ({SQ_LIMIT}%) [VALID]")
+            # Only log S-Q validation during first few iterations to avoid log spam
+            if _iteration_counter <= 3:
+                logging.info(f"PCE prediction ({pce_pred:.2f}%) is within S-Q limit ({SQ_LIMIT}%) [VALID]")
+            elif _iteration_counter % 50 == 0:  # Log every 50th iteration
+                logging.debug(f"PCE ({pce_pred:.2f}%) within S-Q limit [VALID] (iteration {_iteration_counter})")
         
         return pce_pred
         
@@ -467,15 +479,15 @@ def objective_function(x, param_names, models_data, constraint_penalty=1e6):
         # Increment and display progress counter (if enabled)
         _iteration_counter += 1
         
-        # HARD LIMIT: Force stop if iterations exceed limit (prevents runaway)
-        if _iteration_counter > HARD_ITERATION_LIMIT:
-            if _iteration_counter == HARD_ITERATION_LIMIT + 1:  # Log only once
-                logging.warning(f"🛑 HARD ITERATION LIMIT REACHED: {_iteration_counter-1} > {HARD_ITERATION_LIMIT}")
-                logging.warning("🛑 STOPPING OPTIMIZATION (prevents runaway execution)")
-                print(f"\n🛑 ITERATION LIMIT: Reached hard limit of {HARD_ITERATION_LIMIT} iterations!")
-                print("🔄 Optimizer will use best result found so far...")
-            # Return a large but not catastrophic penalty to encourage termination
-            return constraint_penalty  # Don't multiply by 1000 - too harsh
+        # HARD LIMIT: Force stop if iterations reach limit (prevents runaway)
+        if _iteration_counter >= HARD_ITERATION_LIMIT:
+            if _iteration_counter == HARD_ITERATION_LIMIT:  # Log only once
+                logging.warning(f"HARD ITERATION LIMIT REACHED: {_iteration_counter} >= {HARD_ITERATION_LIMIT}")
+                logging.warning("STOPPING OPTIMIZATION (prevents runaway execution)")
+                print(f"\nITERATION LIMIT: Reached hard limit of {HARD_ITERATION_LIMIT} iterations!")
+                print("Optimizer will use best result found so far...")
+            # Return a very large penalty to force termination
+            return constraint_penalty * 100  # Strong signal to stop optimization
         
         if SHOW_PROGRESS_COUNTER:
             progress_percent = (_iteration_counter / _max_iterations) * 100

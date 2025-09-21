@@ -1,55 +1,57 @@
 {
-  "prediction_date": "2025-09-21T15:01:02.258186",
-  "device_type": "Optimized Perovskite Solar Cell",
+  "prediction_date": "2025-09-21T15:21:53.662910",
+  "device_type": "Perovskite Solar Cell (PCBM/MAPI/PEDOT)",
   "experimental_parameters": {
-    "L1_L": 2.0000000000000004e-08,
-    "L1_E_c": 3.8,
-    "L1_E_v": 5.9,
-    "L1_N_D": 1e+21,
-    "L1_N_A": 4.999999999999999e+19,
-    "L2_L": 3.5e-07,
-    "L2_E_c": 3.8,
-    "L2_E_v": 5.4,
-    "L2_N_D": 3.162277660168379e+16,
-    "L2_N_A": 3.162277660168379e+16,
-    "L3_L": 2.0000000000000004e-08,
-    "L3_E_c": 3.0,
-    "L3_E_v": 5.2,
-    "L3_N_D": 2.2360679774997897e+19,
-    "L3_N_A": 7.071067811865475e+20
+    "L1_L": 2e-08,
+    "L1_E_c": 4.0,
+    "L1_E_v": 5.960999346487441,
+    "L1_N_D": 7.93e+20,
+    "L1_N_A": 1.18e+19,
+    "L2_L": 2.1e-07,
+    "L2_E_c": 3.6,
+    "L2_E_v": 5.6,
+    "L2_N_D": 6.21e+16,
+    "L2_N_A": 1.45e+16,
+    "L3_L": 2e-08,
+    "L3_E_c": 2.88899967324372,
+    "L3_E_v": 5.15899967324372,
+    "L3_N_D": 2.37e+19,
+    "L3_N_A": 7.92e+20
   },
   "predictions": {
-    "MPP": 207.912948678132,
-    "PCE": 20.7912948678132,
-    "IntSRHn_mean": 1.9304550932338843e+30
+    "MPP": 145.0912102301064,
+    "PCE": 14.50912102301064,
+    "IntSRHn_mean": 1.5125083775221654e+30
   },
   "physics_validation": {
     "valid": true,
-    "warnings": [],
+    "warnings": [
+      "Right electrode incompatible: W_R (5.2) > HTL E_v (5.16)"
+    ],
     "constraints": {
       "energy_alignment": {
         "ETL_Ec_ge_Active_Ec": true,
         "Active_Ev_ge_HTL_Ev": true
       },
       "energy_gaps": {
-        "L1": 2.1000000000000005,
-        "L2": 1.6000000000000005,
-        "L3": 2.2
+        "L1": 1.9609993464874407,
+        "L2": 1.9999999999999996,
+        "L3": 2.27
       },
       "electrode_compatibility": {
         "W_L_ge_ETL_Ec": true,
-        "W_R_le_HTL_Ev": true
+        "W_R_le_HTL_Ev": false
       }
     }
   },
   "performance_summary": {
     "efficiency": {
-      "MPP_W_per_cm2": 207.912948678132,
-      "PCE_percent": 20.7912948678132,
+      "MPP_W_per_cm2": 145.0912102301064,
+      "PCE_percent": 14.50912102301064,
       "efficiency_category": "High"
     },
     "recombination": {
-      "IntSRHn_mean": 1.9304550932338843e+30,
+      "IntSRHn_mean": 1.5125083775221654e+30,
       "recombination_category": "High"
     }
   },

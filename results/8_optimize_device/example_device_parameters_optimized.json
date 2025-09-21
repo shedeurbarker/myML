@@ -1,28 +1,28 @@
 {
-    "description": "Optimized device parameters (Improved by +0.00%)",
-    "device_type": "Optimized Perovskite Solar Cell (Optimized)",
+    "description": "Optimized device parameters (Improved by +1380.29%)",
+    "device_type": "Perovskite Solar Cell (PCBM/MAPI/PEDOT) (Optimized)",
     "last_updated": "2025-09-21",
     "parameters": {
-        "L1_L": 2.0000000000000004e-08,
-        "L1_E_c": 3.8,
-        "L1_E_v": 5.899998412836029,
-        "L1_N_D": 1e+21,
-        "L1_N_A": 4.999999999999999e+19,
-        "L2_L": 3.4999777797044133e-07,
-        "L2_E_c": 3.799996825672059,
-        "L2_E_v": 5.4,
-        "L2_N_D": 3.162277660168379e+16,
-        "L2_N_A": 3.162277660168379e+16,
-        "L3_L": 2.0000000000000004e-08,
-        "L3_E_c": 3.000003174327941,
-        "L3_E_v": 5.2,
-        "L3_N_D": 2.2360679774997897e+19,
-        "L3_N_A": 7.071067811865475e+20
+        "L1_L": 2e-08,
+        "L1_E_c": 4.0,
+        "L1_E_v": 5.960999346487441,
+        "L1_N_D": 7.93e+20,
+        "L1_N_A": 1.18e+19,
+        "L2_L": 2.1e-07,
+        "L2_E_c": 3.6,
+        "L2_E_v": 5.6,
+        "L2_N_D": 6.21e+16,
+        "L2_N_A": 1.45e+16,
+        "L3_L": 2e-08,
+        "L3_E_c": 2.88899967324372,
+        "L3_E_v": 5.15899967324372,
+        "L3_N_D": 2.37e+19,
+        "L3_N_A": 7.92e+20
     },
     "layer_descriptions": {
-        "L1": "ETL - Electron Transport Layer",
-        "L2": "Active - Perovskite Absorber Layer",
-        "L3": "HTL - Hole Transport Layer"
+        "L1": "ETL - Electron Transport Layer (PCBM)",
+        "L2": "Active - Perovskite Absorber Layer (MAPI)",
+        "L3": "HTL - Hole Transport Layer (PEDOT)"
     },
     "parameter_descriptions": {
         "L_L": "Layer thickness (m)",
@@ -38,17 +38,17 @@
     },
     "optimization_info": {
         "optimized_from": "example_device_parameters.json",
-        "optimization_date": "2025-09-21T15:03:35.594382",
+        "optimization_date": "2025-09-21T15:20:56.159722",
         "method": "both",
         "improvements": {
-            "MPP_improvement_percent": 0.0,
-            "PCE_improvement_percent": 0.0,
-            "recombination_change_percent": 0.0
+            "MPP_improvement_percent": 1380.292742522883,
+            "PCE_improvement_percent": 1380.2927425228827,
+            "recombination_change_percent": -8.211767326816974
         },
         "predicted_performance": {
-            "MPP_W_per_m2": 207.913822530876,
-            "PCE_percent": 20.791382253087598,
-            "recombination": 1.9031027028771162e+30
+            "MPP_W_per_m2": 145.0912102301064,
+            "PCE_percent": 14.50912102301064,
+            "recombination": 1.5125083775221654e+30
         }
     }
 }

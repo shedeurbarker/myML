@@ -1,1562 +1,386 @@
-2025-09-21 15:04:57,285 - INFO - === DEVICE PARAMETER OPTIMIZATION ===
-2025-09-21 15:04:57,285 - INFO - Log file: results/8_optimize_device/optimization_log.txt
-2025-09-21 15:04:57,285 - INFO - 
+2025-09-21 15:20:35,158 - INFO - === DEVICE PARAMETER OPTIMIZATION ===
+2025-09-21 15:20:35,158 - INFO - Log file: results/8_optimize_device/optimization_log.txt
+2025-09-21 15:20:35,158 - INFO - 
 === Step 1: Loading Example Parameters ===
-2025-09-21 15:04:57,285 - INFO - Loaded example parameters from: example_device_parameters.json
-2025-09-21 15:04:57,285 - INFO - Device Type: Optimized Perovskite Solar Cell
-2025-09-21 15:04:57,285 - INFO - 
+2025-09-21 15:20:35,158 - INFO - Loaded example parameters from: example_device_parameters.json
+2025-09-21 15:20:35,158 - INFO - Device Type: Perovskite Solar Cell (PCBM/MAPI/PEDOT)
+2025-09-21 15:20:35,158 - INFO - 
 === Step 2: Loading Optimization Models ===
-2025-09-21 15:04:57,877 - INFO - Loaded optimization models and feature definitions
-2025-09-21 15:04:57,877 - INFO - 
+2025-09-21 15:20:35,764 - INFO - Loaded optimization models and feature definitions
+2025-09-21 15:20:35,764 - INFO - 
 === Step 3: Validating Original Parameters ===
-2025-09-21 15:04:57,877 - INFO - Original parameters validation: All physics constraints satisfied
-2025-09-21 15:04:57,877 - INFO - 
+2025-09-21 15:20:35,764 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:35,766 - INFO - Original parameters validation: All physics constraints satisfied
+2025-09-21 15:20:35,766 - INFO - 
 === Step 4: Optimizing Parameters (Method: both) ===
-2025-09-21 15:04:57,877 - INFO - Progress counter: ENABLED (update every 5 iterations)
-2025-09-21 15:04:57,877 - INFO - 
+2025-09-21 15:20:35,766 - INFO - Progress counter: ENABLED (update every 5 iterations)
+2025-09-21 15:20:35,766 - INFO - 
 === Starting Parameter Optimization ===
-2025-09-21 15:04:57,877 - INFO - Method: both, Max iterations: 100
-2025-09-21 15:04:57,877 - INFO - Converted L1_L bounds from nm to meters: [2e-08, 5.0000000000000004e-08]
-2025-09-21 15:04:57,877 - INFO - Converted L2_L bounds from nm to meters: [2.1e-07, 3.5000000000000004e-07]
-2025-09-21 15:04:57,879 - INFO - Converted L3_L bounds from nm to meters: [2e-08, 5.0000000000000004e-08]
-2025-09-21 15:04:57,879 - INFO - Loaded bounds for 15 parameters
-2025-09-21 15:04:57,879 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:57,893 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:57,933 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:57,935 - INFO - Original Performance - MPP: 207.9129 W/cm², PCE: 20.79%
-2025-09-21 15:04:57,935 - INFO - Original Recombination: 1.93e+30
-2025-09-21 15:04:57,935 - INFO - 
+2025-09-21 15:20:35,766 - INFO - Method: both, Max iterations: 100
+2025-09-21 15:20:35,766 - INFO - Converted L1_L bounds from nm to meters: [2e-08, 5.0000000000000004e-08]
+2025-09-21 15:20:35,766 - INFO - Converted L2_L bounds from nm to meters: [2.1e-07, 3.5000000000000004e-07]
+2025-09-21 15:20:35,766 - INFO - Converted L3_L bounds from nm to meters: [2e-08, 5.0000000000000004e-08]
+2025-09-21 15:20:35,767 - INFO - Loaded bounds for 15 parameters
+2025-09-21 15:20:35,767 - INFO - Calculating derived features (Script 7 compatible)...
+2025-09-21 15:20:35,779 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
+2025-09-21 15:20:35,817 - INFO - PCE prediction (0.98%) is within S-Q limit (33.7%) [VALID]
+2025-09-21 15:20:35,819 - INFO - Original Performance - MPP: 9.8015 W/cm², PCE: 0.98%
+2025-09-21 15:20:35,819 - INFO - Original Recombination: 1.65e+30
+2025-09-21 15:20:35,819 - INFO - 
 --- Local Optimization (L-BFGS-B) ---
-2025-09-21 15:04:57,937 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:57,948 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:57,984 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:57,988 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,000 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,035 - INFO - PCE prediction (20.58%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,039 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,049 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,084 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,088 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,098 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,134 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,138 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,150 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,187 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,191 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,203 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,236 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,240 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,252 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,285 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,289 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,301 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,336 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,340 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,352 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,388 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,390 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,402 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,441 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,445 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,459 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,493 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,495 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,508 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,544 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,546 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,560 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,598 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,600 - WARNING - W_R (5.2) slightly > HTL E_v (5.200) - within tolerance
-2025-09-21 15:04:58,602 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,615 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,652 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,656 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,668 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,703 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,707 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,719 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,754 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,758 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,769 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,803 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,807 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,818 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,855 - INFO - PCE prediction (1.01%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,857 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,868 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,904 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,908 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,920 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:58,957 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:58,959 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:58,971 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,006 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,008 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:59,020 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,055 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,057 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:59,069 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,101 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,105 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:59,116 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,151 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,155 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:59,166 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,201 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,206 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:59,217 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,256 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,258 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:59,270 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,308 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,310 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:59,324 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,358 - INFO - PCE prediction (1.01%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,360 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:59,373 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,407 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,409 - WARNING - W_R (5.2) slightly > HTL E_v (5.200) - within tolerance
-2025-09-21 15:04:59,409 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:59,421 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,458 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,460 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:59,474 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,548 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,552 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:59,563 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,600 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,603 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:59,615 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,651 - INFO - PCE prediction (2.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,655 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:59,667 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,703 - INFO - PCE prediction (2.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,705 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:59,716 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,752 - INFO - PCE prediction (2.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,754 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:59,768 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,801 - INFO - PCE prediction (2.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,805 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:59,817 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,855 - INFO - PCE prediction (2.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,857 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:59,869 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,927 - INFO - PCE prediction (2.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,930 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:04:59,949 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:04:59,992 - INFO - PCE prediction (2.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:04:59,995 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,010 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:00,049 - INFO - PCE prediction (2.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:00,051 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,065 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:00,101 - INFO - PCE prediction (2.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:00,105 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,117 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:00,157 - INFO - PCE prediction (2.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:00,160 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,173 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:00,210 - INFO - PCE prediction (2.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:00,212 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,224 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:00,259 - INFO - PCE prediction (2.33%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:00,263 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,276 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:00,314 - INFO - PCE prediction (2.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:00,316 - WARNING - W_R (5.2) slightly > HTL E_v (5.200) - within tolerance
-2025-09-21 15:05:00,316 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,328 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:00,367 - INFO - PCE prediction (2.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:00,369 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,382 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:00,417 - INFO - PCE prediction (2.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:00,421 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,435 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:00,472 - INFO - PCE prediction (2.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:00,475 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,487 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:00,525 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:00,529 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,542 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:00,581 - INFO - PCE prediction (20.59%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:00,583 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,594 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:00,632 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:00,634 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,646 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:00,681 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:00,685 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,696 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:00,732 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:00,734 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,744 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:00,782 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:00,786 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,798 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:00,834 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:00,838 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,859 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:00,901 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:00,903 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,917 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:00,957 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:00,961 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:00,979 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:01,024 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:01,028 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:01,045 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:01,090 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:01,095 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:01,113 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:01,161 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:01,163 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:01,181 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:01,236 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:01,238 - WARNING - W_R (5.2) slightly > HTL E_v (5.200) - within tolerance
-2025-09-21 15:05:01,240 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:01,254 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:01,297 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:01,301 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:01,313 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:01,349 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:01,351 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:01,362 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:01,400 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:01,402 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:01,414 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:01,452 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:01,454 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:01,466 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:01,502 - INFO - PCE prediction (20.59%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:01,504 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:01,518 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:01,555 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:01,557 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:01,571 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:01,606 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:01,610 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:01,623 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:01,661 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:01,663 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:01,678 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:01,714 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:01,716 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:01,733 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:01,773 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:01,776 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:01,795 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:01,851 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:01,855 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:01,876 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:01,921 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:01,925 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:01,942 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:01,985 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:01,988 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:02,006 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:02,061 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:02,063 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:02,078 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:02,118 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:02,120 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:02,133 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:02,171 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:02,175 - WARNING - W_R (5.2) slightly > HTL E_v (5.200) - within tolerance
-2025-09-21 15:05:02,176 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:02,191 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:02,232 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:02,235 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:02,252 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:02,292 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:02,296 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:02,312 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:02,354 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:02,357 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:02,374 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:02,412 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:02,416 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:02,434 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:02,473 - INFO - PCE prediction (20.59%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:02,476 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:02,493 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:02,537 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:02,539 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:02,554 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:02,594 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:02,596 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:02,614 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:02,659 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:02,661 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:02,678 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:02,731 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:02,735 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:02,749 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:02,799 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:02,803 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:02,823 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:02,885 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:02,889 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:02,909 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:02,954 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:02,956 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:02,972 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:03,026 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:03,032 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:03,050 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:03,104 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:03,108 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:03,119 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:03,162 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:03,164 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:03,177 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:03,218 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:03,220 - WARNING - W_R (5.2) slightly > HTL E_v (5.200) - within tolerance
-2025-09-21 15:05:03,220 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:03,236 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:03,274 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:03,279 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:03,293 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:03,334 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:03,337 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:03,349 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:03,395 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:03,397 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:03,413 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:03,460 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:03,462 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:03,477 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:03,519 - INFO - PCE prediction (20.59%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:03,521 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:03,535 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:03,575 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:03,577 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:03,591 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:03,626 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:03,628 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:03,642 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:03,680 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:03,682 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:03,696 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:03,732 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:03,736 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:03,750 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:03,790 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:03,792 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:03,807 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:03,842 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:03,844 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:03,859 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:03,893 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:03,897 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:03,911 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:03,948 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:03,950 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:03,962 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:03,998 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,002 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,015 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,050 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,054 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,066 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,106 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,108 - WARNING - W_R (5.2) slightly > HTL E_v (5.200) - within tolerance
-2025-09-21 15:05:04,108 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,121 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,157 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,159 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,173 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,208 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,210 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,221 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,260 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,262 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,274 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,307 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,311 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,323 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,359 - INFO - PCE prediction (20.59%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,361 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,374 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,408 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,410 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,422 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,459 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,461 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,472 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,506 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,510 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,522 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,557 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,559 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,571 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,607 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,608 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,620 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,655 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,659 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,670 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,707 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,711 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,724 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,759 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,761 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,774 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,808 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,812 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,824 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,864 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,868 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,882 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,916 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,920 - WARNING - W_R (5.2) slightly > HTL E_v (5.200) - within tolerance
-2025-09-21 15:05:04,920 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,932 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:04,970 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:04,975 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:04,986 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,022 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,024 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,036 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,070 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,074 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,086 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,122 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,124 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,137 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,173 - INFO - PCE prediction (20.59%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,175 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,186 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,219 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,223 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,235 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,274 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,278 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,288 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,324 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,328 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,340 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,372 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,376 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,390 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,423 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,425 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,437 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,471 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,475 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,487 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,521 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,525 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,537 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,572 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,574 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,585 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,622 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,626 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,644 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,693 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,695 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,709 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,751 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,755 - WARNING - W_R (5.2) slightly > HTL E_v (5.200) - within tolerance
-2025-09-21 15:05:05,755 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,768 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,809 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,810 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,823 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,862 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,864 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,877 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,913 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,915 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,928 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:05,962 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:05,963 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:05,977 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:06,016 - INFO - PCE prediction (20.59%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:06,018 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:06,031 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:06,064 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:06,067 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:06,081 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:06,115 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:06,118 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:06,130 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:06,171 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:06,175 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:06,189 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:06,226 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:06,228 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:06,242 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:06,278 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:06,279 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:06,293 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:06,334 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:06,336 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:06,349 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:06,384 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:06,388 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:06,400 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:06,435 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:06,437 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:06,450 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:06,484 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:06,488 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:06,501 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:06,537 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:06,540 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:06,553 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:06,589 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:06,591 - WARNING - W_R (5.2) slightly > HTL E_v (5.200) - within tolerance
-2025-09-21 15:05:06,593 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:06,610 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:06,646 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:06,650 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:06,666 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:06,707 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:06,711 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:06,727 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:06,776 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:06,779 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:06,798 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:06,849 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:06,859 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:06,883 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:06,929 - INFO - PCE prediction (20.59%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:06,932 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:06,947 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:06,999 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:07,002 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:07,019 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:07,057 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:07,062 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:07,074 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:07,143 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:07,168 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:07,192 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:07,250 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:07,282 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:07,352 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:07,426 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:07,430 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:07,451 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:07,522 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:07,527 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:07,547 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:07,598 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:07,602 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:07,615 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:07,654 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:07,656 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:07,669 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:07,706 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:07,708 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:07,721 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:07,760 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:07,764 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:07,775 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:07,813 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:07,817 - WARNING - W_R (5.2) slightly > HTL E_v (5.200) - within tolerance
-2025-09-21 15:05:07,817 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:07,830 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:07,866 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:07,868 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:07,880 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:07,918 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:07,922 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:07,937 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:07,977 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:07,980 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:07,993 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:08,029 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:08,032 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:08,046 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:08,092 - INFO - PCE prediction (20.59%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:08,096 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:08,115 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:08,171 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:08,177 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:08,192 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:08,233 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:08,237 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:08,249 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:08,288 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:08,292 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:08,307 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:08,344 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:08,346 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:08,359 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:08,392 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:08,396 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:08,409 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:08,445 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:08,447 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:08,460 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:08,497 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:08,501 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:08,513 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:08,548 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:08,552 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:08,564 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:08,608 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:08,610 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:08,623 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:08,658 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:08,660 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:08,673 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:08,708 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:08,712 - WARNING - W_R (5.2) slightly > HTL E_v (5.200) - within tolerance
-2025-09-21 15:05:08,712 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:08,726 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:08,760 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:08,763 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:08,775 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:08,812 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:08,813 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:08,827 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:08,861 - INFO - PCE prediction (20.79%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:08,864 - INFO - Local optimization successful. Objective: -206.904507
-2025-09-21 15:05:08,864 - INFO - 
+2025-09-21 15:20:35,821 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:35,821 - INFO - Calculating derived features (Script 7 compatible)...
+2025-09-21 15:20:35,835 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
+2025-09-21 15:20:35,875 - INFO - PCE prediction (0.98%) is within S-Q limit (33.7%) [VALID]
+2025-09-21 15:20:35,877 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:35,877 - INFO - Calculating derived features (Script 7 compatible)...
+2025-09-21 15:20:35,889 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
+2025-09-21 15:20:35,925 - INFO - PCE prediction (1.00%) is within S-Q limit (33.7%) [VALID]
+2025-09-21 15:20:35,927 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:35,927 - INFO - Calculating derived features (Script 7 compatible)...
+2025-09-21 15:20:35,939 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
+2025-09-21 15:20:35,972 - INFO - PCE prediction (0.98%) is within S-Q limit (33.7%) [VALID]
+2025-09-21 15:20:35,975 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,024 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,072 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,119 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,167 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,217 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,263 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,312 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,365 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,410 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,458 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,509 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,560 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,607 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,658 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,706 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,755 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,801 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,852 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,901 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,952 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:36,999 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:37,050 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:37,099 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:37,149 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:37,201 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:37,251 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:37,301 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:37,392 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:37,440 - INFO - Local optimization successful. Objective: -144.085220
+2025-09-21 15:20:37,440 - INFO - 
 --- Global Optimization (Differential Evolution) ---
-2025-09-21 15:05:08,866 - WARNING - W_R (5.2) slightly > HTL E_v (5.184) - within tolerance
-2025-09-21 15:05:08,868 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:08,881 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:08,915 - INFO - PCE prediction (17.04%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:08,918 - WARNING - W_R (5.2) slightly > HTL E_v (5.160) - within tolerance
-2025-09-21 15:05:08,918 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:08,931 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:08,968 - INFO - PCE prediction (10.38%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:08,969 - WARNING - W_R (5.2) slightly > HTL E_v (5.163) - within tolerance
-2025-09-21 15:05:08,969 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:08,983 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:09,017 - INFO - PCE prediction (20.67%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:09,019 - WARNING - W_R (5.2) slightly > HTL E_v (5.174) - within tolerance
-2025-09-21 15:05:09,021 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:09,033 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:09,072 - INFO - PCE prediction (19.24%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:09,072 - WARNING - W_R (5.2) slightly > HTL E_v (5.182) - within tolerance
-2025-09-21 15:05:09,074 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:09,084 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:09,122 - INFO - PCE prediction (19.45%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:09,124 - WARNING - W_R (5.2) slightly > HTL E_v (5.107) - within tolerance
-2025-09-21 15:05:09,125 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:09,137 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:09,179 - INFO - PCE prediction (9.82%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:09,180 - WARNING - W_R (5.2) slightly > HTL E_v (5.110) - within tolerance
-2025-09-21 15:05:09,181 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:09,195 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:09,233 - INFO - PCE prediction (19.51%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:09,235 - WARNING - W_R (5.2) slightly > HTL E_v (5.170) - within tolerance
-2025-09-21 15:05:09,235 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:09,250 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:09,336 - INFO - PCE prediction (16.34%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:09,339 - WARNING - W_R (5.2) slightly > HTL E_v (5.145) - within tolerance
-2025-09-21 15:05:09,341 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:09,351 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:09,399 - INFO - PCE prediction (9.49%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:09,400 - WARNING - W_R (5.2) slightly > HTL E_v (5.147) - within tolerance
-2025-09-21 15:05:09,400 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:09,416 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:09,455 - INFO - PCE prediction (20.62%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:09,457 - WARNING - W_R (5.2) slightly > HTL E_v (5.137) - within tolerance
-2025-09-21 15:05:09,459 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:09,472 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:09,510 - INFO - PCE prediction (1.03%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:09,512 - WARNING - W_R (5.2) slightly > HTL E_v (5.199) - within tolerance
-2025-09-21 15:05:09,512 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:09,527 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:09,568 - INFO - PCE prediction (10.18%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:09,570 - WARNING - W_R (5.2) slightly > HTL E_v (5.192) - within tolerance
-2025-09-21 15:05:09,570 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:09,585 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:09,628 - INFO - PCE prediction (17.95%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:09,629 - WARNING - W_R (5.2) slightly > HTL E_v (5.111) - within tolerance
-2025-09-21 15:05:09,629 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:09,645 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:09,687 - INFO - PCE prediction (1.01%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:09,689 - WARNING - W_R (5.2) slightly > HTL E_v (5.125) - within tolerance
-2025-09-21 15:05:09,690 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:09,702 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:09,743 - INFO - PCE prediction (1.01%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:09,746 - WARNING - W_R (5.2) slightly > HTL E_v (5.155) - within tolerance
-2025-09-21 15:05:09,746 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:09,760 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:09,799 - INFO - PCE prediction (18.96%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:09,801 - WARNING - W_R (5.2) slightly > HTL E_v (5.181) - within tolerance
-2025-09-21 15:05:09,801 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:09,816 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:09,852 - INFO - PCE prediction (10.14%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:09,854 - WARNING - W_R (5.2) slightly > HTL E_v (5.134) - within tolerance
-2025-09-21 15:05:09,856 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:09,869 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:09,925 - INFO - PCE prediction (14.12%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:09,929 - WARNING - W_R (5.2) slightly > HTL E_v (5.141) - within tolerance
-2025-09-21 15:05:09,930 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:09,949 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:10,007 - INFO - PCE prediction (10.71%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:10,011 - WARNING - W_R (5.2) slightly > HTL E_v (5.196) - within tolerance
-2025-09-21 15:05:10,012 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:10,031 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:10,083 - INFO - PCE prediction (15.82%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:10,085 - WARNING - W_R (5.2) slightly > HTL E_v (5.177) - within tolerance
-2025-09-21 15:05:10,086 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:10,099 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:10,139 - INFO - PCE prediction (10.88%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:10,142 - WARNING - W_R (5.2) slightly > HTL E_v (5.145) - within tolerance
-2025-09-21 15:05:10,142 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:10,156 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:10,194 - INFO - PCE prediction (23.49%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:10,197 - WARNING - W_R (5.2) slightly > HTL E_v (5.179) - within tolerance
-2025-09-21 15:05:10,197 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:10,213 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:10,250 - INFO - PCE prediction (10.60%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:10,254 - WARNING - W_R (5.2) slightly > HTL E_v (5.197) - within tolerance
-2025-09-21 15:05:10,254 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:10,267 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:10,304 - INFO - PCE prediction (10.60%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:10,306 - WARNING - W_R (5.2) slightly > HTL E_v (5.127) - within tolerance
-2025-09-21 15:05:10,306 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:10,319 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:10,352 - INFO - PCE prediction (16.31%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:10,356 - WARNING - W_R (5.2) slightly > HTL E_v (5.101) - within tolerance
-2025-09-21 15:05:10,356 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:10,369 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:10,409 - INFO - PCE prediction (1.01%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:10,411 - WARNING - W_R (5.2) slightly > HTL E_v (5.156) - within tolerance
-2025-09-21 15:05:10,411 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:10,428 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:10,467 - INFO - PCE prediction (10.49%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:10,469 - WARNING - W_R (5.2) slightly > HTL E_v (5.121) - within tolerance
-2025-09-21 15:05:10,470 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:10,484 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:10,525 - INFO - PCE prediction (1.03%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:10,527 - WARNING - W_R (5.2) slightly > HTL E_v (5.148) - within tolerance
-2025-09-21 15:05:10,527 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:10,542 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:10,583 - INFO - PCE prediction (9.93%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:10,585 - WARNING - W_R (5.2) slightly > HTL E_v (5.123) - within tolerance
-2025-09-21 15:05:10,585 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:10,600 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:10,654 - INFO - PCE prediction (17.75%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:10,659 - WARNING - W_R (5.2) slightly > HTL E_v (5.153) - within tolerance
-2025-09-21 15:05:10,660 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:10,672 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:10,713 - INFO - PCE prediction (2.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:10,715 - WARNING - W_R (5.2) slightly > HTL E_v (5.109) - within tolerance
-2025-09-21 15:05:10,715 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:10,731 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:10,772 - INFO - PCE prediction (10.10%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:10,774 - WARNING - W_R (5.2) slightly > HTL E_v (5.133) - within tolerance
-2025-09-21 15:05:10,774 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:10,789 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:10,828 - INFO - PCE prediction (19.26%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:10,830 - WARNING - W_R (5.2) slightly > HTL E_v (5.111) - within tolerance
-2025-09-21 15:05:10,832 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:10,847 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:10,911 - INFO - PCE prediction (10.72%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:10,919 - WARNING - W_R (5.2) slightly > HTL E_v (5.154) - within tolerance
-2025-09-21 15:05:10,920 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:10,944 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:11,042 - INFO - PCE prediction (9.54%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:11,046 - WARNING - W_R (5.2) slightly > HTL E_v (5.176) - within tolerance
-2025-09-21 15:05:11,048 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:11,065 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:11,115 - INFO - PCE prediction (14.00%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:11,120 - WARNING - W_R (5.2) slightly > HTL E_v (5.115) - within tolerance
-2025-09-21 15:05:11,121 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:11,135 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:11,186 - INFO - PCE prediction (1.03%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:11,189 - WARNING - W_R (5.2) slightly > HTL E_v (5.130) - within tolerance
-2025-09-21 15:05:11,190 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:11,206 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:11,246 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:11,248 - WARNING - W_R (5.2) slightly > HTL E_v (5.127) - within tolerance
-2025-09-21 15:05:11,249 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:11,264 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:11,300 - INFO - PCE prediction (0.97%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:11,304 - WARNING - W_R (5.2) slightly > HTL E_v (5.190) - within tolerance
-2025-09-21 15:05:11,305 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:11,317 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:11,355 - INFO - PCE prediction (20.66%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:11,356 - WARNING - W_R (5.2) slightly > HTL E_v (5.161) - within tolerance
-2025-09-21 15:05:11,358 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:11,374 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:11,414 - INFO - PCE prediction (10.93%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:11,417 - WARNING - W_R (5.2) slightly > HTL E_v (5.140) - within tolerance
-2025-09-21 15:05:11,417 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:11,432 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:11,471 - INFO - PCE prediction (18.61%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:11,473 - WARNING - W_R (5.2) slightly > HTL E_v (5.124) - within tolerance
-2025-09-21 15:05:11,474 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:11,492 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:11,533 - INFO - PCE prediction (16.29%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:11,535 - WARNING - W_R (5.2) slightly > HTL E_v (5.137) - within tolerance
-2025-09-21 15:05:11,537 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:11,551 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:11,593 - INFO - PCE prediction (9.89%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:11,595 - WARNING - W_R (5.2) slightly > HTL E_v (5.117) - within tolerance
-2025-09-21 15:05:11,596 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:11,611 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:11,659 - INFO - PCE prediction (10.93%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:11,661 - WARNING - W_R (5.2) slightly > HTL E_v (5.141) - within tolerance
-2025-09-21 15:05:11,662 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:11,676 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:11,718 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:11,725 - WARNING - W_R (5.2) slightly > HTL E_v (5.151) - within tolerance
-2025-09-21 15:05:11,727 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:11,750 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:11,806 - INFO - PCE prediction (15.46%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:11,809 - WARNING - W_R (5.2) slightly > HTL E_v (5.198) - within tolerance
-2025-09-21 15:05:11,810 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:11,833 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:11,882 - INFO - PCE prediction (10.83%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:11,886 - WARNING - W_R (5.2) slightly > HTL E_v (5.177) - within tolerance
-2025-09-21 15:05:11,888 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:11,905 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:11,969 - INFO - PCE prediction (10.56%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:11,975 - WARNING - W_R (5.2) slightly > HTL E_v (5.105) - within tolerance
-2025-09-21 15:05:11,977 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:12,001 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:12,053 - INFO - PCE prediction (1.03%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:12,056 - WARNING - W_R (5.2) slightly > HTL E_v (5.162) - within tolerance
-2025-09-21 15:05:12,056 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:12,081 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:12,129 - INFO - PCE prediction (0.96%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:12,131 - WARNING - W_R (5.2) slightly > HTL E_v (5.186) - within tolerance
-2025-09-21 15:05:12,132 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:12,148 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:12,214 - INFO - PCE prediction (10.77%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:12,266 - WARNING - W_R (5.2) slightly > HTL E_v (5.144) - within tolerance
-2025-09-21 15:05:12,270 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:12,323 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:12,386 - INFO - PCE prediction (10.38%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:12,390 - WARNING - W_R (5.2) slightly > HTL E_v (5.158) - within tolerance
-2025-09-21 15:05:12,391 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:12,409 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:12,448 - INFO - PCE prediction (10.75%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:12,451 - WARNING - W_R (5.2) slightly > HTL E_v (5.119) - within tolerance
-2025-09-21 15:05:12,452 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:12,468 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:12,510 - INFO - PCE prediction (10.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:12,513 - WARNING - W_R (5.2) slightly > HTL E_v (5.188) - within tolerance
-2025-09-21 15:05:12,513 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:12,533 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:12,602 - INFO - PCE prediction (9.85%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:12,604 - WARNING - W_R (5.2) slightly > HTL E_v (5.150) - within tolerance
-2025-09-21 15:05:12,606 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:12,620 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:12,655 - INFO - PCE prediction (1.03%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:12,658 - WARNING - W_R (5.2) slightly > HTL E_v (5.173) - within tolerance
-2025-09-21 15:05:12,659 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:12,674 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:12,715 - INFO - PCE prediction (10.19%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:12,717 - WARNING - W_R (5.2) slightly > HTL E_v (5.135) - within tolerance
-2025-09-21 15:05:12,718 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:12,733 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:12,772 - INFO - PCE prediction (16.97%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:12,774 - WARNING - W_R (5.2) slightly > HTL E_v (5.190) - within tolerance
-2025-09-21 15:05:12,776 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:12,791 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:12,828 - INFO - PCE prediction (10.90%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:12,830 - WARNING - W_R (5.2) slightly > HTL E_v (5.170) - within tolerance
-2025-09-21 15:05:12,831 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:12,846 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:12,882 - INFO - PCE prediction (9.72%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:12,885 - WARNING - W_R (5.2) slightly > HTL E_v (5.165) - within tolerance
-2025-09-21 15:05:12,886 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:12,901 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:12,938 - INFO - PCE prediction (19.63%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:12,942 - WARNING - W_R (5.2) slightly > HTL E_v (5.118) - within tolerance
-2025-09-21 15:05:12,943 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:12,962 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:13,002 - INFO - PCE prediction (15.42%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:13,005 - WARNING - W_R (5.2) slightly > HTL E_v (5.193) - within tolerance
-2025-09-21 15:05:13,006 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:13,021 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:13,061 - INFO - PCE prediction (19.52%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:13,063 - WARNING - W_R (5.2) slightly > HTL E_v (5.104) - within tolerance
-2025-09-21 15:05:13,064 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:13,081 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:13,132 - INFO - PCE prediction (19.65%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:13,134 - WARNING - W_R (5.2) slightly > HTL E_v (5.120) - within tolerance
-2025-09-21 15:05:13,135 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:13,152 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:13,193 - INFO - PCE prediction (16.67%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:13,195 - WARNING - W_R (5.2) slightly > HTL E_v (5.135) - within tolerance
-2025-09-21 15:05:13,196 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:13,213 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:13,256 - INFO - PCE prediction (12.01%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:13,259 - WARNING - W_R (5.2) slightly > HTL E_v (5.199) - within tolerance
-2025-09-21 15:05:13,260 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:13,274 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:13,311 - INFO - PCE prediction (23.95%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:13,312 - WARNING - W_R (5.2) slightly > HTL E_v (5.102) - within tolerance
-2025-09-21 15:05:13,314 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:13,329 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:13,367 - INFO - PCE prediction (20.17%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:13,369 - WARNING - W_R (5.2) slightly > HTL E_v (5.195) - within tolerance
-2025-09-21 15:05:13,369 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:13,385 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:13,424 - INFO - PCE prediction (20.70%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:13,427 - WARNING - W_R (5.2) slightly > HTL E_v (5.186) - within tolerance
-2025-09-21 15:05:13,428 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:13,442 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:13,482 - INFO - PCE prediction (10.70%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:13,484 - WARNING - W_R (5.2) slightly > HTL E_v (5.168) - within tolerance
-2025-09-21 15:05:13,485 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:13,502 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:13,543 - INFO - PCE prediction (10.62%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:13,546 - WARNING - W_R (5.2) slightly > HTL E_v (5.139) - within tolerance
-2025-09-21 15:05:13,547 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:13,563 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:13,608 - INFO - PCE prediction (9.71%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:13,610 - WARNING - W_R (5.2) slightly > HTL E_v (5.116) - within tolerance
-2025-09-21 15:05:13,611 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:13,626 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:13,664 - INFO - PCE prediction (10.44%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:13,666 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-21 15:05:13,666 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:13,681 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:13,719 - INFO - PCE prediction (15.21%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:13,724 - WARNING - W_R (5.2) slightly > HTL E_v (5.184) - within tolerance
-2025-09-21 15:05:13,724 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:13,739 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:13,778 - INFO - PCE prediction (17.62%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:13,780 - WARNING - W_R (5.2) slightly > HTL E_v (5.166) - within tolerance
-2025-09-21 15:05:13,781 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:13,795 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:13,830 - INFO - PCE prediction (18.72%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:13,834 - WARNING - W_R (5.2) slightly > HTL E_v (5.149) - within tolerance
-2025-09-21 15:05:13,834 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:13,848 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:13,884 - INFO - PCE prediction (1.03%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:13,888 - WARNING - W_R (5.2) slightly > HTL E_v (5.106) - within tolerance
-2025-09-21 15:05:13,889 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:13,902 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:13,940 - INFO - PCE prediction (9.72%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:13,943 - WARNING - W_R (5.2) slightly > HTL E_v (5.138) - within tolerance
-2025-09-21 15:05:13,944 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:13,957 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:13,992 - INFO - PCE prediction (27.64%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:13,994 - WARNING - W_R (5.2) slightly > HTL E_v (5.131) - within tolerance
-2025-09-21 15:05:13,995 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:14,009 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:14,045 - INFO - PCE prediction (10.61%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:14,047 - WARNING - W_R (5.2) slightly > HTL E_v (5.102) - within tolerance
-2025-09-21 15:05:14,048 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:14,063 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:14,111 - INFO - PCE prediction (17.75%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:14,114 - WARNING - W_R (5.2) slightly > HTL E_v (5.113) - within tolerance
-2025-09-21 15:05:14,115 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:14,129 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:14,166 - INFO - PCE prediction (11.28%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:14,170 - WARNING - W_R (5.2) slightly > HTL E_v (5.180) - within tolerance
-2025-09-21 15:05:14,170 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:14,184 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:14,219 - INFO - PCE prediction (17.65%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:14,223 - WARNING - W_R (5.2) slightly > HTL E_v (5.114) - within tolerance
-2025-09-21 15:05:14,223 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:14,235 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:14,277 - INFO - PCE prediction (10.29%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:14,279 - WARNING - W_R (5.2) slightly > HTL E_v (5.187) - within tolerance
-2025-09-21 15:05:14,280 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:14,293 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:14,338 - INFO - PCE prediction (15.74%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:14,341 - WARNING - W_R (5.2) slightly > HTL E_v (5.189) - within tolerance
-2025-09-21 15:05:14,341 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:14,358 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:14,393 - INFO - PCE prediction (19.35%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:14,395 - WARNING - W_R (5.2) slightly > HTL E_v (5.157) - within tolerance
-2025-09-21 15:05:14,397 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:14,412 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:14,454 - INFO - PCE prediction (16.72%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:14,456 - WARNING - W_R (5.2) slightly > HTL E_v (5.178) - within tolerance
-2025-09-21 15:05:14,458 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:14,470 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:14,507 - INFO - PCE prediction (17.58%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:14,510 - WARNING - W_R (5.2) slightly > HTL E_v (5.125) - within tolerance
-2025-09-21 15:05:14,510 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:14,523 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:14,558 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:14,560 - WARNING - W_R (5.2) slightly > HTL E_v (5.143) - within tolerance
-2025-09-21 15:05:14,561 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:14,575 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:14,613 - INFO - PCE prediction (16.31%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:14,615 - WARNING - W_R (5.2) slightly > HTL E_v (5.130) - within tolerance
-2025-09-21 15:05:14,616 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:14,629 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:14,663 - INFO - PCE prediction (14.33%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:14,665 - WARNING - W_R (5.2) slightly > HTL E_v (5.151) - within tolerance
-2025-09-21 15:05:14,665 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:14,678 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:14,717 - INFO - PCE prediction (10.44%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:14,717 - WARNING - W_R (5.2) slightly > HTL E_v (5.147) - within tolerance
-2025-09-21 15:05:14,719 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:14,731 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:14,771 - INFO - PCE prediction (18.86%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:14,773 - WARNING - W_R (5.2) slightly > HTL E_v (5.167) - within tolerance
-2025-09-21 15:05:14,774 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:14,786 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:14,829 - INFO - PCE prediction (15.81%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:14,831 - WARNING - W_R (5.2) slightly > HTL E_v (5.164) - within tolerance
-2025-09-21 15:05:14,832 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:14,845 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:14,893 - INFO - PCE prediction (18.64%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:14,895 - WARNING - W_R (5.2) slightly > HTL E_v (5.195) - within tolerance
-2025-09-21 15:05:14,896 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:14,912 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:14,950 - INFO - PCE prediction (10.07%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:14,952 - WARNING - W_R (5.2) slightly > HTL E_v (5.128) - within tolerance
-2025-09-21 15:05:14,952 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:14,966 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:15,003 - INFO - PCE prediction (20.22%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:15,007 - WARNING - W_R (5.2) slightly > HTL E_v (5.171) - within tolerance
-2025-09-21 15:05:15,008 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:15,021 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:15,059 - INFO - PCE prediction (20.69%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:15,061 - WARNING - W_R (5.2) slightly > HTL E_v (5.120) - within tolerance
-2025-09-21 15:05:15,061 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:15,072 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:15,109 - INFO - PCE prediction (18.98%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:15,109 - WARNING - W_R (5.2) slightly > HTL E_v (5.132) - within tolerance
-2025-09-21 15:05:15,111 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:15,124 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:15,161 - INFO - PCE prediction (20.61%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:15,166 - WARNING - W_R (5.2) slightly > HTL E_v (5.158) - within tolerance
-2025-09-21 15:05:15,166 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:15,186 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:15,234 - INFO - PCE prediction (22.59%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:15,237 - WARNING - W_R (5.2) slightly > HTL E_v (5.113) - within tolerance
-2025-09-21 15:05:15,237 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:15,259 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:15,301 - INFO - PCE prediction (2.36%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:15,303 - WARNING - W_R (5.2) slightly > HTL E_v (5.166) - within tolerance
-2025-09-21 15:05:15,305 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:15,321 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:15,357 - INFO - PCE prediction (19.19%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:15,361 - WARNING - W_R (5.2) slightly > HTL E_v (5.193) - within tolerance
-2025-09-21 15:05:15,361 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:15,378 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:15,416 - INFO - PCE prediction (10.64%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:15,420 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
-2025-09-21 15:05:15,420 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:15,434 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:15,472 - INFO - PCE prediction (9.44%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:15,475 - WARNING - W_R (5.2) slightly > HTL E_v (5.108) - within tolerance
-2025-09-21 15:05:15,477 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:15,491 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:15,530 - INFO - PCE prediction (9.89%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:15,533 - WARNING - W_R (5.2) slightly > HTL E_v (5.175) - within tolerance
-2025-09-21 15:05:15,534 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:15,549 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:15,590 - INFO - PCE prediction (16.23%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:15,593 - WARNING - W_R (5.2) slightly > HTL E_v (5.182) - within tolerance
-2025-09-21 15:05:15,594 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:15,610 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:15,654 - INFO - PCE prediction (19.20%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:15,658 - WARNING - W_R (5.2) slightly > HTL E_v (5.172) - within tolerance
-2025-09-21 15:05:15,659 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:15,675 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:15,729 - INFO - PCE prediction (20.49%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:15,731 - WARNING - W_R (5.2) slightly > HTL E_v (5.103) - within tolerance
-2025-09-21 15:05:15,731 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:15,749 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:15,792 - INFO - PCE prediction (1.01%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:15,794 - WARNING - W_R (5.2) slightly > HTL E_v (5.153) - within tolerance
-2025-09-21 15:05:15,795 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:15,809 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:15,846 - INFO - PCE prediction (1.03%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:15,847 - WARNING - W_R (5.2) slightly > HTL E_v (5.150) - within tolerance
-2025-09-21 15:05:15,849 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:15,865 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:15,915 - INFO - PCE prediction (11.26%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:15,917 - WARNING - W_R (5.2) slightly > HTL E_v (5.104) - within tolerance
-2025-09-21 15:05:15,917 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:15,936 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:15,986 - INFO - PCE prediction (2.36%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:15,991 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
-2025-09-21 15:05:15,992 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,009 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:16,050 - INFO - PCE prediction (10.71%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:16,052 - WARNING - W_R (5.2) slightly > HTL E_v (5.174) - within tolerance
-2025-09-21 15:05:16,054 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,072 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:16,116 - INFO - PCE prediction (19.18%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:16,118 - WARNING - W_R (5.2) slightly > HTL E_v (5.181) - within tolerance
-2025-09-21 15:05:16,118 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,132 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:16,167 - INFO - PCE prediction (19.57%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:16,169 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
-2025-09-21 15:05:16,169 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,184 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:16,222 - INFO - PCE prediction (2.35%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:16,224 - WARNING - W_R (5.2) slightly > HTL E_v (5.190) - within tolerance
-2025-09-21 15:05:16,224 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,237 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:16,275 - INFO - PCE prediction (18.45%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:16,278 - WARNING - W_R (5.2) slightly > HTL E_v (5.170) - within tolerance
-2025-09-21 15:05:16,278 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,291 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:16,329 - INFO - PCE prediction (17.80%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:16,333 - WARNING - W_R (5.2) slightly > HTL E_v (5.145) - within tolerance
-2025-09-21 15:05:16,333 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,347 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:16,379 - INFO - PCE prediction (10.51%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:16,383 - WARNING - W_R (5.2) slightly > HTL E_v (5.147) - within tolerance
-2025-09-21 15:05:16,383 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,396 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:16,430 - INFO - PCE prediction (19.41%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:16,434 - WARNING - W_R (5.2) slightly > HTL E_v (5.185) - within tolerance
-2025-09-21 15:05:16,434 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,446 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:16,481 - INFO - PCE prediction (15.36%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:16,483 - WARNING - W_R (5.2) slightly > HTL E_v (5.137) - within tolerance
-2025-09-21 15:05:16,485 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,497 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:16,536 - INFO - PCE prediction (10.76%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:16,538 - WARNING - W_R (5.2) slightly > HTL E_v (5.199) - within tolerance
-2025-09-21 15:05:16,538 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,550 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:16,586 - INFO - PCE prediction (11.11%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:16,588 - WARNING - W_R (5.2) slightly > HTL E_v (5.134) - within tolerance
-2025-09-21 15:05:16,588 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,600 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:16,636 - INFO - PCE prediction (9.90%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:16,638 - WARNING - W_R (5.2) slightly > HTL E_v (5.192) - within tolerance
-2025-09-21 15:05:16,639 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,652 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:16,684 - INFO - PCE prediction (9.49%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:16,688 - WARNING - W_R (5.2) slightly > HTL E_v (5.177) - within tolerance
-2025-09-21 15:05:16,690 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,702 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:16,738 - INFO - PCE prediction (1.03%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:16,742 - WARNING - W_R (5.2) slightly > HTL E_v (5.151) - within tolerance
-2025-09-21 15:05:16,743 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,755 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:16,804 - INFO - PCE prediction (15.55%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:16,807 - WARNING - W_R (5.2) slightly > HTL E_v (5.155) - within tolerance
-2025-09-21 15:05:16,807 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,820 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:16,859 - INFO - PCE prediction (10.56%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:16,862 - WARNING - W_R (5.2) slightly > HTL E_v (5.170) - within tolerance
-2025-09-21 15:05:16,863 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,879 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:16,917 - INFO - PCE prediction (19.54%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:16,919 - WARNING - W_R (5.2) slightly > HTL E_v (5.145) - within tolerance
-2025-09-21 15:05:16,919 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,933 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:16,972 - INFO - PCE prediction (18.65%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:16,975 - WARNING - W_R (5.2) slightly > HTL E_v (5.163) - within tolerance
-2025-09-21 15:05:16,976 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:16,991 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:17,069 - INFO - PCE prediction (11.98%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:17,071 - WARNING - W_R (5.2) slightly > HTL E_v (5.131) - within tolerance
-2025-09-21 15:05:17,072 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:17,084 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:17,125 - INFO - PCE prediction (1.01%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:17,127 - WARNING - W_R (5.2) slightly > HTL E_v (5.200) - within tolerance
-2025-09-21 15:05:17,127 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:17,139 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:17,173 - INFO - PCE prediction (15.56%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:17,177 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
-2025-09-21 15:05:17,177 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:17,190 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:17,224 - INFO - PCE prediction (18.92%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:17,228 - WARNING - W_R (5.2) slightly > HTL E_v (5.179) - within tolerance
-2025-09-21 15:05:17,228 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:17,242 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:17,277 - INFO - PCE prediction (10.31%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:17,279 - WARNING - W_R (5.2) slightly > HTL E_v (5.183) - within tolerance
-2025-09-21 15:05:17,281 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:17,293 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:17,328 - INFO - PCE prediction (16.72%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:17,330 - WARNING - W_R (5.2) slightly > HTL E_v (5.128) - within tolerance
-2025-09-21 15:05:17,330 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:17,343 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:17,388 - INFO - PCE prediction (15.22%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:17,390 - WARNING - W_R (5.2) slightly > HTL E_v (5.199) - within tolerance
-2025-09-21 15:05:17,390 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:17,405 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:17,445 - INFO - PCE prediction (19.39%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:17,448 - WARNING - W_R (5.2) slightly > HTL E_v (5.156) - within tolerance
-2025-09-21 15:05:17,448 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:17,462 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:17,501 - INFO - PCE prediction (17.98%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:17,503 - WARNING - W_R (5.2) slightly > HTL E_v (5.121) - within tolerance
-2025-09-21 15:05:17,503 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:17,517 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:17,556 - INFO - PCE prediction (1.00%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:17,559 - WARNING - W_R (5.2) slightly > HTL E_v (5.148) - within tolerance
-2025-09-21 15:05:17,559 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:17,572 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:17,607 - INFO - PCE prediction (25.20%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:17,610 - WARNING - W_R (5.2) slightly > HTL E_v (5.114) - within tolerance
-2025-09-21 15:05:17,611 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:17,624 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:17,662 - INFO - PCE prediction (1.01%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:17,664 - WARNING - W_R (5.2) slightly > HTL E_v (5.172) - within tolerance
-2025-09-21 15:05:17,664 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:17,678 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:17,715 - INFO - PCE prediction (12.04%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:17,717 - WARNING - W_R (5.2) slightly > HTL E_v (5.195) - within tolerance
-2025-09-21 15:05:17,717 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:17,732 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:17,768 - INFO - PCE prediction (19.23%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:17,772 - WARNING - W_R (5.2) slightly > HTL E_v (5.109) - within tolerance
-2025-09-21 15:05:17,774 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:17,787 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:17,824 - INFO - PCE prediction (16.62%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:17,825 - WARNING - W_R (5.2) slightly > HTL E_v (5.154) - within tolerance
-2025-09-21 15:05:17,827 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:17,840 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:17,880 - INFO - PCE prediction (9.81%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:17,882 - WARNING - W_R (5.2) slightly > HTL E_v (5.175) - within tolerance
-2025-09-21 15:05:17,882 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:17,899 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:17,945 - INFO - PCE prediction (20.03%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:17,949 - WARNING - W_R (5.2) slightly > HTL E_v (5.176) - within tolerance
-2025-09-21 15:05:17,949 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:17,965 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:18,004 - INFO - PCE prediction (2.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:18,006 - WARNING - W_R (5.2) slightly > HTL E_v (5.151) - within tolerance
-2025-09-21 15:05:18,007 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:18,021 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:18,061 - INFO - PCE prediction (10.88%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:18,062 - WARNING - W_R (5.2) slightly > HTL E_v (5.115) - within tolerance
-2025-09-21 15:05:18,064 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:18,079 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:18,115 - INFO - PCE prediction (1.03%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:18,117 - WARNING - W_R (5.2) slightly > HTL E_v (5.141) - within tolerance
-2025-09-21 15:05:18,117 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:18,129 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:18,166 - INFO - PCE prediction (10.72%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:18,169 - WARNING - W_R (5.2) slightly > HTL E_v (5.127) - within tolerance
-2025-09-21 15:05:18,171 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:18,183 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:18,216 - INFO - PCE prediction (10.16%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:18,220 - WARNING - W_R (5.2) slightly > HTL E_v (5.142) - within tolerance
-2025-09-21 15:05:18,220 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:18,234 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:18,271 - INFO - PCE prediction (2.36%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:18,274 - WARNING - W_R (5.2) slightly > HTL E_v (5.118) - within tolerance
-2025-09-21 15:05:18,275 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:18,290 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:18,329 - INFO - PCE prediction (16.89%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:18,333 - WARNING - W_R (5.2) slightly > HTL E_v (5.110) - within tolerance
-2025-09-21 15:05:18,333 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:18,349 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:18,396 - INFO - PCE prediction (10.27%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:18,399 - WARNING - W_R (5.2) slightly > HTL E_v (5.102) - within tolerance
-2025-09-21 15:05:18,400 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:18,413 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:18,447 - INFO - PCE prediction (10.95%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:18,451 - WARNING - W_R (5.2) slightly > HTL E_v (5.188) - within tolerance
-2025-09-21 15:05:18,451 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:18,463 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:18,502 - INFO - PCE prediction (19.97%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:18,504 - WARNING - W_R (5.2) slightly > HTL E_v (5.163) - within tolerance
-2025-09-21 15:05:18,504 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:18,518 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:18,555 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:18,558 - WARNING - W_R (5.2) slightly > HTL E_v (5.131) - within tolerance
-2025-09-21 15:05:18,559 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:18,573 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:18,612 - INFO - PCE prediction (1.00%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:18,615 - WARNING - W_R (5.2) slightly > HTL E_v (5.117) - within tolerance
-2025-09-21 15:05:18,615 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:18,631 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:18,669 - INFO - PCE prediction (18.22%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:18,671 - WARNING - W_R (5.2) slightly > HTL E_v (5.143) - within tolerance
-2025-09-21 15:05:18,672 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:18,686 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:18,727 - INFO - PCE prediction (11.71%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:18,730 - WARNING - W_R (5.2) slightly > HTL E_v (5.139) - within tolerance
-2025-09-21 15:05:18,731 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:18,744 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:18,780 - INFO - PCE prediction (19.76%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:18,782 - WARNING - W_R (5.2) slightly > HTL E_v (5.171) - within tolerance
-2025-09-21 15:05:18,782 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:18,799 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:18,836 - INFO - PCE prediction (25.08%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:18,838 - WARNING - W_R (5.2) slightly > HTL E_v (5.158) - within tolerance
-2025-09-21 15:05:18,838 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:18,850 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:18,885 - INFO - PCE prediction (19.27%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:18,890 - WARNING - W_R (5.2) slightly > HTL E_v (5.166) - within tolerance
-2025-09-21 15:05:18,890 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:18,908 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:18,952 - INFO - PCE prediction (23.62%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:18,956 - WARNING - W_R (5.2) slightly > HTL E_v (5.151) - within tolerance
-2025-09-21 15:05:18,957 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:18,974 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,016 - INFO - PCE prediction (9.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,018 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
-2025-09-21 15:05:19,018 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:19,033 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,081 - INFO - PCE prediction (19.18%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,084 - WARNING - W_R (5.2) slightly > HTL E_v (5.169) - within tolerance
-2025-09-21 15:05:19,085 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:19,100 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,135 - INFO - PCE prediction (19.29%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,140 - WARNING - W_R (5.2) slightly > HTL E_v (5.136) - within tolerance
-2025-09-21 15:05:19,141 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:19,155 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,195 - INFO - PCE prediction (10.63%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,197 - WARNING - W_R (5.2) slightly > HTL E_v (5.163) - within tolerance
-2025-09-21 15:05:19,197 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:19,212 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,250 - INFO - PCE prediction (1.01%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,254 - WARNING - W_R (5.2) slightly > HTL E_v (5.162) - within tolerance
-2025-09-21 15:05:19,254 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:19,268 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,306 - INFO - PCE prediction (10.23%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,309 - WARNING - W_R (5.2) slightly > HTL E_v (5.164) - within tolerance
-2025-09-21 15:05:19,310 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:19,324 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,357 - INFO - PCE prediction (12.15%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,361 - WARNING - W_R (5.2) slightly > HTL E_v (5.188) - within tolerance
-2025-09-21 15:05:19,361 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:19,377 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,416 - INFO - PCE prediction (16.55%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,419 - WARNING - W_R (5.2) slightly > HTL E_v (5.158) - within tolerance
-2025-09-21 15:05:19,420 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:19,433 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,471 - INFO - PCE prediction (1.01%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,473 - WARNING - W_R (5.2) slightly > HTL E_v (5.128) - within tolerance
-2025-09-21 15:05:19,473 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:19,488 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,524 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,526 - WARNING - W_R (5.2) slightly > HTL E_v (5.149) - within tolerance
-2025-09-21 15:05:19,526 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:19,539 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,574 - INFO - PCE prediction (16.73%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,576 - WARNING - W_R (5.2) slightly > HTL E_v (5.124) - within tolerance
-2025-09-21 15:05:19,576 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:19,591 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,623 - INFO - PCE prediction (2.33%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,627 - WARNING - W_R (5.2) slightly > HTL E_v (5.146) - within tolerance
-2025-09-21 15:05:19,627 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:19,641 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,675 - INFO - PCE prediction (16.90%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,679 - WARNING - W_R (5.2) slightly > HTL E_v (5.190) - within tolerance
-2025-09-21 15:05:19,679 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:19,693 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,731 - INFO - PCE prediction (10.66%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,733 - WARNING - W_R (5.2) slightly > HTL E_v (5.141) - within tolerance
-2025-09-21 15:05:19,733 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:19,747 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,789 - INFO - PCE prediction (20.65%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,791 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
-2025-09-21 15:05:19,793 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:19,805 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,840 - INFO - PCE prediction (19.11%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,842 - WARNING - W_R (5.2) slightly > HTL E_v (5.155) - within tolerance
-2025-09-21 15:05:19,842 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:19,854 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,889 - INFO - PCE prediction (20.37%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,893 - WARNING - W_R (5.2) slightly > HTL E_v (5.190) - within tolerance
-2025-09-21 15:05:19,893 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:19,906 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,945 - INFO - PCE prediction (16.71%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,947 - WARNING - W_R (5.2) slightly > HTL E_v (5.118) - within tolerance
-2025-09-21 15:05:19,947 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:19,961 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:19,994 - INFO - PCE prediction (19.45%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:19,998 - WARNING - W_R (5.2) slightly > HTL E_v (5.149) - within tolerance
-2025-09-21 15:05:19,998 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,010 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:20,046 - INFO - PCE prediction (10.37%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:20,048 - WARNING - W_R (5.2) slightly > HTL E_v (5.104) - within tolerance
-2025-09-21 15:05:20,048 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,059 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:20,097 - INFO - PCE prediction (16.66%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:20,099 - WARNING - W_R (5.2) slightly > HTL E_v (5.135) - within tolerance
-2025-09-21 15:05:20,099 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,111 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:20,147 - INFO - PCE prediction (10.57%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:20,151 - WARNING - W_R (5.2) slightly > HTL E_v (5.129) - within tolerance
-2025-09-21 15:05:20,151 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,164 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:20,199 - INFO - PCE prediction (10.26%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:20,201 - WARNING - W_R (5.2) slightly > HTL E_v (5.199) - within tolerance
-2025-09-21 15:05:20,201 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,217 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:20,249 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:20,253 - WARNING - W_R (5.2) slightly > HTL E_v (5.173) - within tolerance
-2025-09-21 15:05:20,253 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,265 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:20,311 - INFO - PCE prediction (19.99%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:20,313 - WARNING - W_R (5.2) slightly > HTL E_v (5.195) - within tolerance
-2025-09-21 15:05:20,315 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,331 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:20,375 - INFO - PCE prediction (2.30%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:20,377 - WARNING - W_R (5.2) slightly > HTL E_v (5.146) - within tolerance
-2025-09-21 15:05:20,378 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,391 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:20,424 - INFO - PCE prediction (16.88%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:20,428 - WARNING - W_R (5.2) slightly > HTL E_v (5.112) - within tolerance
-2025-09-21 15:05:20,428 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,441 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:20,481 - INFO - PCE prediction (20.76%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:20,485 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-21 15:05:20,485 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,498 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:20,536 - INFO - PCE prediction (19.11%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:20,538 - WARNING - W_R (5.2) slightly > HTL E_v (5.136) - within tolerance
-2025-09-21 15:05:20,538 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,550 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:20,584 - INFO - PCE prediction (10.54%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:20,588 - WARNING - W_R (5.2) slightly > HTL E_v (5.123) - within tolerance
-2025-09-21 15:05:20,588 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,600 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:20,635 - INFO - PCE prediction (19.15%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:20,639 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-21 15:05:20,639 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,653 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:20,688 - INFO - PCE prediction (0.94%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:20,692 - WARNING - W_R (5.2) slightly > HTL E_v (5.168) - within tolerance
-2025-09-21 15:05:20,693 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,708 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:20,743 - INFO - PCE prediction (9.54%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:20,745 - WARNING - W_R (5.2) slightly > HTL E_v (5.149) - within tolerance
-2025-09-21 15:05:20,745 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,761 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:20,801 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:20,805 - WARNING - W_R (5.2) slightly > HTL E_v (5.189) - within tolerance
-2025-09-21 15:05:20,806 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,820 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:20,858 - INFO - PCE prediction (17.73%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:20,860 - WARNING - W_R (5.2) slightly > HTL E_v (5.146) - within tolerance
-2025-09-21 15:05:20,860 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,874 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:20,918 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:20,922 - WARNING - W_R (5.2) slightly > HTL E_v (5.163) - within tolerance
-2025-09-21 15:05:20,923 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,935 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:20,969 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:20,973 - WARNING - W_R (5.2) slightly > HTL E_v (5.160) - within tolerance
-2025-09-21 15:05:20,973 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:20,985 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,022 - INFO - PCE prediction (1.03%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,024 - WARNING - W_R (5.2) slightly > HTL E_v (5.113) - within tolerance
-2025-09-21 15:05:21,024 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:21,037 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,069 - INFO - PCE prediction (19.31%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,073 - WARNING - W_R (5.2) slightly > HTL E_v (5.180) - within tolerance
-2025-09-21 15:05:21,073 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:21,086 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,119 - INFO - PCE prediction (10.65%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,123 - WARNING - W_R (5.2) slightly > HTL E_v (5.184) - within tolerance
-2025-09-21 15:05:21,123 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:21,136 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,174 - INFO - PCE prediction (9.84%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,176 - WARNING - W_R (5.2) slightly > HTL E_v (5.165) - within tolerance
-2025-09-21 15:05:21,177 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:21,194 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,232 - INFO - PCE prediction (10.49%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,235 - WARNING - W_R (5.2) slightly > HTL E_v (5.155) - within tolerance
-2025-09-21 15:05:21,235 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:21,248 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,285 - INFO - PCE prediction (1.01%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,289 - WARNING - W_R (5.2) slightly > HTL E_v (5.174) - within tolerance
-2025-09-21 15:05:21,291 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:21,303 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,339 - INFO - PCE prediction (10.86%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,341 - WARNING - W_R (5.2) slightly > HTL E_v (5.143) - within tolerance
-2025-09-21 15:05:21,343 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:21,355 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,389 - INFO - PCE prediction (1.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,393 - WARNING - W_R (5.2) slightly > HTL E_v (5.191) - within tolerance
-2025-09-21 15:05:21,393 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:21,406 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,439 - INFO - PCE prediction (20.11%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,443 - WARNING - W_R (5.2) slightly > HTL E_v (5.120) - within tolerance
-2025-09-21 15:05:21,443 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:21,455 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,491 - INFO - PCE prediction (10.41%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,493 - WARNING - W_R (5.2) slightly > HTL E_v (5.151) - within tolerance
-2025-09-21 15:05:21,493 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:21,506 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,541 - INFO - PCE prediction (24.19%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,543 - WARNING - W_R (5.2) slightly > HTL E_v (5.119) - within tolerance
-2025-09-21 15:05:21,543 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:21,556 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,591 - INFO - PCE prediction (19.36%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,593 - WARNING - W_R (5.2) slightly > HTL E_v (5.139) - within tolerance
-2025-09-21 15:05:21,593 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:21,609 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,644 - INFO - PCE prediction (1.01%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,646 - WARNING - W_R (5.2) slightly > HTL E_v (5.164) - within tolerance
-2025-09-21 15:05:21,646 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:21,658 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,697 - INFO - PCE prediction (11.66%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,701 - WARNING - W_R (5.2) slightly > HTL E_v (5.168) - within tolerance
-2025-09-21 15:05:21,701 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:21,718 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,759 - INFO - PCE prediction (10.72%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,762 - WARNING - W_R (5.2) slightly > HTL E_v (5.128) - within tolerance
-2025-09-21 15:05:21,763 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:21,777 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,815 - INFO - PCE prediction (18.07%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,819 - WARNING - W_R (5.2) slightly > HTL E_v (5.157) - within tolerance
-2025-09-21 15:05:21,819 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:21,838 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,879 - INFO - PCE prediction (17.39%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,881 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-21 15:05:21,881 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:21,896 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,934 - INFO - PCE prediction (12.02%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,936 - WARNING - W_R (5.2) slightly > HTL E_v (5.171) - within tolerance
-2025-09-21 15:05:21,938 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:21,954 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:21,996 - INFO - PCE prediction (1.03%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:21,998 - WARNING - W_R (5.2) slightly > HTL E_v (5.120) - within tolerance
-2025-09-21 15:05:21,998 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:22,011 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:22,046 - INFO - PCE prediction (19.54%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:22,050 - WARNING - W_R (5.2) slightly > HTL E_v (5.132) - within tolerance
-2025-09-21 15:05:22,050 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:22,064 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:22,113 - INFO - PCE prediction (10.76%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:22,114 - WARNING - W_R (5.2) slightly > HTL E_v (5.113) - within tolerance
-2025-09-21 15:05:22,114 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:22,126 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:22,162 - INFO - PCE prediction (1.03%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:22,164 - WARNING - W_R (5.2) slightly > HTL E_v (5.105) - within tolerance
-2025-09-21 15:05:22,164 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:22,178 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:22,212 - INFO - PCE prediction (19.89%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:22,216 - WARNING - W_R (5.2) slightly > HTL E_v (5.193) - within tolerance
-2025-09-21 15:05:22,216 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:22,228 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:22,267 - INFO - PCE prediction (23.23%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:22,267 - WARNING - W_R (5.2) slightly > HTL E_v (5.181) - within tolerance
-2025-09-21 15:05:22,270 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:22,281 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:22,319 - INFO - PCE prediction (19.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:22,321 - WARNING - W_R (5.2) slightly > HTL E_v (5.160) - within tolerance
-2025-09-21 15:05:22,321 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:22,335 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:22,370 - INFO - PCE prediction (18.32%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:22,372 - WARNING - W_R (5.2) slightly > HTL E_v (5.125) - within tolerance
-2025-09-21 15:05:22,372 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:22,386 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:22,424 - INFO - PCE prediction (19.47%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:22,426 - WARNING - W_R (5.2) slightly > HTL E_v (5.129) - within tolerance
-2025-09-21 15:05:22,426 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:22,440 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:22,478 - INFO - PCE prediction (10.33%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:22,480 - WARNING - W_R (5.2) slightly > HTL E_v (5.167) - within tolerance
-2025-09-21 15:05:22,480 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:22,493 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:22,531 - INFO - PCE prediction (20.68%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:22,533 - WARNING - W_R (5.2) slightly > HTL E_v (5.103) - within tolerance
-2025-09-21 15:05:22,534 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:22,550 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:22,587 - INFO - PCE prediction (10.84%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:22,588 - WARNING - W_R (5.2) slightly > HTL E_v (5.136) - within tolerance
-2025-09-21 15:05:22,590 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-21 15:05:22,603 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-21 15:05:22,637 - INFO - PCE prediction (0.98%) is within S-Q limit (33.7%) [VALID]
-2025-09-21 15:05:22,639 - WARNING - W_R (5.2) slightly > HTL E_v (5.124) - within tolerance
-2025-09-21 15:05:22,639 - INFO - Calculating derived features (Script 7 compatible)...
+2025-09-21 15:20:37,444 - WARNING - W_R (5.2) slightly > HTL E_v (5.184) - within tolerance
+2025-09-21 15:20:37,444 - INFO - Calculating derived features (Script 7 compatible)...
+2025-09-21 15:20:37,457 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
+2025-09-21 15:20:37,492 - INFO - PCE prediction (17.04%) is within S-Q limit (33.7%) [VALID]
+2025-09-21 15:20:37,494 - WARNING - W_R (5.2) slightly > HTL E_v (5.160) - within tolerance
+2025-09-21 15:20:37,542 - WARNING - W_R (5.2) slightly > HTL E_v (5.163) - within tolerance
+2025-09-21 15:20:37,592 - WARNING - W_R (5.2) slightly > HTL E_v (5.174) - within tolerance
+2025-09-21 15:20:37,646 - WARNING - W_R (5.2) slightly > HTL E_v (5.182) - within tolerance
+2025-09-21 15:20:37,695 - WARNING - W_R (5.2) slightly > HTL E_v (5.107) - within tolerance
+2025-09-21 15:20:37,745 - WARNING - W_R (5.2) slightly > HTL E_v (5.110) - within tolerance
+2025-09-21 15:20:37,791 - WARNING - W_R (5.2) slightly > HTL E_v (5.170) - within tolerance
+2025-09-21 15:20:37,841 - WARNING - W_R (5.2) slightly > HTL E_v (5.145) - within tolerance
+2025-09-21 15:20:37,895 - WARNING - W_R (5.2) slightly > HTL E_v (5.147) - within tolerance
+2025-09-21 15:20:37,946 - WARNING - W_R (5.2) slightly > HTL E_v (5.137) - within tolerance
+2025-09-21 15:20:37,998 - WARNING - W_R (5.2) slightly > HTL E_v (5.199) - within tolerance
+2025-09-21 15:20:38,049 - WARNING - W_R (5.2) slightly > HTL E_v (5.192) - within tolerance
+2025-09-21 15:20:38,096 - WARNING - W_R (5.2) slightly > HTL E_v (5.111) - within tolerance
+2025-09-21 15:20:38,146 - WARNING - W_R (5.2) slightly > HTL E_v (5.125) - within tolerance
+2025-09-21 15:20:38,194 - WARNING - W_R (5.2) slightly > HTL E_v (5.155) - within tolerance
+2025-09-21 15:20:38,241 - WARNING - W_R (5.2) slightly > HTL E_v (5.181) - within tolerance
+2025-09-21 15:20:38,289 - WARNING - W_R (5.2) slightly > HTL E_v (5.134) - within tolerance
+2025-09-21 15:20:38,339 - WARNING - W_R (5.2) slightly > HTL E_v (5.141) - within tolerance
+2025-09-21 15:20:38,388 - WARNING - W_R (5.2) slightly > HTL E_v (5.196) - within tolerance
+2025-09-21 15:20:38,439 - WARNING - W_R (5.2) slightly > HTL E_v (5.177) - within tolerance
+2025-09-21 15:20:38,487 - WARNING - W_R (5.2) slightly > HTL E_v (5.145) - within tolerance
+2025-09-21 15:20:38,535 - WARNING - W_R (5.2) slightly > HTL E_v (5.179) - within tolerance
+2025-09-21 15:20:38,585 - WARNING - W_R (5.2) slightly > HTL E_v (5.197) - within tolerance
+2025-09-21 15:20:38,632 - WARNING - W_R (5.2) slightly > HTL E_v (5.127) - within tolerance
+2025-09-21 15:20:38,682 - WARNING - W_R (5.2) slightly > HTL E_v (5.101) - within tolerance
+2025-09-21 15:20:38,734 - WARNING - W_R (5.2) slightly > HTL E_v (5.156) - within tolerance
+2025-09-21 15:20:38,784 - WARNING - W_R (5.2) slightly > HTL E_v (5.121) - within tolerance
+2025-09-21 15:20:38,834 - WARNING - W_R (5.2) slightly > HTL E_v (5.148) - within tolerance
+2025-09-21 15:20:38,882 - WARNING - W_R (5.2) slightly > HTL E_v (5.123) - within tolerance
+2025-09-21 15:20:38,930 - WARNING - W_R (5.2) slightly > HTL E_v (5.153) - within tolerance
+2025-09-21 15:20:38,984 - WARNING - W_R (5.2) slightly > HTL E_v (5.109) - within tolerance
+2025-09-21 15:20:39,073 - WARNING - W_R (5.2) slightly > HTL E_v (5.133) - within tolerance
+2025-09-21 15:20:39,184 - WARNING - W_R (5.2) slightly > HTL E_v (5.111) - within tolerance
+2025-09-21 15:20:39,239 - WARNING - W_R (5.2) slightly > HTL E_v (5.154) - within tolerance
+2025-09-21 15:20:39,299 - WARNING - W_R (5.2) slightly > HTL E_v (5.176) - within tolerance
+2025-09-21 15:20:39,351 - WARNING - W_R (5.2) slightly > HTL E_v (5.115) - within tolerance
+2025-09-21 15:20:39,401 - WARNING - W_R (5.2) slightly > HTL E_v (5.130) - within tolerance
+2025-09-21 15:20:39,449 - WARNING - W_R (5.2) slightly > HTL E_v (5.127) - within tolerance
+2025-09-21 15:20:39,500 - WARNING - W_R (5.2) slightly > HTL E_v (5.190) - within tolerance
+2025-09-21 15:20:39,550 - WARNING - W_R (5.2) slightly > HTL E_v (5.161) - within tolerance
+2025-09-21 15:20:39,599 - WARNING - W_R (5.2) slightly > HTL E_v (5.140) - within tolerance
+2025-09-21 15:20:39,646 - WARNING - W_R (5.2) slightly > HTL E_v (5.124) - within tolerance
+2025-09-21 15:20:39,694 - WARNING - W_R (5.2) slightly > HTL E_v (5.137) - within tolerance
+2025-09-21 15:20:39,746 - WARNING - W_R (5.2) slightly > HTL E_v (5.117) - within tolerance
+2025-09-21 15:20:39,799 - WARNING - W_R (5.2) slightly > HTL E_v (5.141) - within tolerance
+2025-09-21 15:20:39,854 - WARNING - W_R (5.2) slightly > HTL E_v (5.151) - within tolerance
+2025-09-21 15:20:39,902 - WARNING - W_R (5.2) slightly > HTL E_v (5.198) - within tolerance
+2025-09-21 15:20:39,951 - WARNING - W_R (5.2) slightly > HTL E_v (5.177) - within tolerance
+2025-09-21 15:20:40,000 - WARNING - W_R (5.2) slightly > HTL E_v (5.105) - within tolerance
+2025-09-21 15:20:40,054 - WARNING - W_R (5.2) slightly > HTL E_v (5.162) - within tolerance
+2025-09-21 15:20:40,102 - WARNING - W_R (5.2) slightly > HTL E_v (5.186) - within tolerance
+2025-09-21 15:20:40,152 - WARNING - W_R (5.2) slightly > HTL E_v (5.144) - within tolerance
+2025-09-21 15:20:40,202 - WARNING - W_R (5.2) slightly > HTL E_v (5.158) - within tolerance
+2025-09-21 15:20:40,256 - WARNING - W_R (5.2) slightly > HTL E_v (5.119) - within tolerance
+2025-09-21 15:20:40,305 - WARNING - W_R (5.2) slightly > HTL E_v (5.188) - within tolerance
+2025-09-21 15:20:40,353 - WARNING - W_R (5.2) slightly > HTL E_v (5.150) - within tolerance
+2025-09-21 15:20:40,402 - WARNING - W_R (5.2) slightly > HTL E_v (5.173) - within tolerance
+2025-09-21 15:20:40,451 - WARNING - W_R (5.2) slightly > HTL E_v (5.135) - within tolerance
+2025-09-21 15:20:40,499 - WARNING - W_R (5.2) slightly > HTL E_v (5.190) - within tolerance
+2025-09-21 15:20:40,547 - WARNING - W_R (5.2) slightly > HTL E_v (5.170) - within tolerance
+2025-09-21 15:20:40,599 - WARNING - W_R (5.2) slightly > HTL E_v (5.165) - within tolerance
+2025-09-21 15:20:40,649 - WARNING - W_R (5.2) slightly > HTL E_v (5.118) - within tolerance
+2025-09-21 15:20:40,697 - WARNING - W_R (5.2) slightly > HTL E_v (5.193) - within tolerance
+2025-09-21 15:20:40,748 - WARNING - W_R (5.2) slightly > HTL E_v (5.104) - within tolerance
+2025-09-21 15:20:40,805 - WARNING - W_R (5.2) slightly > HTL E_v (5.120) - within tolerance
+2025-09-21 15:20:40,871 - WARNING - W_R (5.2) slightly > HTL E_v (5.135) - within tolerance
+2025-09-21 15:20:40,944 - WARNING - W_R (5.2) slightly > HTL E_v (5.199) - within tolerance
+2025-09-21 15:20:41,012 - WARNING - W_R (5.2) slightly > HTL E_v (5.102) - within tolerance
+2025-09-21 15:20:41,069 - WARNING - W_R (5.2) slightly > HTL E_v (5.195) - within tolerance
+2025-09-21 15:20:41,130 - WARNING - W_R (5.2) slightly > HTL E_v (5.186) - within tolerance
+2025-09-21 15:20:41,192 - WARNING - W_R (5.2) slightly > HTL E_v (5.168) - within tolerance
+2025-09-21 15:20:41,314 - WARNING - W_R (5.2) slightly > HTL E_v (5.139) - within tolerance
+2025-09-21 15:20:41,408 - WARNING - W_R (5.2) slightly > HTL E_v (5.116) - within tolerance
+2025-09-21 15:20:41,468 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:41,517 - WARNING - W_R (5.2) slightly > HTL E_v (5.184) - within tolerance
+2025-09-21 15:20:41,566 - WARNING - W_R (5.2) slightly > HTL E_v (5.166) - within tolerance
+2025-09-21 15:20:41,617 - WARNING - W_R (5.2) slightly > HTL E_v (5.149) - within tolerance
+2025-09-21 15:20:41,665 - WARNING - W_R (5.2) slightly > HTL E_v (5.106) - within tolerance
+2025-09-21 15:20:41,715 - WARNING - W_R (5.2) slightly > HTL E_v (5.138) - within tolerance
+2025-09-21 15:20:41,769 - WARNING - W_R (5.2) slightly > HTL E_v (5.131) - within tolerance
+2025-09-21 15:20:41,820 - WARNING - W_R (5.2) slightly > HTL E_v (5.102) - within tolerance
+2025-09-21 15:20:41,868 - WARNING - W_R (5.2) slightly > HTL E_v (5.113) - within tolerance
+2025-09-21 15:20:41,917 - WARNING - W_R (5.2) slightly > HTL E_v (5.180) - within tolerance
+2025-09-21 15:20:41,969 - WARNING - W_R (5.2) slightly > HTL E_v (5.114) - within tolerance
+2025-09-21 15:20:42,019 - WARNING - W_R (5.2) slightly > HTL E_v (5.187) - within tolerance
+2025-09-21 15:20:42,068 - WARNING - W_R (5.2) slightly > HTL E_v (5.189) - within tolerance
+2025-09-21 15:20:42,117 - WARNING - W_R (5.2) slightly > HTL E_v (5.157) - within tolerance
+2025-09-21 15:20:42,165 - WARNING - W_R (5.2) slightly > HTL E_v (5.178) - within tolerance
+2025-09-21 15:20:42,219 - WARNING - W_R (5.2) slightly > HTL E_v (5.125) - within tolerance
+2025-09-21 15:20:42,267 - WARNING - W_R (5.2) slightly > HTL E_v (5.143) - within tolerance
+2025-09-21 15:20:42,317 - WARNING - W_R (5.2) slightly > HTL E_v (5.130) - within tolerance
+2025-09-21 15:20:42,365 - WARNING - W_R (5.2) slightly > HTL E_v (5.151) - within tolerance
+2025-09-21 15:20:42,417 - WARNING - W_R (5.2) slightly > HTL E_v (5.147) - within tolerance
+2025-09-21 15:20:42,467 - WARNING - W_R (5.2) slightly > HTL E_v (5.167) - within tolerance
+2025-09-21 15:20:42,518 - WARNING - W_R (5.2) slightly > HTL E_v (5.164) - within tolerance
+2025-09-21 15:20:42,567 - WARNING - W_R (5.2) slightly > HTL E_v (5.195) - within tolerance
+2025-09-21 15:20:42,614 - WARNING - W_R (5.2) slightly > HTL E_v (5.128) - within tolerance
+2025-09-21 15:20:42,665 - WARNING - W_R (5.2) slightly > HTL E_v (5.171) - within tolerance
+2025-09-21 15:20:42,713 - WARNING - W_R (5.2) slightly > HTL E_v (5.120) - within tolerance
+2025-09-21 15:20:42,761 - WARNING - W_R (5.2) slightly > HTL E_v (5.132) - within tolerance
+2025-09-21 15:20:42,812 - WARNING - W_R (5.2) slightly > HTL E_v (5.158) - within tolerance
+2025-09-21 15:20:42,862 - WARNING - W_R (5.2) slightly > HTL E_v (5.113) - within tolerance
+2025-09-21 15:20:42,911 - WARNING - W_R (5.2) slightly > HTL E_v (5.166) - within tolerance
+2025-09-21 15:20:42,961 - WARNING - W_R (5.2) slightly > HTL E_v (5.193) - within tolerance
+2025-09-21 15:20:43,011 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
+2025-09-21 15:20:43,059 - WARNING - W_R (5.2) slightly > HTL E_v (5.108) - within tolerance
+2025-09-21 15:20:43,111 - WARNING - W_R (5.2) slightly > HTL E_v (5.175) - within tolerance
+2025-09-21 15:20:43,161 - WARNING - W_R (5.2) slightly > HTL E_v (5.182) - within tolerance
+2025-09-21 15:20:43,214 - WARNING - W_R (5.2) slightly > HTL E_v (5.172) - within tolerance
+2025-09-21 15:20:43,273 - WARNING - W_R (5.2) slightly > HTL E_v (5.103) - within tolerance
+2025-09-21 15:20:43,325 - WARNING - W_R (5.2) slightly > HTL E_v (5.153) - within tolerance
+2025-09-21 15:20:43,375 - WARNING - W_R (5.2) slightly > HTL E_v (5.150) - within tolerance
+2025-09-21 15:20:43,421 - WARNING - W_R (5.2) slightly > HTL E_v (5.104) - within tolerance
+2025-09-21 15:20:43,473 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
+2025-09-21 15:20:43,524 - WARNING - W_R (5.2) slightly > HTL E_v (5.174) - within tolerance
+2025-09-21 15:20:43,578 - WARNING - W_R (5.2) slightly > HTL E_v (5.181) - within tolerance
+2025-09-21 15:20:43,632 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
+2025-09-21 15:20:43,682 - WARNING - W_R (5.2) slightly > HTL E_v (5.190) - within tolerance
+2025-09-21 15:20:43,736 - WARNING - W_R (5.2) slightly > HTL E_v (5.170) - within tolerance
+2025-09-21 15:20:43,783 - WARNING - W_R (5.2) slightly > HTL E_v (5.145) - within tolerance
+2025-09-21 15:20:43,834 - WARNING - W_R (5.2) slightly > HTL E_v (5.147) - within tolerance
+2025-09-21 15:20:43,883 - WARNING - W_R (5.2) slightly > HTL E_v (5.185) - within tolerance
+2025-09-21 15:20:43,930 - WARNING - W_R (5.2) slightly > HTL E_v (5.137) - within tolerance
+2025-09-21 15:20:43,981 - WARNING - W_R (5.2) slightly > HTL E_v (5.199) - within tolerance
+2025-09-21 15:20:44,033 - WARNING - W_R (5.2) slightly > HTL E_v (5.134) - within tolerance
+2025-09-21 15:20:44,086 - WARNING - W_R (5.2) slightly > HTL E_v (5.192) - within tolerance
+2025-09-21 15:20:44,135 - WARNING - W_R (5.2) slightly > HTL E_v (5.177) - within tolerance
+2025-09-21 15:20:44,187 - WARNING - W_R (5.2) slightly > HTL E_v (5.151) - within tolerance
+2025-09-21 15:20:44,244 - WARNING - W_R (5.2) slightly > HTL E_v (5.155) - within tolerance
+2025-09-21 15:20:44,298 - WARNING - W_R (5.2) slightly > HTL E_v (5.170) - within tolerance
+2025-09-21 15:20:44,348 - WARNING - W_R (5.2) slightly > HTL E_v (5.145) - within tolerance
+2025-09-21 15:20:44,399 - WARNING - W_R (5.2) slightly > HTL E_v (5.163) - within tolerance
+2025-09-21 15:20:44,446 - WARNING - W_R (5.2) slightly > HTL E_v (5.131) - within tolerance
+2025-09-21 15:20:44,494 - WARNING - W_R (5.2) slightly > HTL E_v (5.200) - within tolerance
+2025-09-21 15:20:44,543 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
+2025-09-21 15:20:44,595 - WARNING - W_R (5.2) slightly > HTL E_v (5.179) - within tolerance
+2025-09-21 15:20:44,644 - WARNING - W_R (5.2) slightly > HTL E_v (5.183) - within tolerance
+2025-09-21 15:20:44,697 - WARNING - W_R (5.2) slightly > HTL E_v (5.128) - within tolerance
+2025-09-21 15:20:44,749 - WARNING - W_R (5.2) slightly > HTL E_v (5.199) - within tolerance
+2025-09-21 15:20:44,802 - WARNING - W_R (5.2) slightly > HTL E_v (5.156) - within tolerance
+2025-09-21 15:20:44,851 - WARNING - W_R (5.2) slightly > HTL E_v (5.121) - within tolerance
+2025-09-21 15:20:44,898 - WARNING - W_R (5.2) slightly > HTL E_v (5.148) - within tolerance
+2025-09-21 15:20:44,949 - WARNING - W_R (5.2) slightly > HTL E_v (5.114) - within tolerance
+2025-09-21 15:20:44,998 - WARNING - W_R (5.2) slightly > HTL E_v (5.172) - within tolerance
+2025-09-21 15:20:45,049 - WARNING - W_R (5.2) slightly > HTL E_v (5.195) - within tolerance
+2025-09-21 15:20:45,101 - WARNING - W_R (5.2) slightly > HTL E_v (5.109) - within tolerance
+2025-09-21 15:20:45,156 - WARNING - W_R (5.2) slightly > HTL E_v (5.154) - within tolerance
+2025-09-21 15:20:45,206 - WARNING - W_R (5.2) slightly > HTL E_v (5.175) - within tolerance
+2025-09-21 15:20:45,259 - WARNING - W_R (5.2) slightly > HTL E_v (5.176) - within tolerance
+2025-09-21 15:20:45,310 - WARNING - W_R (5.2) slightly > HTL E_v (5.151) - within tolerance
+2025-09-21 15:20:45,361 - WARNING - W_R (5.2) slightly > HTL E_v (5.115) - within tolerance
+2025-09-21 15:20:45,413 - WARNING - W_R (5.2) slightly > HTL E_v (5.141) - within tolerance
+2025-09-21 15:20:45,465 - WARNING - W_R (5.2) slightly > HTL E_v (5.127) - within tolerance
+2025-09-21 15:20:45,518 - WARNING - W_R (5.2) slightly > HTL E_v (5.142) - within tolerance
+2025-09-21 15:20:45,570 - WARNING - W_R (5.2) slightly > HTL E_v (5.118) - within tolerance
+2025-09-21 15:20:45,619 - WARNING - W_R (5.2) slightly > HTL E_v (5.110) - within tolerance
+2025-09-21 15:20:45,668 - WARNING - W_R (5.2) slightly > HTL E_v (5.102) - within tolerance
+2025-09-21 15:20:45,718 - WARNING - W_R (5.2) slightly > HTL E_v (5.188) - within tolerance
+2025-09-21 15:20:45,770 - WARNING - W_R (5.2) slightly > HTL E_v (5.163) - within tolerance
+2025-09-21 15:20:45,819 - WARNING - W_R (5.2) slightly > HTL E_v (5.131) - within tolerance
+2025-09-21 15:20:45,869 - WARNING - W_R (5.2) slightly > HTL E_v (5.117) - within tolerance
+2025-09-21 15:20:45,921 - WARNING - W_R (5.2) slightly > HTL E_v (5.143) - within tolerance
+2025-09-21 15:20:45,971 - WARNING - W_R (5.2) slightly > HTL E_v (5.139) - within tolerance
+2025-09-21 15:20:46,019 - WARNING - W_R (5.2) slightly > HTL E_v (5.171) - within tolerance
+2025-09-21 15:20:46,071 - WARNING - W_R (5.2) slightly > HTL E_v (5.158) - within tolerance
+2025-09-21 15:20:46,119 - WARNING - W_R (5.2) slightly > HTL E_v (5.166) - within tolerance
+2025-09-21 15:20:46,170 - WARNING - W_R (5.2) slightly > HTL E_v (5.151) - within tolerance
+2025-09-21 15:20:46,219 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
+2025-09-21 15:20:46,268 - WARNING - W_R (5.2) slightly > HTL E_v (5.169) - within tolerance
+2025-09-21 15:20:46,320 - WARNING - W_R (5.2) slightly > HTL E_v (5.136) - within tolerance
+2025-09-21 15:20:46,411 - WARNING - W_R (5.2) slightly > HTL E_v (5.163) - within tolerance
+2025-09-21 15:20:46,463 - WARNING - W_R (5.2) slightly > HTL E_v (5.162) - within tolerance
+2025-09-21 15:20:46,515 - WARNING - W_R (5.2) slightly > HTL E_v (5.164) - within tolerance
+2025-09-21 15:20:46,566 - WARNING - W_R (5.2) slightly > HTL E_v (5.188) - within tolerance
+2025-09-21 15:20:46,618 - WARNING - W_R (5.2) slightly > HTL E_v (5.158) - within tolerance
+2025-09-21 15:20:46,668 - WARNING - W_R (5.2) slightly > HTL E_v (5.128) - within tolerance
+2025-09-21 15:20:46,716 - WARNING - W_R (5.2) slightly > HTL E_v (5.149) - within tolerance
+2025-09-21 15:20:46,769 - WARNING - W_R (5.2) slightly > HTL E_v (5.124) - within tolerance
+2025-09-21 15:20:46,818 - WARNING - W_R (5.2) slightly > HTL E_v (5.146) - within tolerance
+2025-09-21 15:20:46,868 - WARNING - W_R (5.2) slightly > HTL E_v (5.190) - within tolerance
+2025-09-21 15:20:46,925 - WARNING - W_R (5.2) slightly > HTL E_v (5.141) - within tolerance
+2025-09-21 15:20:46,980 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
+2025-09-21 15:20:47,029 - WARNING - W_R (5.2) slightly > HTL E_v (5.155) - within tolerance
+2025-09-21 15:20:47,079 - WARNING - W_R (5.2) slightly > HTL E_v (5.190) - within tolerance
+2025-09-21 15:20:47,131 - WARNING - W_R (5.2) slightly > HTL E_v (5.118) - within tolerance
+2025-09-21 15:20:47,181 - WARNING - W_R (5.2) slightly > HTL E_v (5.149) - within tolerance
+2025-09-21 15:20:47,229 - WARNING - W_R (5.2) slightly > HTL E_v (5.104) - within tolerance
+2025-09-21 15:20:47,280 - WARNING - W_R (5.2) slightly > HTL E_v (5.135) - within tolerance
+2025-09-21 15:20:47,330 - WARNING - W_R (5.2) slightly > HTL E_v (5.129) - within tolerance
+2025-09-21 15:20:47,378 - WARNING - W_R (5.2) slightly > HTL E_v (5.199) - within tolerance
+2025-09-21 15:20:47,428 - WARNING - W_R (5.2) slightly > HTL E_v (5.173) - within tolerance
+2025-09-21 15:20:47,482 - WARNING - W_R (5.2) slightly > HTL E_v (5.195) - within tolerance
+2025-09-21 15:20:47,530 - WARNING - W_R (5.2) slightly > HTL E_v (5.146) - within tolerance
+2025-09-21 15:20:47,579 - WARNING - W_R (5.2) slightly > HTL E_v (5.112) - within tolerance
+2025-09-21 15:20:47,631 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:47,682 - WARNING - W_R (5.2) slightly > HTL E_v (5.136) - within tolerance
+2025-09-21 15:20:47,731 - WARNING - W_R (5.2) slightly > HTL E_v (5.123) - within tolerance
+2025-09-21 15:20:47,784 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:47,834 - WARNING - W_R (5.2) slightly > HTL E_v (5.168) - within tolerance
+2025-09-21 15:20:47,884 - WARNING - W_R (5.2) slightly > HTL E_v (5.149) - within tolerance
+2025-09-21 15:20:47,936 - WARNING - W_R (5.2) slightly > HTL E_v (5.189) - within tolerance
+2025-09-21 15:20:47,984 - WARNING - W_R (5.2) slightly > HTL E_v (5.146) - within tolerance
+2025-09-21 15:20:48,037 - WARNING - W_R (5.2) slightly > HTL E_v (5.163) - within tolerance
+2025-09-21 15:20:48,086 - WARNING - W_R (5.2) slightly > HTL E_v (5.160) - within tolerance
+2025-09-21 15:20:48,138 - WARNING - W_R (5.2) slightly > HTL E_v (5.113) - within tolerance
+2025-09-21 15:20:48,188 - WARNING - W_R (5.2) slightly > HTL E_v (5.180) - within tolerance
+2025-09-21 15:20:48,241 - WARNING - W_R (5.2) slightly > HTL E_v (5.184) - within tolerance
+2025-09-21 15:20:48,288 - WARNING - W_R (5.2) slightly > HTL E_v (5.165) - within tolerance
+2025-09-21 15:20:48,336 - WARNING - W_R (5.2) slightly > HTL E_v (5.155) - within tolerance
+2025-09-21 15:20:48,386 - WARNING - W_R (5.2) slightly > HTL E_v (5.174) - within tolerance
+2025-09-21 15:20:48,440 - WARNING - W_R (5.2) slightly > HTL E_v (5.143) - within tolerance
+2025-09-21 15:20:48,492 - WARNING - W_R (5.2) slightly > HTL E_v (5.191) - within tolerance
+2025-09-21 15:20:48,540 - WARNING - W_R (5.2) slightly > HTL E_v (5.120) - within tolerance
+2025-09-21 15:20:48,590 - WARNING - W_R (5.2) slightly > HTL E_v (5.151) - within tolerance
+2025-09-21 15:20:48,641 - WARNING - W_R (5.2) slightly > HTL E_v (5.119) - within tolerance
+2025-09-21 15:20:48,689 - WARNING - W_R (5.2) slightly > HTL E_v (5.139) - within tolerance
+2025-09-21 15:20:48,742 - WARNING - W_R (5.2) slightly > HTL E_v (5.164) - within tolerance
+2025-09-21 15:20:48,797 - WARNING - W_R (5.2) slightly > HTL E_v (5.168) - within tolerance
+2025-09-21 15:20:48,845 - WARNING - W_R (5.2) slightly > HTL E_v (5.128) - within tolerance
+2025-09-21 15:20:48,898 - WARNING - W_R (5.2) slightly > HTL E_v (5.157) - within tolerance
+2025-09-21 15:20:48,955 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:49,003 - WARNING - W_R (5.2) slightly > HTL E_v (5.171) - within tolerance
+2025-09-21 15:20:49,052 - WARNING - W_R (5.2) slightly > HTL E_v (5.120) - within tolerance
+2025-09-21 15:20:49,102 - WARNING - W_R (5.2) slightly > HTL E_v (5.132) - within tolerance
+2025-09-21 15:20:49,153 - WARNING - W_R (5.2) slightly > HTL E_v (5.113) - within tolerance
+2025-09-21 15:20:49,204 - WARNING - W_R (5.2) slightly > HTL E_v (5.105) - within tolerance
+2025-09-21 15:20:49,256 - WARNING - W_R (5.2) slightly > HTL E_v (5.193) - within tolerance
+2025-09-21 15:20:49,306 - WARNING - W_R (5.2) slightly > HTL E_v (5.181) - within tolerance
+2025-09-21 15:20:49,354 - WARNING - W_R (5.2) slightly > HTL E_v (5.160) - within tolerance
+2025-09-21 15:20:49,418 - WARNING - W_R (5.2) slightly > HTL E_v (5.125) - within tolerance
+2025-09-21 15:20:49,470 - WARNING - W_R (5.2) slightly > HTL E_v (5.129) - within tolerance
+2025-09-21 15:20:49,524 - WARNING - W_R (5.2) slightly > HTL E_v (5.167) - within tolerance
+2025-09-21 15:20:49,576 - WARNING - W_R (5.2) slightly > HTL E_v (5.103) - within tolerance
+2025-09-21 15:20:49,630 - WARNING - W_R (5.2) slightly > HTL E_v (5.136) - within tolerance
+2025-09-21 15:20:49,683 - WARNING - W_R (5.2) slightly > HTL E_v (5.124) - within tolerance
+2025-09-21 15:20:49,735 - WARNING - W_R (5.2) slightly > HTL E_v (5.172) - within tolerance
+2025-09-21 15:20:49,783 - WARNING - W_R (5.2) slightly > HTL E_v (5.145) - within tolerance
+2025-09-21 15:20:49,834 - WARNING - W_R (5.2) slightly > HTL E_v (5.103) - within tolerance
+2025-09-21 15:20:49,883 - WARNING - W_R (5.2) slightly > HTL E_v (5.181) - within tolerance
+2025-09-21 15:20:49,932 - WARNING - W_R (5.2) slightly > HTL E_v (5.169) - within tolerance
+2025-09-21 15:20:49,981 - WARNING - W_R (5.2) slightly > HTL E_v (5.156) - within tolerance
+2025-09-21 15:20:50,030 - WARNING - W_R (5.2) slightly > HTL E_v (5.118) - within tolerance
+2025-09-21 15:20:50,081 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
+2025-09-21 15:20:50,129 - WARNING - W_R (5.2) slightly > HTL E_v (5.160) - within tolerance
+2025-09-21 15:20:50,180 - WARNING - W_R (5.2) slightly > HTL E_v (5.138) - within tolerance
+2025-09-21 15:20:50,228 - WARNING - W_R (5.2) slightly > HTL E_v (5.103) - within tolerance
+2025-09-21 15:20:50,279 - WARNING - W_R (5.2) slightly > HTL E_v (5.164) - within tolerance
+2025-09-21 15:20:50,331 - WARNING - W_R (5.2) slightly > HTL E_v (5.139) - within tolerance
+2025-09-21 15:20:50,383 - WARNING - W_R (5.2) slightly > HTL E_v (5.141) - within tolerance
+2025-09-21 15:20:50,436 - WARNING - W_R (5.2) slightly > HTL E_v (5.190) - within tolerance
+2025-09-21 15:20:50,488 - WARNING - W_R (5.2) slightly > HTL E_v (5.104) - within tolerance
+2025-09-21 15:20:50,539 - WARNING - W_R (5.2) slightly > HTL E_v (5.167) - within tolerance
+2025-09-21 15:20:50,588 - WARNING - W_R (5.2) slightly > HTL E_v (5.147) - within tolerance
+2025-09-21 15:20:50,647 - WARNING - W_R (5.2) slightly > HTL E_v (5.185) - within tolerance
+2025-09-21 15:20:50,699 - WARNING - W_R (5.2) slightly > HTL E_v (5.119) - within tolerance
+2025-09-21 15:20:50,754 - WARNING - W_R (5.2) slightly > HTL E_v (5.199) - within tolerance
+2025-09-21 15:20:50,807 - WARNING - W_R (5.2) slightly > HTL E_v (5.142) - within tolerance
+2025-09-21 15:20:50,858 - WARNING - W_R (5.2) slightly > HTL E_v (5.192) - within tolerance
+2025-09-21 15:20:50,910 - WARNING - W_R (5.2) slightly > HTL E_v (5.153) - within tolerance
+2025-09-21 15:20:50,960 - WARNING - W_R (5.2) slightly > HTL E_v (5.141) - within tolerance
+2025-09-21 15:20:51,015 - WARNING - W_R (5.2) slightly > HTL E_v (5.176) - within tolerance
+2025-09-21 15:20:51,068 - WARNING - W_R (5.2) slightly > HTL E_v (5.144) - within tolerance
+2025-09-21 15:20:51,117 - WARNING - W_R (5.2) slightly > HTL E_v (5.170) - within tolerance
+2025-09-21 15:20:51,165 - WARNING - W_R (5.2) slightly > HTL E_v (5.141) - within tolerance
+2025-09-21 15:20:51,222 - WARNING - W_R (5.2) slightly > HTL E_v (5.196) - within tolerance
+2025-09-21 15:20:51,274 - WARNING - W_R (5.2) slightly > HTL E_v (5.131) - within tolerance
+2025-09-21 15:20:51,323 - WARNING - W_R (5.2) slightly > HTL E_v (5.108) - within tolerance
+2025-09-21 15:20:51,374 - WARNING - W_R (5.2) slightly > HTL E_v (5.197) - within tolerance
+2025-09-21 15:20:51,425 - WARNING - W_R (5.2) slightly > HTL E_v (5.145) - within tolerance
+2025-09-21 15:20:51,475 - WARNING - HARD ITERATION LIMIT REACHED: 500 >= 500
+2025-09-21 15:20:51,475 - WARNING - STOPPING OPTIMIZATION (prevents runaway execution)
+2025-09-21 15:20:52,005 - WARNING - Global optimization failed or poor result: Maximum number of iterations has been exceeded.
+2025-09-21 15:20:52,005 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-21 15:20:52,052 - INFO - 
+=== Optimization Results ===
+2025-09-21 15:20:52,052 - INFO - Optimized Performance - MPP: 145.0912 W/cm², PCE: 14.51%
+2025-09-21 15:20:52,052 - INFO - Optimized Recombination: 1.51e+30
+2025-09-21 15:20:52,052 - INFO - Physics Validation: All physics constraints satisfied
+2025-09-21 15:20:52,052 - INFO - Improvements - MPP: +1380.29%, PCE: +1380.29%, Recombination: -8.21%
+2025-09-21 15:20:52,052 - INFO - 
+=== Step 5: Creating Optimization Visualizations ===
+2025-09-21 15:20:56,159 - INFO - Created optimization table: results/8_optimize_device/6_optimization_table.png
+2025-09-21 15:20:56,159 - INFO - Created optimization visualizations in results/8_optimize_device/
+2025-09-21 15:20:56,159 - INFO - 
+=== Step 6: Saving Optimization Results ===
+2025-09-21 15:20:56,159 - INFO - Created ready-to-use format: example_device_parameters_optimized.json
+2025-09-21 15:20:56,159 - INFO - To test: cp results/8_optimize_device/example_device_parameters_optimized.json example_device_parameters.json
+2025-09-21 15:20:56,159 - INFO - Optimization results saved to results/8_optimize_device/
+2025-09-21 15:20:56,159 - INFO - Optimized parameters: optimized_device_parameters.json
+2025-09-21 15:20:56,159 - INFO - Detailed report: optimization_report.json
+2025-09-21 15:20:56,159 - INFO - Ready-to-use format: example_device_parameters_optimized.json
+2025-09-21 15:20:56,159 - INFO - 
+=== OPTIMIZATION COMPLETE ===
+2025-09-21 15:20:56,159 - INFO - Results saved to: results/8_optimize_device/
+2025-09-21 15:20:56,159 - INFO - Optimized Parameters: optimized_device_parameters.json
+2025-09-21 15:20:56,159 - INFO - Optimization Report: optimization_report.json
+2025-09-21 15:20:56,159 - INFO - Performance Comparison: 1_optimization_comparison.png
+2025-09-21 15:20:56,159 - INFO - Thickness Optimization: 2_thickness_optimization.png
+2025-09-21 15:20:56,159 - INFO - Energy Optimization: 3_energy_optimization.png
+2025-09-21 15:20:56,159 - INFO - Doping Optimization: 4_doping_optimization.png
+2025-09-21 15:20:56,159 - INFO - Improvements Summary: 5_performance_improvements.png
+2025-09-21 15:20:56,159 - INFO - Comprehensive Table: 6_optimization_table.png
+2025-09-21 15:20:56,159 - INFO - 
+=== PERFORMANCE IMPROVEMENTS ===
+2025-09-21 15:20:56,159 - INFO - MPP: +1380.29%
+2025-09-21 15:20:56,159 - INFO - PCE: +1380.29%
+2025-09-21 15:20:56,159 - INFO - Recombination: -8.21%
+2025-09-21 15:20:56,159 - INFO - Status: Device optimization successful and manufacturable!
