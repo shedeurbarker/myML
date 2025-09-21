@@ -1,6 +1,7 @@
 numpy
 matplotlib
 pandas
+xgboost
 scikit-learn==1.6.1
 seaborn
 shap

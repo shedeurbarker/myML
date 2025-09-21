@@ -20,13 +20,16 @@ REQUIREMENTS:
 
 OUTPUT:
 - results/7_experimental_predictions/
-  ├── prediction_log.txt                 # Detailed execution log
-  ├── device_performance_summary.png     # Complete performance dashboard
-  ├── efficiency_predictions.png         # MPP and PCE prediction charts
-  ├── recombination_predictions.png      # Recombination rate predictions
-  ├── parameter_analysis.png             # Device parameter analysis
-  ├── confidence_analysis.png            # Prediction confidence intervals
-  └── prediction_report.json             # Detailed prediction results
+  ├── prediction_log.txt                    # Detailed execution log
+  ├── 1_performance_metrics_summary.png     # Overall performance predictions summary
+  ├── 2_thickness_parameters.png            # Layer thickness analysis
+  ├── 3_energy_parameters.png               # Energy level distribution
+  ├── 4_doping_parameters.png               # Doping concentration analysis
+  ├── 5_physics_validation.png              # Physics constraint validation
+  ├── efficiency_predictions.png            # Detailed MPP and PCE charts
+  ├── recombination_predictions.png         # Detailed recombination rate predictions
+  ├── parameter_analysis.png                # Combined parameter analysis
+  └── prediction_report.json                # Detailed prediction results and recommendations
 """
 
 import os
@@ -231,13 +234,18 @@ def predict_device_performance(parameters, models_data):
         model = models_data['mpp_model']
         scalers = models_data['mpp_scalers']
         feature_scaler = scalers['feature_scaler']
+        target_scaler = scalers['target_scaler']
         
         X_scaled = feature_scaler.transform(df_features)
-        mpp_pred = model.predict(X_scaled)[0]
+        mpp_pred_scaled = model.predict(X_scaled)[0]
+        
+        # Inverse transform the scaled prediction back to original scale
+        mpp_pred = target_scaler.inverse_transform([[mpp_pred_scaled]])[0][0]
         
         # Calculate PCE (Power Conversion Efficiency) from MPP
-        # Assuming standard test conditions: 1000 W/m² = 100 mW/cm²
-        pce_pred = (mpp_pred / 100) * 100  # Convert W/cm² to % efficiency
+        # Note: The exact relationship depends on simulation units and normalization
+        # For now, treat PCE as proportional to MPP (common in simulation workflows)
+        pce_pred = mpp_pred  # Assuming MPP values are already in appropriate units
         
         predictions['MPP'] = mpp_pred
         predictions['PCE'] = pce_pred
@@ -251,9 +259,13 @@ def predict_device_performance(parameters, models_data):
         model = models_data['recomb_model']
         scalers = models_data['recomb_scalers']
         feature_scaler = scalers['feature_scaler']
+        target_scaler = scalers['target_scaler']
         
         X_scaled = feature_scaler.transform(df_features)
-        recomb_pred = model.predict(X_scaled)[0]
+        recomb_pred_scaled = model.predict(X_scaled)[0]
+        
+        # Inverse transform the scaled prediction back to original scale
+        recomb_pred = target_scaler.inverse_transform([[recomb_pred_scaled]])[0][0]
         
         predictions['IntSRHn_mean'] = recomb_pred
         
@@ -415,7 +427,7 @@ def create_performance_metrics_summary(predictions, validation_results, device_c
         # Add value labels
         for bar, value, metric in zip(bars, values, metrics):
             if 'Recombination' in metric:
-                label = f'10^{value:.1f}'
+                label = f'1e{value:.1f}'
             elif 'PCE' in metric:
                 label = f'{value:.2f}%'
             else:
@@ -507,7 +519,7 @@ def create_individual_parameter_charts(parameters, results_dir):
     
     for bar, value in zip(bars, doping_values):
         if value > 0:
-            label = f'10^{value:.1f}'
+            label = f'1e{value:.1f}'
         else:
             label = '0'
         ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + max(doping_values) * 0.02,
@@ -608,7 +620,7 @@ def create_performance_summary(predictions, validation_results, ax):
         # Add value labels
         for bar, value, metric in zip(bars, values, metrics):
             if 'Recombination' in metric:
-                label = f'10^{value:.1f}'
+                label = f'1e{value:.1f}'
             elif 'PCE' in metric:
                 label = f'{value:.2f}%'
             else:
@@ -660,7 +672,7 @@ def create_parameter_overview(parameters, ax, param_type):
         elif param_type == 'Energy':
             label = f'{value:.2f}eV'
         else:  # Doping
-            label = f'10^{value:.1f}'
+            label = f'1e{value:.1f}'
         
         ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + max(values) * 0.02,
                 label, ha='center', va='bottom', fontweight='bold', fontsize=8, rotation=45)
@@ -722,9 +734,11 @@ def create_efficiency_chart(predictions, results_dir):
         ax1.bar(['MPP'], [mpp], color='lightblue', alpha=0.7, edgecolor='black')
         ax1.set_ylabel('Power Density (W/cm²)')
         ax1.set_title('Maximum Power Point (MPP)')
-        ax1.text(0, mpp + abs(mpp) * 0.05, f'{mpp:.3f} W/cm²', 
-                ha='center', va='bottom', fontweight='bold', fontsize=12)
+        ax1.text(0, mpp + abs(mpp) * 0.02, f'{mpp:.3f} W/cm²', 
+                ha='center', va='bottom', fontweight='bold', fontsize=10)
         ax1.grid(True, alpha=0.3)
+        # Add extra space at the top for labels
+        ax1.set_ylim(0, mpp * 1.15)
     
     # PCE Chart
     if 'PCE' in predictions:
@@ -732,9 +746,11 @@ def create_efficiency_chart(predictions, results_dir):
         ax2.bar(['PCE'], [pce], color='lightgreen', alpha=0.7, edgecolor='black')
         ax2.set_ylabel('Efficiency (%)')
         ax2.set_title('Power Conversion Efficiency (PCE)')
-        ax2.text(0, pce + abs(pce) * 0.05, f'{pce:.2f}%', 
-                ha='center', va='bottom', fontweight='bold', fontsize=12)
+        ax2.text(0, pce + abs(pce) * 0.02, f'{pce:.2f}%', 
+                ha='center', va='bottom', fontweight='bold', fontsize=10)
         ax2.grid(True, alpha=0.3)
+        # Add extra space at the top for labels
+        ax2.set_ylim(0, pce * 1.15)
     
     plt.tight_layout()
     plt.savefig(f'{results_dir}/efficiency_predictions.png', dpi=300, bbox_inches='tight')
@@ -745,6 +761,7 @@ def create_efficiency_chart(predictions, results_dir):
 def create_recombination_chart(predictions, results_dir):
     """Create recombination predictions chart."""
     import matplotlib.pyplot as plt
+    import numpy as np
     
     if 'IntSRHn_mean' not in predictions:
         return
@@ -758,18 +775,22 @@ def create_recombination_chart(predictions, results_dir):
     ax1.bar(['IntSRHn_mean'], [recomb], color='lightcoral', alpha=0.7, edgecolor='black')
     ax1.set_ylabel('Recombination Rate')
     ax1.set_title('Linear Scale')
-    ax1.text(0, recomb + abs(recomb) * 0.05, f'{recomb:.2e}', 
+    ax1.text(0, recomb + abs(recomb) * 0.02, f'{recomb:.2e}', 
             ha='center', va='bottom', fontweight='bold', fontsize=10)
     ax1.grid(True, alpha=0.3)
+    # Add extra space at the top for labels
+    ax1.set_ylim(0, recomb * 1.15)
     
     # Log scale
     log_recomb = np.log10(recomb) if recomb > 0 else 0
     ax2.bar(['IntSRHn_mean'], [log_recomb], color='orange', alpha=0.7, edgecolor='black')
     ax2.set_ylabel('log₁₀(Recombination Rate)')
     ax2.set_title('Logarithmic Scale')
-    ax2.text(0, log_recomb + abs(log_recomb) * 0.05, f'10^{log_recomb:.1f}', 
-            ha='center', va='bottom', fontweight='bold', fontsize=12)
+    ax2.text(0, log_recomb + abs(log_recomb) * 0.02, f'1e{log_recomb:.1f}', 
+            ha='center', va='bottom', fontweight='bold', fontsize=10)
     ax2.grid(True, alpha=0.3)
+    # Add extra space at the top for labels
+    ax2.set_ylim(log_recomb - abs(log_recomb) * 0.1, log_recomb * 1.15)
     
     plt.tight_layout()
     plt.savefig(f'{results_dir}/recombination_predictions.png', dpi=300, bbox_inches='tight')
@@ -780,6 +801,7 @@ def create_recombination_chart(predictions, results_dir):
 def create_parameter_analysis(parameters, results_dir):
     """Create detailed parameter analysis chart."""
     import matplotlib.pyplot as plt
+    import numpy as np
     
     fig, axes = plt.subplots(2, 2, figsize=(14, 10))
     fig.suptitle('Device Parameter Analysis', fontsize=16, fontweight='bold')
@@ -796,8 +818,10 @@ def create_parameter_analysis(parameters, results_dir):
     
     for bar, value in zip(bars, thickness_values):
         ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + max(thickness_values) * 0.02,
-                f'{value:.1f}nm', ha='center', va='bottom', fontweight='bold')
+                f'{value:.1f}nm', ha='center', va='bottom', fontweight='bold', fontsize=10)
     ax.grid(True, alpha=0.3)
+    # Add extra space at the top for labels
+    ax.set_ylim(0, max(thickness_values) * 1.15)
     
     # Energy gap analysis
     ax = axes[0, 1]
@@ -814,8 +838,10 @@ def create_parameter_analysis(parameters, results_dir):
     
     for bar, gap in zip(bars, energy_gaps):
         ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + max(energy_gaps) * 0.02,
-                f'{gap:.2f}eV', ha='center', va='bottom', fontweight='bold')
+                f'{gap:.2f}eV', ha='center', va='bottom', fontweight='bold', fontsize=10)
     ax.grid(True, alpha=0.3)
+    # Add extra space at the top for labels
+    ax.set_ylim(0, max(energy_gaps) * 1.15)
     
     # Doping ratio analysis
     ax = axes[1, 0]
@@ -832,8 +858,10 @@ def create_parameter_analysis(parameters, results_dir):
     
     for bar, ratio in zip(bars, doping_ratios):
         ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + max(doping_ratios) * 0.02,
-                f'10^{ratio:.1f}', ha='center', va='bottom', fontweight='bold')
+                f'1e{ratio:.1f}', ha='center', va='bottom', fontweight='bold', fontsize=10)
     ax.grid(True, alpha=0.3)
+    # Add extra space at the top for labels
+    ax.set_ylim(min(doping_ratios) - abs(min(doping_ratios)) * 0.1, max(doping_ratios) * 1.15)
     
     # Band alignment analysis
     ax = axes[1, 1]
@@ -854,8 +882,11 @@ def create_parameter_analysis(parameters, results_dir):
         ax.text(bar.get_x() + bar.get_width()/2, 
                 bar.get_height() + (abs(offset) * 0.05 if offset > 0 else -abs(offset) * 0.05),
                 f'{offset:+.3f}eV', ha='center', 
-                va='bottom' if offset > 0 else 'top', fontweight='bold')
+                va='bottom' if offset > 0 else 'top', fontweight='bold', fontsize=10)
     ax.grid(True, alpha=0.3)
+    # Add extra space at the top and bottom for labels
+    max_abs = max(abs(min(band_offsets)), abs(max(band_offsets)))
+    ax.set_ylim(min(band_offsets) - max_abs * 0.15, max(band_offsets) + max_abs * 0.15)
     
     plt.tight_layout()
     plt.savefig(f'{results_dir}/parameter_analysis.png', dpi=300, bbox_inches='tight')

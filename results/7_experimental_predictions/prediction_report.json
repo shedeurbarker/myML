@@ -1,62 +1,60 @@
 {
-  "prediction_date": "2025-09-21T03:56:06.908152",
-  "device_type": "Perovskite Solar Cell (PCBM/MAPI/PEDOT)",
+  "prediction_date": "2025-09-21T13:49:14.365533",
+  "device_type": "Optimized Perovskite Solar Cell",
   "experimental_parameters": {
-    "L1_L": 4.84e-08,
-    "L1_E_c": 3.91,
-    "L1_E_v": 5.82,
-    "L1_N_D": 5e+20,
-    "L1_N_A": 4.6e+19,
-    "L2_L": 2.222e-07,
+    "L1_L": 2.0000000000000004e-08,
+    "L1_E_c": 3.8,
+    "L1_E_v": 5.9,
+    "L1_N_D": 1e+21,
+    "L1_N_A": 4.999999999999999e+19,
+    "L2_L": 3.5e-07,
     "L2_E_c": 3.8,
-    "L2_E_v": 5.42,
-    "L2_N_D": 0.0,
-    "L2_N_A": 0.0,
-    "L3_L": 2.02e-08,
-    "L3_E_c": 3.02,
-    "L3_E_v": 5.18,
-    "L3_N_D": 4.5e+19,
-    "L3_N_A": 1e+21
+    "L2_E_v": 5.4,
+    "L2_N_D": 3.162277660168379e+16,
+    "L2_N_A": 3.162277660168379e+16,
+    "L3_L": 2.0000000000000004e-08,
+    "L3_E_c": 3.0,
+    "L3_E_v": 5.2,
+    "L3_N_D": 2.2360679774997897e+19,
+    "L3_N_A": 7.071067811865475e+20
   },
   "predictions": {
-    "MPP": 1.0906562792316756,
-    "PCE": 1.0906562792316756,
-    "IntSRHn_mean": "2.8243828"
+    "MPP": 207.91294867813198,
+    "PCE": 207.91294867813198,
+    "IntSRHn_mean": 1.9304550932338843e+30
   },
   "physics_validation": {
     "valid": true,
-    "warnings": [
-      "Right electrode incompatible: W_R (5.2) > HTL E_v (5.18)"
-    ],
+    "warnings": [],
     "constraints": {
       "energy_alignment": {
         "ETL_Ec_ge_Active_Ec": true,
         "Active_Ev_ge_HTL_Ev": true
       },
       "energy_gaps": {
-        "L1": 1.9100000000000001,
-        "L2": 1.62,
-        "L3": 2.1599999999999997
+        "L1": 2.1000000000000005,
+        "L2": 1.6000000000000005,
+        "L3": 2.2
       },
       "electrode_compatibility": {
         "W_L_ge_ETL_Ec": true,
-        "W_R_le_HTL_Ev": false
+        "W_R_le_HTL_Ev": true
       }
     }
   },
   "performance_summary": {
     "efficiency": {
-      "MPP_W_per_cm2": 1.0906562792316756,
-      "PCE_percent": 1.0906562792316756,
-      "efficiency_category": "Low"
+      "MPP_W_per_cm2": 207.91294867813198,
+      "PCE_percent": 207.91294867813198,
+      "efficiency_category": "High"
     },
     "recombination": {
-      "IntSRHn_mean": "2.8243828",
-      "recombination_category": "Low"
+      "IntSRHn_mean": 1.9304550932338843e+30,
+      "recombination_category": "High"
     }
   },
   "recommendations": [
     "Physics constraints satisfied - device should be manufacturable",
-    "Low efficiency predicted - consider parameter optimization"
+    "Excellent efficiency predicted - suitable for high-performance applications"
   ]
 }

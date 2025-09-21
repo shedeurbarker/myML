@@ -1,0 +1,39 @@
+{
+    "description": "Example solar cell device parameters for prediction demonstrations",
+    "device_type": "Perovskite Solar Cell (PCBM/MAPI/PEDOT)",
+    "last_updated": "2025-09-20",
+    "parameters": {
+        "L1_L": 41.2e-9,
+        "L1_E_c": 3.772,
+        "L1_E_v": 5.961,
+        "L1_N_D": 7.93e20,
+        "L1_N_A": 1.18e19,
+        "L2_L": 218.2e-9,
+        "L2_E_c": 2.889,
+        "L2_E_v": 5.961,
+        "L2_N_D": 6.21e16,
+        "L2_N_A": 1.45e16,
+        "L3_L": 28.5e-9,
+        "L3_E_c": 2.889,
+        "L3_E_v": 5.159,
+        "L3_N_D": 2.37e19,
+        "L3_N_A": 7.92e20
+    },
+    "layer_descriptions": {
+        "L1": "ETL - Electron Transport Layer (PCBM)",
+        "L2": "Active - Perovskite Absorber Layer (MAPI)",
+        "L3": "HTL - Hole Transport Layer (PEDOT)"
+    },
+    "parameter_descriptions": {
+        "L_L": "Layer thickness (m)",
+        "E_c": "Conduction band energy (eV)",
+        "E_v": "Valence band energy (eV)",
+        "N_D": "Donor concentration (cm^-3)",
+        "N_A": "Acceptor concentration (cm^-3)"
+    },
+    "physics_notes": {
+        "energy_alignment": "ETL E_c >= Active E_c, Active E_v >= HTL E_v",
+        "electrode_compatibility": "W_L=4.05eV >= ETL E_c, W_R=5.2eV <= HTL E_v",
+        "doping_types": "ETL: n-type, Active: intrinsic, HTL: p-type"
+    }
+}
