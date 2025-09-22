@@ -28,4 +28,4 @@ L = [20E-9, 50E-9, 3, True]           # Thickness: 20-50 nm (thin transport laye
 E_c = [2.8, 3.2, 3, False]             # Conduction band: gives 1.8-2.4 eV bandgap
 E_v = [5.0, 5.2, 3, False]             # Valence band: compatible with W_R=5.2 eV
 N_D = [1E19, 5E19, 3, True]            # Donor doping: low (p-type: NA >> ND)
-N_A = [5E20, 1E21, 3, True]            # Acceptor doping: high for p-type
+N_A = [5E20, 1E21, 3, True]            # Acceptor doping: for high for p-type
