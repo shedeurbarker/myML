@@ -41,19 +41,14 @@ Thumbs.db
 output_*/
 sim/simulations/
 sim/simulations/*
-!sim/simulations/.gitkeep
 
 # Generated data files
 *.npy
 *.csv
 *.joblib
 
-# Results directory (but keep the directory structure)
-#results/*
-#!results/.gitkeep
-
 # Logs
-*.log
+#*.log
 
 # Backup files
 # helper_files/
