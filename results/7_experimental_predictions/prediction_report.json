@@ -1,0 +1,62 @@
+{
+  "prediction_date": "2025-09-22T22:06:19.020549",
+  "device_type": "Perovskite Solar Cell (PCBM/MAPI/PEDOT)",
+  "experimental_parameters": {
+    "L1_L": 4.12e-08,
+    "L1_E_c": 3.772,
+    "L1_E_v": 5.961,
+    "L1_N_D": 7.93e+20,
+    "L1_N_A": 1.18e+19,
+    "L2_L": 2.182e-07,
+    "L2_E_c": 2.889,
+    "L2_E_v": 5.961,
+    "L2_N_D": 6.21e+16,
+    "L2_N_A": 1.45e+16,
+    "L3_L": 2.85e-08,
+    "L3_E_c": 2.889,
+    "L3_E_v": 5.159,
+    "L3_N_D": 2.37e+19,
+    "L3_N_A": 7.92e+20
+  },
+  "predictions": {
+    "MPP": 9.801521419528541,
+    "PCE": 0.980152141952854,
+    "IntSRHn_mean": 1.647823836969967e+30
+  },
+  "physics_validation": {
+    "valid": true,
+    "warnings": [
+      "Right electrode incompatible: W_R (5.2) > HTL E_v (5.16)"
+    ],
+    "constraints": {
+      "energy_alignment": {
+        "ETL_Ec_ge_Active_Ec": true,
+        "Active_Ev_ge_HTL_Ev": true
+      },
+      "energy_gaps": {
+        "L1": 2.1890000000000005,
+        "L2": 3.0720000000000005,
+        "L3": 2.27
+      },
+      "electrode_compatibility": {
+        "W_L_ge_ETL_Ec": true,
+        "W_R_le_HTL_Ev": false
+      }
+    }
+  },
+  "performance_summary": {
+    "efficiency": {
+      "MPP_W_per_cm2": 9.801521419528541,
+      "PCE_percent": 0.980152141952854,
+      "efficiency_category": "Low"
+    },
+    "recombination": {
+      "IntSRHn_mean": 1.647823836969967e+30,
+      "recombination_category": "High"
+    }
+  },
+  "recommendations": [
+    "Physics constraints satisfied - device should be manufacturable",
+    "Low efficiency predicted - consider parameter optimization"
+  ]
+}
