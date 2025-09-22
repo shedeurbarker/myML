@@ -482,25 +482,48 @@ Enhanced features capture important physics relationships:
 myML/
 ├── scripts/
 │   ├── 1_create_feature_names.py              # Define features and parameters
-│   ├── 2_generate_simulations.py              # Run physics simulations
+│   ├── 2_generate_simulations.py              # Run physics-validated simulations
 │   ├── 3_extract_simulation_data.py           # Extract MPP and IntSRHn_mean
 │   ├── 4_prepare_ml_data.py                   # Create ML-ready datasets
 │   ├── 5_train_models.py                      # Train ML models
 │   ├── 6_model_performance_visualization.py   # Model performance visualization
-│   └── 7_predict_experimental_data.py         # Predict experimental device performance
+│   └── 8_optimize_device_parameters.py        # Optimize device parameters
 ├── sim/
 │   ├── parameters.txt                # Parameter bounds
-│   ├── simss.exe                     # Physics simulation executable
-│   ├── Data/                         # Material properties
+│   ├── simulation_setup.txt          # Simulation configuration
+│   ├── L1_parameters.txt             # ETL layer config
+│   ├── L2_parameters.txt             # Absorber layer config
+│   ├── L3_parameters.txt             # HTL layer config
+│   ├── simss.exe                     # Drift-diffusion solver
+│   ├── simss.pas                     # Solver source (Pascal)
+│   ├── simss.o                       # Build artifact (if present)
+│   ├── output_JV.dat                 # Example JV output
+│   ├── output_Var.dat                # Example recombination/vars output
+│   ├── output_scPars.dat             # Example parameters output
+│   ├── Data/                         # Material optical/electrical properties
 │   └── simulations/                  # Simulation results
+├── Data/                              # Additional optical constants (root-level)
 ├── results/
 │   ├── 1_feature/                    # Feature definitions from Script 1
-│   ├── extract_simulation_data/      # Extracted simulation data
-│   ├── prepare_ml_data/              # ML-ready datasets
-│   ├── train_optimization_models/    # Trained ML models and scalers
-│   ├── model_performance/            # Model performance visualizations and analysis
-│   └── experimental_predictions/     # Experimental device performance predictions
-├── example_device_parameters.json    # Configurable example device parameters
+│   ├── 2_generated_simulations/      # Simulation generation logs
+│   ├── 3_extract_simulation_data/    # Extracted simulation data
+│   ├── 4_prepare_ml_data/            # ML-ready datasets
+│   ├── 5_train_optimization_models/  # Trained models, scalers, plots
+│   ├── 6_model_performance/          # Model performance visualizations and analysis
+│   ├── 7_experimental_predictions/   # Experimental device performance predictions
+│   └── 8_optimize_device/            # Optimization runs and artifacts
+├── example_device_parameters.json    # Example device parameters (single)
+├── example_devices/                  # Additional example/high-performance devices
+│   ├── example_device_parameters_backup.json
+│   ├── high_performance_device_1.json
+│   ├── high_performance_device_2.json
+│   └── high_performance_device_3.json
+├── device_stack.py                   # Layered device visualization (2D)
+├── device_stack_2d.py                # 2D stack plotting utilities
+├── device_stack_3d.py                # 3D stack plotting utilities
+├── device_stack_3d_view.png          # 3D visualization example
+├── run_all.py                        # Convenience pipeline runner
+├── requirements.txt                  # Python dependencies
 └── README.md                         # This file
 ```
 
@@ -510,6 +533,60 @@ myML/
 -   **Physics Simulation**: `sim/simss.exe` (drift-diffusion solver)
 -   **Material Data**: Optical and electrical properties in `sim/Data/`
 -   **Parameter Configuration**: Bounds defined in `sim/parameters.txt`
+
+## Setup
+
+Follow these steps to prepare the environment and simulator.
+
+### 1) System requirements
+
+-   OS: Windows 10/11, macOS 12+, or Ubuntu 20.04+
+-   Python: 3.10–3.12 recommended (compatible with `scikit-learn==1.6.1`)
+-   Disk space: ≥ 2 GB (simulations + results)
+
+### 2) Create a Python environment and install dependencies
+
+Windows (PowerShell):
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+macOS/Linux (bash):
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### 3) Obtain the SIMsalabim drift–diffusion solver
+
+-   Option A (Windows, recommended): Use the bundled binary at `sim/simss.exe`.
+-   Option B (build from source): Clone and build the solver from the official repository [SIMsalabim GitHub](https://github.com/kostergroup/SIMsalabim). Typical steps:
+    -   Install Free Pascal (FPC) and (optionally) Lazarus IDE
+    -   `git clone https://github.com/kostergroup/SIMsalabim`
+    -   Build the `SimSS` project to obtain `simss`/`simss.exe`
+    -   Place the resulting binary as `sim/simss.exe` in this project (scripts expect this path)
+
+### 4) Verify materials and setup files
+
+-   `sim/Data/` contains required optical/electrical files: `AM15G.txt`, `nk_*.txt`
+-   `sim/L1_parameters.txt`, `sim/L2_parameters.txt`, `sim/L3_parameters.txt` exist
+-   `sim/simulation_setup.txt` exists
+
+### 5) Quick verification
+
+Run a small end-to-end smoke test to ensure the simulator is callable and outputs are generated:
+
+```bash
+python scripts/1_create_feature_names.py
+python scripts/2_generate_simulations.py
+```
+
+You should see new folders under `sim/simulations/sim_0001/…` and a log at `results/2_generated_simulations/generated_simulations.log`.
 
 ## Next Steps
 
