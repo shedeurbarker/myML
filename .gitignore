@@ -43,8 +43,8 @@ sim/simulations/
 sim/simulations/*
 
 # Generated data files
-*.npy
-*.csv
+#*.npy
+#*.csv
 *.joblib
 
 # Logs
