@@ -3,23 +3,23 @@
   "parameters": {
     "L1_L": 2e-08,
     "L1_E_c": 4.0,
-    "L1_E_v": 5.960999346487441,
+    "L1_E_v": 5.961000000273345,
     "L1_N_D": 7.93e+20,
     "L1_N_A": 1.18e+19,
     "L2_L": 2.1e-07,
-    "L2_E_c": 3.6,
+    "L2_E_c": 3.600000000273345,
     "L2_E_v": 5.6,
     "L2_N_D": 6.21e+16,
     "L2_N_A": 1.45e+16,
     "L3_L": 2e-08,
-    "L3_E_c": 2.88899967324372,
-    "L3_E_v": 5.15899967324372,
+    "L3_E_c": 2.889,
+    "L3_E_v": 5.15900000054669,
     "L3_N_D": 2.37e+19,
     "L3_N_A": 7.92e+20
   },
   "optimization_info": {
     "original_device": "Perovskite Solar Cell (PCBM/MAPI/PEDOT)",
-    "optimization_date": "2025-09-21T15:20:56.159722",
+    "optimization_date": "2025-09-22T21:28:24.841480",
     "improvements": {
       "MPP_improvement_percent": 1380.292742522883,
       "PCE_improvement_percent": 1380.2927425228827,
