@@ -83,8 +83,14 @@ def extract_jv_curve_data(sim_dir):
         mpp_idx = jv_data['P'].idxmax()
         mpp_data = jv_data.loc[mpp_idx]
         
+        # Simple validation: MPP must be between 0 and 1000 W/cm²
+        mpp_value = mpp_data['P']
+        if mpp_value < 0 or mpp_value > 1000:
+            logging.warning(f"Invalid MPP ({mpp_value:.6f} W/cm²) in {sim_dir} - outside valid range")
+            return None
+        
         return {
-            'MPP': mpp_data['P']
+            'MPP': mpp_value
         }
         
     except Exception as e:

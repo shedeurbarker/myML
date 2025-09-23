@@ -126,15 +126,26 @@ def create_derived_features(df):
     # Thickness features
     if all(col in df.columns for col in ['L1_L', 'L2_L', 'L3_L']):
         df['total_thickness'] = df['L1_L'] + df['L2_L'] + df['L3_L']
-        df['thickness_ratio_L2'] = df['L2_L'] / (df['total_thickness'] + 1e-30)
-        df['thickness_ratio_ETL'] = df['L1_L'] / (df['total_thickness'] + 1e-30)
-        df['thickness_ratio_HTL'] = df['L3_L'] / (df['total_thickness'] + 1e-30)
+        
+        # Improved division safety with larger epsilon and validation
+        epsilon = 1e-10
+        if (df['total_thickness'] < epsilon).any():
+            logging.warning("Very small total thickness values detected - may cause numerical issues")
+        
+        df['thickness_ratio_L2'] = df['L2_L'] / (df['total_thickness'] + epsilon)
+        df['thickness_ratio_ETL'] = df['L1_L'] / (df['total_thickness'] + epsilon)
+        df['thickness_ratio_HTL'] = df['L3_L'] / (df['total_thickness'] + epsilon)
     
-    # Energy gap features (use absolute value to ensure positive gaps)
+    # Energy gap features (consistent with script 1: E_v - E_c)
     if all(col in df.columns for col in ['L1_E_c', 'L1_E_v', 'L2_E_c', 'L2_E_v', 'L3_E_c', 'L3_E_v']):
-        df['energy_gap_L1'] = abs(df['L1_E_c'] - df['L1_E_v'])
-        df['energy_gap_L2'] = abs(df['L2_E_c'] - df['L2_E_v'])
-        df['energy_gap_L3'] = abs(df['L3_E_c'] - df['L3_E_v'])
+        df['energy_gap_L1'] = df['L1_E_v'] - df['L1_E_c']
+        df['energy_gap_L2'] = df['L2_E_v'] - df['L2_E_c']
+        df['energy_gap_L3'] = df['L3_E_v'] - df['L3_E_c']
+        
+        # Validate energy gaps are positive (physical requirement)
+        negative_gaps = (df['energy_gap_L1'] <= 0).sum() + (df['energy_gap_L2'] <= 0).sum() + (df['energy_gap_L3'] <= 0).sum()
+        if negative_gaps > 0:
+            logging.warning(f"Found {negative_gaps} negative or zero energy gaps - may indicate failed simulations")
     
     # Band alignment features
     if all(col in df.columns for col in ['L1_E_c', 'L2_E_c', 'L3_E_c', 'L1_E_v', 'L2_E_v', 'L3_E_v']):
@@ -145,9 +156,14 @@ def create_derived_features(df):
     
     # Doping features
     if all(col in df.columns for col in ['L1_N_D', 'L1_N_A', 'L2_N_D', 'L2_N_A', 'L3_N_D', 'L3_N_A']):
-        df['doping_ratio_L1'] = df['L1_N_D'] / (df['L1_N_A'] + 1e-30)
-        df['doping_ratio_L2'] = df['L2_N_D'] / (df['L2_N_A'] + 1e-30)
-        df['doping_ratio_L3'] = df['L3_N_D'] / (df['L3_N_A'] + 1e-30)
+        # Improved division safety for doping ratios
+        epsilon = 1e-10
+        if (df['L1_N_A'] < epsilon).any() or (df['L2_N_A'] < epsilon).any() or (df['L3_N_A'] < epsilon).any():
+            logging.warning("Very small acceptor concentrations detected - may cause numerical issues")
+        
+        df['doping_ratio_L1'] = df['L1_N_D'] / (df['L1_N_A'] + epsilon)
+        df['doping_ratio_L2'] = df['L2_N_D'] / (df['L2_N_A'] + epsilon)
+        df['doping_ratio_L3'] = df['L3_N_D'] / (df['L3_N_A'] + epsilon)
         df['total_donor_concentration'] = df['L1_N_D'] + df['L2_N_D'] + df['L3_N_D']
         df['total_acceptor_concentration'] = df['L1_N_A'] + df['L2_N_A'] + df['L3_N_A']
     
@@ -179,15 +195,26 @@ def create_enhanced_derived_features(df):
     # Thickness features
     if all(col in df.columns for col in ['L1_L', 'L2_L', 'L3_L']):
         df['total_thickness'] = df['L1_L'] + df['L2_L'] + df['L3_L']
-        df['thickness_ratio_L2'] = df['L2_L'] / (df['total_thickness'] + 1e-30)
-        df['thickness_ratio_ETL'] = df['L1_L'] / (df['total_thickness'] + 1e-30)
-        df['thickness_ratio_HTL'] = df['L3_L'] / (df['total_thickness'] + 1e-30)
+        
+        # Improved division safety with larger epsilon and validation
+        epsilon = 1e-10
+        if (df['total_thickness'] < epsilon).any():
+            logging.warning("Very small total thickness values detected - may cause numerical issues")
+        
+        df['thickness_ratio_L2'] = df['L2_L'] / (df['total_thickness'] + epsilon)
+        df['thickness_ratio_ETL'] = df['L1_L'] / (df['total_thickness'] + epsilon)
+        df['thickness_ratio_HTL'] = df['L3_L'] / (df['total_thickness'] + epsilon)
     
-    # Energy gap features (use absolute value to ensure positive gaps)
+    # Energy gap features (consistent with script 1: E_v - E_c)
     if all(col in df.columns for col in ['L1_E_c', 'L1_E_v', 'L2_E_c', 'L2_E_v', 'L3_E_c', 'L3_E_v']):
-        df['energy_gap_L1'] = abs(df['L1_E_c'] - df['L1_E_v'])
-        df['energy_gap_L2'] = abs(df['L2_E_c'] - df['L2_E_v'])
-        df['energy_gap_L3'] = abs(df['L3_E_c'] - df['L3_E_v'])
+        df['energy_gap_L1'] = df['L1_E_v'] - df['L1_E_c']
+        df['energy_gap_L2'] = df['L2_E_v'] - df['L2_E_c']
+        df['energy_gap_L3'] = df['L3_E_v'] - df['L3_E_c']
+        
+        # Validate energy gaps are positive (physical requirement)
+        negative_gaps = (df['energy_gap_L1'] <= 0).sum() + (df['energy_gap_L2'] <= 0).sum() + (df['energy_gap_L3'] <= 0).sum()
+        if negative_gaps > 0:
+            logging.warning(f"Found {negative_gaps} negative or zero energy gaps - may indicate failed simulations")
     
     # Band alignment features
     if all(col in df.columns for col in ['L1_E_c', 'L2_E_c', 'L3_E_c', 'L1_E_v', 'L2_E_v', 'L3_E_v']):
@@ -198,9 +225,14 @@ def create_enhanced_derived_features(df):
     
     # Doping features
     if all(col in df.columns for col in ['L1_N_D', 'L1_N_A', 'L2_N_D', 'L2_N_A', 'L3_N_D', 'L3_N_A']):
-        df['doping_ratio_L1'] = df['L1_N_D'] / (df['L1_N_A'] + 1e-30)
-        df['doping_ratio_L2'] = df['L2_N_D'] / (df['L2_N_A'] + 1e-30)
-        df['doping_ratio_L3'] = df['L3_N_D'] / (df['L3_N_A'] + 1e-30)
+        # Improved division safety for doping ratios
+        epsilon = 1e-10
+        if (df['L1_N_A'] < epsilon).any() or (df['L2_N_A'] < epsilon).any() or (df['L3_N_A'] < epsilon).any():
+            logging.warning("Very small acceptor concentrations detected - may cause numerical issues")
+        
+        df['doping_ratio_L1'] = df['L1_N_D'] / (df['L1_N_A'] + epsilon)
+        df['doping_ratio_L2'] = df['L2_N_D'] / (df['L2_N_A'] + epsilon)
+        df['doping_ratio_L3'] = df['L3_N_D'] / (df['L3_N_A'] + epsilon)
         df['total_donor_concentration'] = df['L1_N_D'] + df['L2_N_D'] + df['L3_N_D']
         df['total_acceptor_concentration'] = df['L1_N_A'] + df['L2_N_A'] + df['L3_N_A']
     
@@ -217,11 +249,29 @@ def create_enhanced_derived_features(df):
     
     # NEW: Physics-based features for recombination-efficiency relationship
     if 'MPP' in df.columns and 'IntSRHn_mean' in df.columns:
-        # Recombination efficiency ratio (how much recombination affects efficiency)
-        df['recombination_efficiency_ratio'] = df['IntSRHn_mean'] / (df['MPP'] + 1e-30)
+        # Validate unit consistency before creating physics-based features
+        epsilon = 1e-10
         
-        # Interface quality index (lower recombination relative to efficiency = better interface)
-        df['interface_quality_index'] = df['MPP'] / (df['IntSRHn_mean'] + 1e-30)
+        # Check for reasonable value ranges
+        mpp_range = df['MPP'].quantile([0.01, 0.99])
+        intsrhn_range = df['IntSRHn_mean'].quantile([0.01, 0.99])
+        
+        if mpp_range.iloc[1] / mpp_range.iloc[0] > 1e6:
+            logging.warning("Extreme MPP range detected - physics-based features may be unreliable")
+        if intsrhn_range.iloc[1] / intsrhn_range.iloc[0] > 1e6:
+            logging.warning("Extreme IntSRHn_mean range detected - physics-based features may be unreliable")
+        
+        # Recombination efficiency ratio (dimensionless - normalized by MPP)
+        df['recombination_efficiency_ratio'] = df['IntSRHn_mean'] / (df['MPP'] + epsilon)
+        
+        # Interface quality index (dimensionless - efficiency per unit recombination)
+        df['interface_quality_index'] = df['MPP'] / (df['IntSRHn_mean'] + epsilon)
+        
+        # Validate the created features
+        if df['recombination_efficiency_ratio'].isnull().any():
+            logging.warning("NaN values detected in recombination_efficiency_ratio")
+        if df['interface_quality_index'].isnull().any():
+            logging.warning("NaN values detected in interface_quality_index")
     
     # NEW: Carrier transport efficiency features
     if all(col in df.columns for col in ['band_offset_L1_L2', 'band_offset_L2_L3']):

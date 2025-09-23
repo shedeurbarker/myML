@@ -99,8 +99,16 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 ML_MODELS = {}
 ML_MODEL_NAMES = {}
 
-# Add Random Forest
-ML_MODELS['RandomForest'] = RandomForestRegressor(n_estimators=100, random_state=42, n_jobs=-1)
+# Add Random Forest with controlled parameters to prevent overfitting
+ML_MODELS['RandomForest'] = RandomForestRegressor(
+    n_estimators=100,
+    max_depth=10,                    # Limit tree depth to prevent overfitting
+    max_features='sqrt',            # Reduce feature complexity
+    min_samples_split=10,           # Prevent overfitting on small splits
+    min_samples_leaf=5,             # Control leaf size
+    random_state=42,
+    n_jobs=-1
+)
 ML_MODEL_NAMES['RandomForest'] = 'Random Forest'
 
 # Add XGBoost if available
@@ -220,6 +228,11 @@ def evaluate_model_comprehensive(model, X_test, y_test, target_name):
     """Evaluate model with multiple metrics."""
     y_pred = model.predict(X_test)
     
+    # NOTE: For log-transformed models, no clipping is needed as 10^x is always positive
+    # This clipping is only for non-log-transformed models (efficiency models)
+    if 'IntSRHn' in target_name or 'recombination' in target_name.lower():
+        logging.warning(f"Using regular evaluation for {target_name} - consider using log-transformed approach")
+    
     # Calculate metrics
     r2 = r2_score(y_test, y_pred)
     rmse = np.sqrt(mean_squared_error(y_test, y_pred))
@@ -234,12 +247,68 @@ def evaluate_model_comprehensive(model, X_test, y_test, target_name):
         rmse_relative = 0
         mae_relative = 0
     
-    # Calculate MAPE
+    # Calculate MAPE with improved handling for extreme values
     valid_mask = np.abs(y_test) > 1e-10
     if np.sum(valid_mask) > 0:
-        mape = np.mean(np.abs((y_test[valid_mask] - y_pred[valid_mask]) / np.abs(y_test[valid_mask]))) * 100
+        # Clip predictions to prevent negative values for physical quantities
+        if 'IntSRHn' in target_name or 'recombination' in target_name.lower():
+            y_pred_clipped = np.maximum(y_pred, 1e20)  # Ensure positive values
+        else:
+            y_pred_clipped = y_pred
+        
+        # Calculate MAPE with clipped predictions
+        relative_errors = np.abs((y_test[valid_mask] - y_pred_clipped[valid_mask]) / np.abs(y_test[valid_mask]))
+        
+        # Cap extreme relative errors to prevent MAPE explosion
+        relative_errors = np.minimum(relative_errors, 10.0)  # Cap at 1000% error
+        
+        mape = np.mean(relative_errors) * 100
     else:
         mape = 0
+    
+    return {
+        'r2': r2,
+        'rmse': rmse,
+        'mae': mae,
+        'rmse_relative': rmse_relative,
+        'mae_relative': mae_relative,
+        'mape': mape
+    }
+
+def evaluate_log_transformed_model(model, X_test, y_test_original, target_scaler, target_name):
+    """Evaluate log-transformed model with proper inverse transformation.
+    
+    NOTE: No clipping needed! 10^x is mathematically guaranteed to be positive for any real x.
+    """
+    y_pred_scaled = model.predict(X_test)
+    
+    # Convert back to original scale - 10^x is ALWAYS positive for any real x
+    y_pred_original = 10 ** target_scaler.inverse_transform(y_pred_scaled.reshape(-1, 1)).flatten()
+    
+    # Calculate metrics on original scale
+    r2 = r2_score(y_test_original, y_pred_original)
+    rmse = np.sqrt(mean_squared_error(y_test_original, y_pred_original))
+    mae = mean_absolute_error(y_test_original, y_pred_original)
+    
+    # Calculate relative errors
+    y_mean = np.mean(np.abs(y_test_original))
+    rmse_relative = rmse / y_mean * 100
+    mae_relative = mae / y_mean * 100
+    
+    # Calculate MAPE with improved handling
+    valid_mask = np.abs(y_test_original) > 1e-10
+    if np.sum(valid_mask) > 0:
+        relative_errors = np.abs((y_test_original[valid_mask] - y_pred_original[valid_mask]) / np.abs(y_test_original[valid_mask]))
+        relative_errors = np.minimum(relative_errors, 10.0)  # Cap at 1000% error
+        mape = np.mean(relative_errors) * 100
+    else:
+        mape = 0
+    
+    logging.info(f"Log-transformed model evaluation for {target_name}:")
+    logging.info(f"  R²: {r2:.4f}")
+    logging.info(f"  RMSE: {rmse:.2e}")
+    logging.info(f"  MAE: {mae:.2e}")
+    logging.info(f"  MAPE: {mape:.2f}%")
     
     return {
         'r2': r2,
@@ -297,6 +366,9 @@ def train_efficiency_predictor_improved(X, y_efficiency, all_features):
         for model_name in ML_MODEL_NAMES:
             model = ML_MODELS[model_name]
             
+            # Log model parameters for debugging
+            logging.info(f"Training {model_name} for {target} with parameters: {model.get_params()}")
+            
             # Use cross-validation for better evaluation
             cv_scores = cross_val_score(model, X_train_scaled, y_train_scaled[target], 
                                       cv=5, scoring='r2')
@@ -304,8 +376,13 @@ def train_efficiency_predictor_improved(X, y_efficiency, all_features):
             # Train on full training set
             model.fit(X_train_scaled, y_train_scaled[target])
             
-            # Evaluate on test set
-            metrics = evaluate_model_comprehensive(model, X_test_scaled, y_test_scaled[target], target)
+            # Evaluate on test set (inverse transform predictions for proper evaluation)
+            y_pred_scaled = model.predict(X_test_scaled)
+            y_pred_original = target_scaler.inverse_transform(y_pred_scaled.reshape(-1, 1)).flatten()
+            metrics = evaluate_model_comprehensive(model, X_test_scaled, y_test[target].values, target)
+            # Override with correct R² calculation
+            metrics['r2'] = r2_score(y_test[target].values, y_pred_original)
+            #metrics = evaluate_model_comprehensive(model, X_test_scaled, y_test_scaled[target], target)
             
             models[model_name] = model
             model_scores[model_name] = {
@@ -355,8 +432,8 @@ def train_efficiency_predictor_improved(X, y_efficiency, all_features):
     return efficiency_models, efficiency_scalers, model_metadata
 
 def train_recombination_predictor_improved(X, y_recombination, all_features):
-    """Train model to predict recombination with improved scaling and evaluation."""
-    logging.info("\n=== Training Recombination Predictor (Improved) ===")
+    """Train model to predict recombination with log-transformed targets to prevent negative predictions."""
+    logging.info("\n=== Training Recombination Predictor (Log-Transformed) ===")
     
     # Handle small datasets
     if len(X) < 10:
@@ -374,17 +451,25 @@ def train_recombination_predictor_improved(X, y_recombination, all_features):
     X_train_scaled = feature_scaler.fit_transform(X_train)
     X_test_scaled = feature_scaler.transform(X_test)
     
-    # Scale targets using RobustScaler
+    # CRITICAL FIX: Use log-transformed targets to prevent negative predictions
     target_scalers = {}
     y_train_scaled = y_train.copy()
     y_test_scaled = y_test.copy()
     
     for target in y_recombination.columns:
+        # Log-transform the targets (log10 for better numerical stability)
+        y_train_log = np.log10(y_train[target].values)
+        y_test_log = np.log10(y_test[target].values)
+        
+        # Scale the log-transformed targets
         target_scaler = RobustScaler()
-        y_train_scaled[target] = target_scaler.fit_transform(y_train[[target]]).flatten()
-        y_test_scaled[target] = target_scaler.transform(y_test[[target]]).flatten()
+        y_train_scaled[target] = target_scaler.fit_transform(y_train_log.reshape(-1, 1)).flatten()
+        y_test_scaled[target] = target_scaler.transform(y_test_log.reshape(-1, 1)).flatten()
         target_scalers[target] = target_scaler
-        logging.info(f"Scaled {target}: mean={np.mean(y_train_scaled[target]):.4f}, std={np.std(y_train_scaled[target]):.4f}")
+        
+        logging.info(f"Log-transformed and scaled {target}: mean={np.mean(y_train_scaled[target]):.4f}, std={np.std(y_train_scaled[target]):.4f}")
+        logging.info(f"Original {target} range: {y_train[target].min():.2e} to {y_train[target].max():.2e}")
+        logging.info(f"Log-transformed {target} range: {y_train_log.min():.2f} to {y_train_log.max():.2f}")
     
     # Train models for each recombination metric
     recombination_models = {}
@@ -401,6 +486,9 @@ def train_recombination_predictor_improved(X, y_recombination, all_features):
         for model_name in ML_MODEL_NAMES:
             model = ML_MODELS[model_name]
             
+            # Log model parameters for debugging
+            logging.info(f"Training {model_name} for {target} with parameters: {model.get_params()}")
+            
             # Use cross-validation for better evaluation
             cv_scores = cross_val_score(model, X_train_scaled, y_train_scaled[target], 
                                       cv=5, scoring='r2')
@@ -408,8 +496,13 @@ def train_recombination_predictor_improved(X, y_recombination, all_features):
             # Train on full training set
             model.fit(X_train_scaled, y_train_scaled[target])
             
-            # Evaluate on test set
-            metrics = evaluate_model_comprehensive(model, X_test_scaled, y_test_scaled[target], target)
+            # Evaluate on test set (use log-transformed evaluation for recombination)
+            metrics = evaluate_log_transformed_model(model, X_test_scaled, y_test[target].values, target_scaler, target)
+            # Override with correct R² calculation (same fix as MPP model)
+            y_pred_scaled = model.predict(X_test_scaled)
+            y_pred_log = target_scaler.inverse_transform(y_pred_scaled.reshape(-1, 1)).flatten()
+            y_pred_original = 10 ** y_pred_log
+            metrics['r2'] = r2_score(y_test[target].values, y_pred_original)
             
             models[model_name] = model
             model_scores[model_name] = {

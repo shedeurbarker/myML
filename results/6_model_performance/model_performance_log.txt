@@ -1,0 +1,41 @@
+2025-09-23 18:26:56,075 - INFO - === ML MODEL PERFORMANCE VISUALIZATION ===
+2025-09-23 18:26:56,075 - INFO - Log file: results/6_model_performance/model_performance_log.txt
+2025-09-23 18:26:56,075 - INFO - 
+=== Step 1: Loading Trained Models ===
+2025-09-23 18:26:56,893 - INFO - Loaded MPP model and scalers
+2025-09-23 18:26:56,899 - INFO - Loaded recombination model and scalers
+2025-09-23 18:26:56,899 - INFO - Loaded training metadata
+2025-09-23 18:26:56,899 - INFO - 
+=== Step 2: Loading Simulation Data ===
+2025-09-23 18:26:56,943 - INFO - Loaded simulation data: 9950 samples, 19 features
+2025-09-23 18:26:56,943 - INFO - 
+=== Step 3: Validating Model Performance ===
+2025-09-23 18:26:56,944 - INFO - Replicating Script 5 training validation approach...
+2025-09-23 18:26:57,024 - INFO - Loaded Script 5 data: X=(9950, 38), y_eff=(9950, 1), y_rec=(9950, 1)
+2025-09-23 18:26:57,037 - INFO - MPP Model (XGBoost) - R²: 0.9987, RMSE: 6.9824, MAE: 2.0604 (1990 samples)
+2025-09-23 18:26:57,037 - INFO -   Training metadata R²: 0.9998 (should match: False)
+2025-09-23 18:26:57,048 - INFO - Recombination Model (XGBoost) - R²: 0.8735, RMSE: 19436998006604246544584598880256.0000, MAE: 1815366750400812409398688219136.0000 (1990 samples)
+2025-09-23 18:26:57,048 - INFO -   Training metadata R²: 0.9967 (should match: False)
+2025-09-23 18:26:57,048 - INFO - 
+=== Step 4: Creating Visualizations ===
+2025-09-23 18:26:58,020 - INFO - Created performance metrics plot: results/6_model_performance/1_performance_metrics.png
+2025-09-23 18:26:58,609 - INFO - Created prediction scatter plots: results/6_model_performance/2_prediction_scatter.png
+2025-09-23 18:26:59,592 - INFO - Created error distribution plots: results/6_model_performance/3_error_distribution.png
+2025-09-23 18:27:00,061 - INFO - Created training vs validation comparison: results/6_model_performance/4_training_validation_comparison.png
+2025-09-23 18:27:00,062 - INFO - All 4 visualization plots created successfully!
+2025-09-23 18:27:00,062 - INFO - 
+=== Step 5: Saving Performance Summary ===
+2025-09-23 18:27:00,063 - INFO - Performance summary saved: results/6_model_performance/performance_summary.json
+2025-09-23 18:27:00,063 - INFO - 
+=== MODEL PERFORMANCE ANALYSIS COMPLETE ===
+2025-09-23 18:27:00,063 - INFO - Results saved to: results/6_model_performance/
+2025-09-23 18:27:00,063 - INFO - Plot 1: 1_performance_metrics.png
+2025-09-23 18:27:00,063 - INFO - Plot 2: 2_prediction_scatter.png
+2025-09-23 18:27:00,065 - INFO - Plot 3: 3_error_distribution.png
+2025-09-23 18:27:00,065 - INFO - Plot 4: 4_training_validation_comparison.png
+2025-09-23 18:27:00,065 - INFO - Summary: performance_summary.json
+2025-09-23 18:27:00,065 - INFO - Log: model_performance_log.txt
+2025-09-23 18:27:00,065 - INFO - 
+=== KEY PERFORMANCE METRICS ===
+2025-09-23 18:27:00,065 - INFO - MPP: R² = 0.9987, RMSE = 6.9824
+2025-09-23 18:27:00,066 - INFO - IntSRHn_mean: R² = 0.8735, RMSE = 19436998006604246544584598880256.0000

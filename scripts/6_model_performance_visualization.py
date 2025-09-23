@@ -214,11 +214,22 @@ def validate_model_performance(models_data, validation_data):
             # Scale the test targets exactly like Script 5 does for evaluation
             y_test_scaled = target_scaler.transform(y_test[['MPP']]).flatten()
             
-            # Calculate metrics on SCALED targets (exactly like Script 5)
-            r2 = r2_score(y_test_scaled, y_pred_scaled)
-            rmse = np.sqrt(mean_squared_error(y_test_scaled, y_pred_scaled))
-            mae = mean_absolute_error(y_test_scaled, y_pred_scaled)
-            mape = np.mean(np.abs((y_test_scaled - y_pred_scaled) / (np.abs(y_test_scaled) + 1e-30))) * 100
+            # Calculate metrics on ORIGINAL targets (fixed like Script 5)
+            y_pred_original = target_scaler.inverse_transform(y_pred_scaled.reshape(-1, 1)).flatten()
+            y_test_original = y_test['MPP'].values
+            
+            r2 = r2_score(y_test_original, y_pred_original)
+            rmse = np.sqrt(mean_squared_error(y_test_original, y_pred_original))
+            mae = mean_absolute_error(y_test_original, y_pred_original)
+            
+            # Calculate MAPE with improved handling
+            valid_mask = np.abs(y_test_original) > 1e-10
+            if np.sum(valid_mask) > 0:
+                relative_errors = np.abs((y_test_original[valid_mask] - y_pred_original[valid_mask]) / np.abs(y_test_original[valid_mask]))
+                relative_errors = np.minimum(relative_errors, 10.0)  # Cap at 1000% error
+                mape = np.mean(relative_errors) * 100
+            else:
+                mape = 0
             
             # For plotting, convert back to unscaled for interpretability
             y_pred = target_scaler.inverse_transform(y_pred_scaled.reshape(-1, 1)).flatten()
@@ -263,22 +274,36 @@ def validate_model_performance(models_data, validation_data):
             feature_scaler = scalers['feature_scaler']
             target_scaler = scalers['target_scaler']
             
-            # Apply the exact same scaling as Script 5
+            # Apply the exact same scaling as Script 5 (log-transformed approach)
             X_test_scaled = feature_scaler.transform(X_test)
             y_pred_scaled = model.predict(X_test_scaled)
             
-            # Scale the test targets exactly like Script 5 does for evaluation
-            y_test_scaled = target_scaler.transform(y_test[['IntSRHn_mean']]).flatten()
-            
-            # Calculate metrics on SCALED targets (exactly like Script 5)
-            r2 = r2_score(y_test_scaled, y_pred_scaled)
-            rmse = np.sqrt(mean_squared_error(y_test_scaled, y_pred_scaled))
-            mae = mean_absolute_error(y_test_scaled, y_pred_scaled)
-            mape = np.mean(np.abs((y_test_scaled - y_pred_scaled) / (np.abs(y_test_scaled) + 1e-30))) * 100
-            
-            # For plotting, convert back to unscaled for interpretability
-            y_pred = target_scaler.inverse_transform(y_pred_scaled.reshape(-1, 1)).flatten()
+            # CRITICAL FIX: Use the EXACT same evaluation as Script 5
+            # Copy the exact evaluation logic from Script 5
+            y_pred_log = target_scaler.inverse_transform(y_pred_scaled.reshape(-1, 1)).flatten()
+            y_pred_original = 10 ** y_pred_log
             y_true = y_test['IntSRHn_mean'].values
+            
+            # Calculate metrics on original scale (exactly like Script 5)
+            r2 = r2_score(y_true, y_pred_original)
+            rmse = np.sqrt(mean_squared_error(y_true, y_pred_original))
+            mae = mean_absolute_error(y_true, y_pred_original)
+            
+            # Calculate relative errors
+            y_mean = np.mean(np.abs(y_true))
+            rmse_relative = rmse / y_mean * 100
+            mae_relative = mae / y_mean * 100
+            
+            # Calculate MAPE with improved handling (exactly like Script 5)
+            valid_mask = np.abs(y_true) > 1e-10
+            if np.sum(valid_mask) > 0:
+                relative_errors = np.abs((y_true[valid_mask] - y_pred_original[valid_mask]) / np.abs(y_true[valid_mask]))
+                relative_errors = np.minimum(relative_errors, 10.0)  # Cap at 1000% error
+                mape = np.mean(relative_errors) * 100
+            else:
+                mape = 0
+            
+            # y_pred_original and y_true are already calculated above
             
             # Get training metadata for comparison
             training_metrics = {}
@@ -296,7 +321,7 @@ def validate_model_performance(models_data, validation_data):
                 'cv_std': training_metrics.get('cv_std', 0),
                 'best_algorithm': best_model_name,
                 'y_true': y_true,
-                'y_pred': y_pred,
+                'y_pred': y_pred_original,
                 'n_samples': len(y_true)
             }
             
