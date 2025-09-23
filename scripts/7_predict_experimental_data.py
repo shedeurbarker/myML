@@ -26,9 +26,9 @@ OUTPUT:
   ├── 3_energy_parameters.png               # Energy level distribution
   ├── 4_doping_parameters.png               # Doping concentration analysis
   ├── 5_physics_validation.png              # Physics constraint validation
-  ├── efficiency_predictions.png            # Detailed MPP and PCE charts
-  ├── recombination_predictions.png         # Detailed recombination rate predictions
-  ├── parameter_analysis.png                # Combined parameter analysis
+  ├── 6_efficiency_predictions.png            # Detailed MPP and PCE charts
+  ├── 7_recombination_predictions.png         # Detailed recombination rate predictions
+  ├── 8_parameter_analysis.png                # Combined parameter analysis
   └── prediction_report.json                # Detailed prediction results and recommendations
 """
 
@@ -787,10 +787,10 @@ def create_efficiency_chart(predictions, results_dir):
         ax2.set_ylim(0, pce * 1.15)
     
     plt.tight_layout()
-    plt.savefig(f'{results_dir}/efficiency_predictions.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'{results_dir}/6_efficiency_predictions.png', dpi=300, bbox_inches='tight')
     plt.close()
     
-    logging.info(f"Created efficiency chart: {results_dir}/efficiency_predictions.png")
+    logging.info(f"Created efficiency chart: {results_dir}/6_efficiency_predictions.png")
 
 def create_recombination_chart(predictions, results_dir):
     """Create recombination predictions chart."""
@@ -827,10 +827,10 @@ def create_recombination_chart(predictions, results_dir):
     ax2.set_ylim(log_recomb - abs(log_recomb) * 0.1, log_recomb * 1.15)
     
     plt.tight_layout()
-    plt.savefig(f'{results_dir}/recombination_predictions.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'{results_dir}/7_recombination_predictions.png', dpi=300, bbox_inches='tight')
     plt.close()
     
-    logging.info(f"Created recombination chart: {results_dir}/recombination_predictions.png")
+    logging.info(f"Created recombination chart: {results_dir}/7_recombination_predictions.png")
 
 def create_parameter_analysis(parameters, results_dir):
     """Create detailed parameter analysis chart."""
@@ -923,10 +923,10 @@ def create_parameter_analysis(parameters, results_dir):
     ax.set_ylim(min(band_offsets) - max_abs * 0.15, max(band_offsets) + max_abs * 0.15)
     
     plt.tight_layout()
-    plt.savefig(f'{results_dir}/parameter_analysis.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'{results_dir}/8_parameter_analysis.png', dpi=300, bbox_inches='tight')
     plt.close()
     
-    logging.info(f"Created parameter analysis: {results_dir}/parameter_analysis.png")
+    logging.info(f"Created parameter analysis: {results_dir}/8_parameter_analysis.png")
 
 def create_physics_validation_chart(validation_results, ax):
     """Create physics validation status chart."""
@@ -1053,9 +1053,9 @@ def main():
         logging.info(f"Energy: 3_energy_parameters.png")
         logging.info(f"Doping: 4_doping_parameters.png")
         logging.info(f"Physics: 5_physics_validation.png")
-        logging.info(f"Efficiency: efficiency_predictions.png")
-        logging.info(f"Recombination: recombination_predictions.png")
-        logging.info(f"Parameters: parameter_analysis.png")
+        logging.info(f"Efficiency: 6_efficiency_predictions.png")
+        logging.info(f"Recombination: 7_recombination_predictions.png")
+        logging.info(f"Parameters: 8_parameter_analysis.png")
         logging.info(f"Report: prediction_report.json")
         
         # Print key predictions
