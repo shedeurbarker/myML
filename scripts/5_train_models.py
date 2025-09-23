@@ -823,6 +823,63 @@ MODEL QUALITY ASSESSMENT:
     print(f"⚠️ Error analysis: {plots_dir}/error_analysis.png")
     print(f"📋 Training summary report: {plots_dir}/training_summary_report.png")
 
+def save_primary_feature_importances(efficiency_models, recombination_models, efficiency_metadata, recombination_metadata):
+    """Save bar plots of model feature importances restricted to the 15 primary parameters."""
+    try:
+        plots_dir = 'results/5_train_optimization_models/plots'
+        os.makedirs(plots_dir, exist_ok=True)
+
+        # Load primary parameter names (authoritative list)
+        with open('results/1_feature/primary_parameters.json', 'r') as f:
+            primary_params = list(json.load(f).keys())
+
+        def _plot_for_target(models_dict, metadata_dict, target_key, outfile):
+            if target_key not in models_dict or target_key not in metadata_dict:
+                logging.warning(f"Feature importance: missing model or metadata for {target_key}")
+                return
+            model = models_dict[target_key]
+            feature_names = metadata_dict[target_key].get('feature_names', [])
+            importances = getattr(model, 'feature_importances_', None)
+            if importances is None or not feature_names:
+                logging.warning(f"Model for {target_key} has no feature_importances_ or feature names unavailable")
+                return
+
+            # Collect importances for primary parameters only
+            primary_importances = []
+            for idx, name in enumerate(feature_names):
+                if name in primary_params:
+                    value = float(importances[idx])
+                    primary_importances.append((name, value))
+
+            if not primary_importances:
+                logging.warning(f"No primary features found in model features for {target_key}")
+                return
+
+            # Sort by importance descending
+            primary_importances.sort(key=lambda x: x[1], reverse=True)
+            labels = [n for n, _ in primary_importances]
+            values = [v for _, v in primary_importances]
+
+            # Plot horizontal bar chart for readability
+            plt.figure(figsize=(10, 6))
+            y_pos = np.arange(len(labels))
+            plt.barh(y_pos, values, color='steelblue', alpha=0.8, edgecolor='black')
+            plt.yticks(y_pos, labels)
+            plt.xlabel('Feature importance (model-based)')
+            plt.title(f'Primary Feature Importances - {target_key}')
+            plt.gca().invert_yaxis()
+            for y, v in enumerate(values):
+                plt.text(v + max(values) * 0.01, y, f'{v:.3f}', va='center')
+            plt.tight_layout()
+            plt.savefig(os.path.join(plots_dir, outfile), dpi=300, bbox_inches='tight')
+            plt.close()
+            logging.info(f"Saved primary feature importance plot: {outfile}")
+
+        _plot_for_target(efficiency_models, efficiency_metadata, 'MPP', 'feature_importance_mpp_primary.png')
+        _plot_for_target(recombination_models, recombination_metadata, 'IntSRHn_mean', 'feature_importance_intsrhn_primary.png')
+    except Exception as e:
+        logging.warning(f"Could not create primary feature importance plots: {e}")
+
 def main():
     """Main function for training MPP and IntSRHn_mean prediction models."""
     logging.info("Starting ML model training for solar cell optimization...")
@@ -852,6 +909,10 @@ def main():
         # Create training visualizations
         logging.info("\n=== Creating Training Visualizations ===")
         create_training_visualizations(efficiency_metadata, recombination_metadata)
+        
+        # Save primary feature importances for both targets
+        logging.info("\n=== Saving Primary Feature Importances ===")
+        save_primary_feature_importances(efficiency_models, recombination_models, efficiency_metadata, recombination_metadata)
         
         # Print summary
         print("\n=== ML MODEL TRAINING SUMMARY ===")

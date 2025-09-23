@@ -59,7 +59,7 @@ warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
 SHOW_PROGRESS_COUNTER = True        # Set to False to disable progress display
 PROGRESS_UPDATE_FREQUENCY = 5       # Show progress every N iterations (1=every iteration, 10=every 10th)
 SHOW_EXCEEDED_ITERATIONS = True     # Show when optimizer exceeds maxiter limit
-HARD_ITERATION_LIMIT = 50         # HARD LIMIT: Force stop after this many iterations (prevents runaway)
+HARD_ITERATION_LIMIT = 100         # HARD LIMIT: Force stop after this many iterations (prevents runaway)
 
 def setup_logging():
     """Setup logging configuration."""
@@ -198,64 +198,6 @@ def validate_physics_constraints(parameters):
     
     except Exception as e:
         return False, f"Error validating constraints: {e}"
-
-def calculate_derived_features(parameters):
-    """Calculate derived features from primary parameters."""
-    try:
-        features = parameters.copy()
-        
-        # Enhanced Physics Features (matching Script 4)
-        # 1. Energy gaps
-        features['L1_energy_gap'] = abs(parameters['L1_E_v'] - parameters['L1_E_c'])
-        features['L2_energy_gap'] = abs(parameters['L2_E_v'] - parameters['L2_E_c'])
-        features['L3_energy_gap'] = abs(parameters['L3_E_v'] - parameters['L3_E_c'])
-        
-        # 2. Band offsets
-        features['ETL_Active_Ec_offset'] = parameters['L1_E_c'] - parameters['L2_E_c']
-        features['Active_HTL_Ec_offset'] = parameters['L2_E_c'] - parameters['L3_E_c']
-        features['ETL_Active_Ev_offset'] = parameters['L1_E_v'] - parameters['L2_E_v']
-        features['Active_HTL_Ev_offset'] = parameters['L2_E_v'] - parameters['L3_E_v']
-        
-        # 3. Overall band alignment
-        features['overall_Ec_drop'] = parameters['L1_E_c'] - parameters['L3_E_c']
-        features['overall_Ev_rise'] = parameters['L3_E_v'] - parameters['L1_E_v']
-        
-        # 4. Layer thickness ratios
-        total_thickness = parameters['L1_L'] + parameters['L2_L'] + parameters['L3_L']
-        features['L1_thickness_ratio'] = parameters['L1_L'] / total_thickness
-        features['L2_thickness_ratio'] = parameters['L2_L'] / total_thickness
-        features['L3_thickness_ratio'] = parameters['L3_L'] / total_thickness
-        features['total_device_thickness'] = total_thickness
-        
-        # 5. Doping characteristics
-        features['L1_net_doping'] = parameters['L1_N_D'] - parameters['L1_N_A']
-        features['L2_net_doping'] = parameters['L2_N_D'] - parameters['L2_N_A']
-        features['L3_net_doping'] = parameters['L3_N_D'] - parameters['L3_N_A']
-        
-        features['total_donor_concentration'] = parameters['L1_N_D'] + parameters['L2_N_D'] + parameters['L3_N_D']
-        features['total_acceptor_concentration'] = parameters['L1_N_A'] + parameters['L2_N_A'] + parameters['L3_N_A']
-        
-        # 6. Doping ratios (with small epsilon to avoid division by zero)
-        eps = 1e-30
-        features['L1_doping_ratio'] = parameters['L1_N_D'] / (parameters['L1_N_A'] + eps)
-        features['L2_doping_ratio'] = parameters['L2_N_D'] / (parameters['L2_N_A'] + eps)
-        features['L3_doping_ratio'] = parameters['L3_N_D'] / (parameters['L3_N_A'] + eps)
-        
-        # 7. Interface quality indicators
-        features['ETL_Active_interface_quality'] = 1.0 / (1.0 + abs(features['ETL_Active_Ec_offset']) + abs(features['ETL_Active_Ev_offset']))
-        features['Active_HTL_interface_quality'] = 1.0 / (1.0 + abs(features['Active_HTL_Ec_offset']) + abs(features['Active_HTL_Ev_offset']))
-        
-        # 8. Enhanced physics features (use default values for prediction targets)
-        features['recombination_efficiency_ratio'] = 0.5  # Default for optimization
-        features['interface_quality_index'] = (features['ETL_Active_interface_quality'] + features['Active_HTL_interface_quality']) / 2
-        
-        logging.debug(f"Calculated derived features. Total features: {len(features)}")
-        
-        return features
-    
-    except Exception as e:
-        logging.error(f"Error calculating derived features: {e}")
-        raise
 
 def calculate_derived_features_script7_compatible(df):
     """Calculate derived features EXACTLY like Script 7 for consistency."""
