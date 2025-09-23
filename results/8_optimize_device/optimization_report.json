@@ -1,8 +1,8 @@
 {
   "optimization_summary": {
     "success": true,
-    "method": "local",
-    "optimization_date": "2025-09-23T03:57:50.921657",
+    "method": "both",
+    "optimization_date": "2025-09-23T04:17:21.194397",
     "original_device": "Perovskite Solar Cell (PCBM/MAPI/PEDOT)"
   },
   "performance_comparison": {
@@ -43,17 +43,17 @@
     "optimized": {
       "L1_L": 2e-08,
       "L1_E_c": 4.0,
-      "L1_E_v": 5.961,
+      "L1_E_v": 5.961000000273345,
       "L1_N_D": 7.93e+20,
       "L1_N_A": 1.18e+19,
       "L2_L": 2.1e-07,
-      "L2_E_c": 3.600000000273345,
+      "L2_E_c": 3.6,
       "L2_E_v": 5.6,
       "L2_N_D": 6.21e+16,
       "L2_N_A": 1.45e+16,
       "L3_L": 2e-08,
       "L3_E_c": 2.889,
-      "L3_E_v": 5.159,
+      "L3_E_v": 5.159000000273345,
       "L3_N_D": 2.37e+19,
       "L3_N_A": 7.92e+20
     }

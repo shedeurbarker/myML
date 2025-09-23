@@ -59,7 +59,7 @@ warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
 SHOW_PROGRESS_COUNTER = True        # Set to False to disable progress display
 PROGRESS_UPDATE_FREQUENCY = 5       # Show progress every N iterations (1=every iteration, 10=every 10th)
 SHOW_EXCEEDED_ITERATIONS = True     # Show when optimizer exceeds maxiter limit
-HARD_ITERATION_LIMIT = 500         # HARD LIMIT: Force stop after this many iterations (prevents runaway)
+HARD_ITERATION_LIMIT = 50         # HARD LIMIT: Force stop after this many iterations (prevents runaway)
 
 def setup_logging():
     """Setup logging configuration."""
@@ -741,20 +741,21 @@ def create_optimization_visualizations(optimization_results, results_dir):
         bars = ax.bar(categories, recomb_values, color=colors, alpha=0.7)
         ax.set_ylabel('log₁₀(|Recombination Rate|)')
         ax.set_title('Interfacial SRH (Lower is Better)')
-        # Compute compact y-limits and place labels inside bars to avoid excessive top margins
+        # Compute compact y-limits and place labels just above bar tops
         y_min, y_max = min(recomb_values), max(recomb_values)
         y_range = max(y_max - y_min, 1e-6)
         for bar, value, actual_val in zip(bars, recomb_values, [original_recomb, optimized_recomb]):
             sign = '-' if actual_val < 0 else ''
-            label = f'{sign}≈0' if abs(actual_val) < 1e-10 else f'{sign}1e{value:.1f}'
-            text_y = value - 0.03 * y_range
+            label = f'{sign}≈0' if abs(actual_val) < 1e-10 else f'{sign}1e{value:.3f}'
+            text_y = value + 0.02 * y_range
             ax.text(bar.get_x() + bar.get_width()/2, text_y,
-                    label, ha='center', va='top', fontweight='bold', fontsize=10)
-        # Tighter margins so the plot remains large on screen
-        ax.set_ylim(y_min - 0.05 * y_range, y_max + 0.05 * y_range)
+                    label, ha='center', va='bottom', fontweight='bold', fontsize=10)
+        # Slight headroom for labels above bars
+        ax.set_ylim(y_min - 0.03 * y_range, y_max + 0.10 * y_range)
         ax.grid(True, alpha=0.3)
-        plt.tight_layout()
-        plt.savefig(f'{results_dir}/1_comparison_intsrhn_mean.png', dpi=300, bbox_inches='tight')
+        # Keep layout compact and avoid large outer bbox that can shrink the axes
+        fig.tight_layout()
+        plt.savefig(f'{results_dir}/1_comparison_intsrhn_mean.png', dpi=300)
         plt.close()
 
         # 2. Individual Parameter Change Charts
