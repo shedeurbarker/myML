@@ -57,6 +57,9 @@ DATE: 2025
 
 import numpy as np
 import pandas as pd
+import matplotlib
+# Force non-interactive backend to avoid GUI main-loop errors in headless runs
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.ensemble import RandomForestRegressor
