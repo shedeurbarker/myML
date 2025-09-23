@@ -22,7 +22,9 @@ REQUIREMENTS:
 OUTPUT:
 - results/8_optimize_device/
   ├── optimization_log.txt                    # Detailed execution log
-  ├── 1_optimization_comparison.png           # Before vs after performance comparison
+  ├── 1_comparison_mpp.png                    # Before vs after: MPP
+  ├── 1_comparison_pce.png                    # Before vs after: PCE
+  ├── 1_comparison_intsrhn_mean.png           # Before vs after: IntSRHn_mean (log)
   ├── 2_parameter_improvements.png            # Parameter changes visualization
   ├── 3_physics_validation.png                # Constraint validation for both versions
   ├── 4_efficiency_optimization.png           # Detailed efficiency improvement analysis
@@ -696,79 +698,65 @@ def create_optimization_visualizations(optimization_results, results_dir):
         optimized_pred = optimization_results['optimized_predictions']
         improvements = optimization_results['improvements']
         
-        # 1. Performance Comparison
-        fig, axes = plt.subplots(1, 3, figsize=(15, 5))
-        fig.suptitle('Device Performance Optimization Results', fontsize=16, fontweight='bold')
-        
-        # MPP comparison
-        ax = axes[0]
+        # 1. Performance Comparison - split into three separate figures
+        # a) MPP comparison
+        fig, ax = plt.subplots(1, 1, figsize=(6, 5))
         categories = ['Original', 'Optimized']
         mpp_values = [original_pred['MPP'], optimized_pred['MPP']]
         bars = ax.bar(categories, mpp_values, color=['lightblue', 'darkblue'], alpha=0.7)
         ax.set_ylabel('MPP (W/cm²)')
         ax.set_title('Maximum Power Point')
-        
         for bar, value in zip(bars, mpp_values):
             ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + max(mpp_values) * 0.02,
                     f'{value:.3f}', ha='center', va='bottom', fontweight='bold', fontsize=10)
         ax.set_ylim(0, max(mpp_values) * 1.15)
         ax.grid(True, alpha=0.3)
-        
-        # PCE comparison
-        ax = axes[1]
+        plt.tight_layout()
+        plt.savefig(f'{results_dir}/1_comparison_mpp.png', dpi=300, bbox_inches='tight')
+        plt.close()
+
+        # b) PCE comparison
+        fig, ax = plt.subplots(1, 1, figsize=(6, 5))
         pce_values = [original_pred['PCE'], optimized_pred['PCE']]
         bars = ax.bar(categories, pce_values, color=['lightgreen', 'darkgreen'], alpha=0.7)
         ax.set_ylabel('PCE (%)')
         ax.set_title('Power Conversion Efficiency')
-        
         for bar, value in zip(bars, pce_values):
             ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + max(pce_values) * 0.02,
                     f'{value:.2f}%', ha='center', va='bottom', fontweight='bold', fontsize=10)
         ax.set_ylim(0, max(pce_values) * 1.15)
         ax.grid(True, alpha=0.3)
-        
-        # Recombination comparison (handle negative values)
-        ax = axes[2]
+        plt.tight_layout()
+        plt.savefig(f'{results_dir}/1_comparison_pce.png', dpi=300, bbox_inches='tight')
+        plt.close()
+
+        # c) IntSRHn_mean comparison (log-scale label)
+        fig, ax = plt.subplots(1, 1, figsize=(6, 5))
         original_recomb = original_pred['IntSRHn_mean']
         optimized_recomb = optimized_pred['IntSRHn_mean']
-        
-        # Handle negative recombination values by using absolute values for log scale
         original_abs = abs(original_recomb) if original_recomb != 0 else 1e-30
         optimized_abs = abs(optimized_recomb) if optimized_recomb != 0 else 1e-30
-        
         recomb_values = [np.log10(original_abs), np.log10(optimized_abs)]
         colors = ['lightcoral', 'darkgreen' if optimized_recomb < original_recomb else 'darkred']
-        
         bars = ax.bar(categories, recomb_values, color=colors, alpha=0.7)
         ax.set_ylabel('log₁₀(|Recombination Rate|)')
-        ax.set_title('Recombination Rate (Lower is Better)')
-        
-        # Add labels with proper signs and scientific notation
+        ax.set_title('Interfacial SRH (Lower is Better)')
+        # Compute compact y-limits and place labels inside bars to avoid excessive top margins
+        y_min, y_max = min(recomb_values), max(recomb_values)
+        y_range = max(y_max - y_min, 1e-6)
         for bar, value, actual_val in zip(bars, recomb_values, [original_recomb, optimized_recomb]):
             sign = '-' if actual_val < 0 else ''
-            if abs(actual_val) < 1e-10:
-                label = f'{sign}≈0'
-            else:
-                label = f'{sign}1e{value:.1f}'
-            
-            ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + abs(max(recomb_values)) * 0.02,
-                    label, ha='center', va='bottom', fontweight='bold', fontsize=10)
-        
-        # Adjust y-limits to show both bars properly
-        if len(recomb_values) > 1 and min(recomb_values) != max(recomb_values):
-            y_range = max(recomb_values) - min(recomb_values)
-            ax.set_ylim(min(recomb_values) - y_range * 0.1, max(recomb_values) + y_range * 0.15)
-        else:
-            # Handle case where values are very similar or one is zero
-            max_val = max(recomb_values)
-            ax.set_ylim(max_val - 1, max_val + 1)
-        
+            label = f'{sign}≈0' if abs(actual_val) < 1e-10 else f'{sign}1e{value:.1f}'
+            text_y = value - 0.03 * y_range
+            ax.text(bar.get_x() + bar.get_width()/2, text_y,
+                    label, ha='center', va='top', fontweight='bold', fontsize=10)
+        # Tighter margins so the plot remains large on screen
+        ax.set_ylim(y_min - 0.05 * y_range, y_max + 0.05 * y_range)
         ax.grid(True, alpha=0.3)
-        
         plt.tight_layout()
-        plt.savefig(f'{results_dir}/1_optimization_comparison.png', dpi=300, bbox_inches='tight')
+        plt.savefig(f'{results_dir}/1_comparison_intsrhn_mean.png', dpi=300, bbox_inches='tight')
         plt.close()
-        
+
         # 2. Individual Parameter Change Charts
         
         # 2a. Thickness Changes Chart
@@ -777,28 +765,28 @@ def create_optimization_visualizations(optimization_results, results_dir):
         original_thick = [original_params[p] * 1e9 for p in thickness_params]
         optimized_thick = [optimized_params[p] * 1e9 for p in thickness_params]
         labels = ['ETL', 'Active', 'HTL']
-        
+
         x = np.arange(len(labels))
         width = 0.35
         bars1 = ax.bar(x - width/2, original_thick, width, label='Original', color='lightblue', alpha=0.7, edgecolor='black')
         bars2 = ax.bar(x + width/2, optimized_thick, width, label='Optimized', color='darkblue', alpha=0.7, edgecolor='black')
-        
+
         ax.set_ylabel('Thickness (nm)')
         ax.set_title('Layer Thickness Optimization', fontsize=14, fontweight='bold')
         ax.set_xticks(x)
         ax.set_xticklabels(labels)
         ax.legend()
         ax.grid(True, alpha=0.3)
-        
+
         # Add value labels
         for bars, values in [(bars1, original_thick), (bars2, optimized_thick)]:
             for bar, value in zip(bars, values):
                 ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + max(original_thick + optimized_thick) * 0.02,
                         f'{value:.1f}nm', ha='center', va='bottom', fontweight='bold', fontsize=10)
-        
+
         # Add extra space at the top for labels
         ax.set_ylim(0, max(original_thick + optimized_thick) * 1.15)
-        
+
         plt.tight_layout()
         plt.savefig(f'{results_dir}/2_thickness_optimization.png', dpi=300, bbox_inches='tight')
         plt.close()
@@ -1303,7 +1291,9 @@ def main():
         logging.info(f"Results saved to: {results_dir}/")
         logging.info(f"Optimized Parameters: optimized_device_parameters.json")
         logging.info(f"Optimization Report: optimization_report.json")
-        logging.info(f"Performance Comparison: 1_optimization_comparison.png")
+        logging.info(f"Comparison (MPP): 1_comparison_mpp.png")
+        logging.info(f"Comparison (PCE): 1_comparison_pce.png")
+        logging.info(f"Comparison (IntSRHn_mean): 1_comparison_intsrhn_mean.png")
         logging.info(f"Thickness Optimization: 2_thickness_optimization.png")
         logging.info(f"Energy Optimization: 3_energy_optimization.png")
         logging.info(f"Doping Optimization: 4_doping_optimization.png")

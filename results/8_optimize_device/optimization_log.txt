@@ -1,386 +1,108 @@
-2025-09-22 21:27:57,828 - INFO - === DEVICE PARAMETER OPTIMIZATION ===
-2025-09-22 21:27:57,828 - INFO - Log file: results/8_optimize_device/optimization_log.txt
-2025-09-22 21:27:57,828 - INFO - 
+2025-09-23 03:57:42,436 - INFO - === DEVICE PARAMETER OPTIMIZATION ===
+2025-09-23 03:57:42,437 - INFO - Log file: results/8_optimize_device/optimization_log.txt
+2025-09-23 03:57:42,437 - INFO - 
 === Step 1: Loading Example Parameters ===
-2025-09-22 21:27:57,829 - INFO - Loaded example parameters from: example_device_parameters.json
-2025-09-22 21:27:57,829 - INFO - Device Type: Perovskite Solar Cell (PCBM/MAPI/PEDOT)
-2025-09-22 21:27:57,829 - INFO - 
+2025-09-23 03:57:42,438 - INFO - Loaded example parameters from: example_device_parameters.json
+2025-09-23 03:57:42,438 - INFO - Device Type: Perovskite Solar Cell (PCBM/MAPI/PEDOT)
+2025-09-23 03:57:42,439 - INFO - 
 === Step 2: Loading Optimization Models ===
-2025-09-22 21:27:58,530 - INFO - Loaded optimization models and feature definitions
-2025-09-22 21:27:58,531 - INFO - 
+2025-09-23 03:57:43,732 - INFO - Loaded optimization models and feature definitions
+2025-09-23 03:57:43,732 - INFO - 
 === Step 3: Validating Original Parameters ===
-2025-09-22 21:27:58,531 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:58,533 - INFO - Original parameters validation: All physics constraints satisfied
-2025-09-22 21:27:58,533 - INFO - 
-=== Step 4: Optimizing Parameters (Method: both) ===
-2025-09-22 21:27:58,533 - INFO - Progress counter: ENABLED (update every 5 iterations)
-2025-09-22 21:27:58,533 - INFO - 
+2025-09-23 03:57:43,732 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:43,733 - INFO - Original parameters validation: All physics constraints satisfied
+2025-09-23 03:57:43,733 - INFO - 
+=== Step 4: Optimizing Parameters (Method: local) ===
+2025-09-23 03:57:43,733 - INFO - Progress counter: ENABLED (update every 5 iterations)
+2025-09-23 03:57:43,733 - INFO - 
 === Starting Parameter Optimization ===
-2025-09-22 21:27:58,534 - INFO - Method: both, Max iterations: 100
-2025-09-22 21:27:58,534 - INFO - Converted L1_L bounds from nm to meters: [2e-08, 5.0000000000000004e-08]
-2025-09-22 21:27:58,535 - INFO - Converted L2_L bounds from nm to meters: [2.1e-07, 3.5000000000000004e-07]
-2025-09-22 21:27:58,535 - INFO - Converted L3_L bounds from nm to meters: [2e-08, 5.0000000000000004e-08]
-2025-09-22 21:27:58,535 - INFO - Loaded bounds for 15 parameters
-2025-09-22 21:27:58,536 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-22 21:27:58,550 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-22 21:27:58,605 - INFO - PCE prediction (0.98%) is within S-Q limit (33.7%) [VALID]
-2025-09-22 21:27:58,607 - INFO - Original Performance - MPP: 9.8015 W/cm�, PCE: 0.98%
-2025-09-22 21:27:58,607 - INFO - Original Recombination: 1.65e+30
-2025-09-22 21:27:58,608 - INFO - 
+2025-09-23 03:57:43,733 - INFO - Method: local, Max iterations: 3
+2025-09-23 03:57:43,734 - INFO - Converted L1_L bounds from nm to meters: [2e-08, 5.0000000000000004e-08]
+2025-09-23 03:57:43,734 - INFO - Converted L2_L bounds from nm to meters: [2.1e-07, 3.5000000000000004e-07]
+2025-09-23 03:57:43,734 - INFO - Converted L3_L bounds from nm to meters: [2e-08, 5.0000000000000004e-08]
+2025-09-23 03:57:43,734 - INFO - Loaded bounds for 15 parameters
+2025-09-23 03:57:43,736 - INFO - Calculating derived features (Script 7 compatible)...
+2025-09-23 03:57:43,764 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
+2025-09-23 03:57:43,830 - INFO - PCE prediction (0.98%) is within S-Q limit (33.7%) [VALID]
+2025-09-23 03:57:43,842 - INFO - Original Performance - MPP: 9.8015 W/cm�, PCE: 0.98%
+2025-09-23 03:57:43,842 - INFO - Original Recombination: 1.65e+30
+2025-09-23 03:57:43,842 - INFO - 
 --- Local Optimization (L-BFGS-B) ---
-2025-09-22 21:27:58,608 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:58,609 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-22 21:27:58,624 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-22 21:27:58,676 - INFO - PCE prediction (0.98%) is within S-Q limit (33.7%) [VALID]
-2025-09-22 21:27:58,679 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:58,680 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-22 21:27:58,695 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-22 21:27:58,745 - INFO - PCE prediction (1.00%) is within S-Q limit (33.7%) [VALID]
-2025-09-22 21:27:58,747 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:58,747 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-22 21:27:58,763 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-22 21:27:58,816 - INFO - PCE prediction (0.98%) is within S-Q limit (33.7%) [VALID]
-2025-09-22 21:27:58,821 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:58,890 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:58,959 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:59,021 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:59,087 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:59,157 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:59,226 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:59,293 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:59,360 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:59,415 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:59,485 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:59,549 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:59,611 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:59,673 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:59,742 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:59,814 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:59,882 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:27:59,948 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:28:00,011 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:28:00,083 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:28:00,150 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:28:00,216 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:28:00,285 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:28:00,394 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:28:00,456 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:28:00,523 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:28:00,580 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:28:00,647 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:28:00,706 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:28:00,773 - INFO - Local optimization successful. Objective: -144.085220
-2025-09-22 21:28:00,773 - INFO - 
---- Global Optimization (Differential Evolution) ---
-2025-09-22 21:28:00,776 - WARNING - W_R (5.2) slightly > HTL E_v (5.184) - within tolerance
-2025-09-22 21:28:00,776 - INFO - Calculating derived features (Script 7 compatible)...
-2025-09-22 21:28:00,793 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
-2025-09-22 21:28:00,845 - INFO - PCE prediction (17.04%) is within S-Q limit (33.7%) [VALID]
-2025-09-22 21:28:00,847 - WARNING - W_R (5.2) slightly > HTL E_v (5.160) - within tolerance
-2025-09-22 21:28:00,918 - WARNING - W_R (5.2) slightly > HTL E_v (5.163) - within tolerance
-2025-09-22 21:28:00,985 - WARNING - W_R (5.2) slightly > HTL E_v (5.174) - within tolerance
-2025-09-22 21:28:01,043 - WARNING - W_R (5.2) slightly > HTL E_v (5.182) - within tolerance
-2025-09-22 21:28:01,102 - WARNING - W_R (5.2) slightly > HTL E_v (5.107) - within tolerance
-2025-09-22 21:28:01,160 - WARNING - W_R (5.2) slightly > HTL E_v (5.110) - within tolerance
-2025-09-22 21:28:01,229 - WARNING - W_R (5.2) slightly > HTL E_v (5.170) - within tolerance
-2025-09-22 21:28:01,299 - WARNING - W_R (5.2) slightly > HTL E_v (5.145) - within tolerance
-2025-09-22 21:28:01,357 - WARNING - W_R (5.2) slightly > HTL E_v (5.147) - within tolerance
-2025-09-22 21:28:01,425 - WARNING - W_R (5.2) slightly > HTL E_v (5.137) - within tolerance
-2025-09-22 21:28:01,490 - WARNING - W_R (5.2) slightly > HTL E_v (5.199) - within tolerance
-2025-09-22 21:28:01,547 - WARNING - W_R (5.2) slightly > HTL E_v (5.192) - within tolerance
-2025-09-22 21:28:01,614 - WARNING - W_R (5.2) slightly > HTL E_v (5.111) - within tolerance
-2025-09-22 21:28:01,672 - WARNING - W_R (5.2) slightly > HTL E_v (5.125) - within tolerance
-2025-09-22 21:28:01,740 - WARNING - W_R (5.2) slightly > HTL E_v (5.155) - within tolerance
-2025-09-22 21:28:01,797 - WARNING - W_R (5.2) slightly > HTL E_v (5.181) - within tolerance
-2025-09-22 21:28:01,863 - WARNING - W_R (5.2) slightly > HTL E_v (5.134) - within tolerance
-2025-09-22 21:28:01,923 - WARNING - W_R (5.2) slightly > HTL E_v (5.141) - within tolerance
-2025-09-22 21:28:01,989 - WARNING - W_R (5.2) slightly > HTL E_v (5.196) - within tolerance
-2025-09-22 21:28:02,057 - WARNING - W_R (5.2) slightly > HTL E_v (5.177) - within tolerance
-2025-09-22 21:28:02,125 - WARNING - W_R (5.2) slightly > HTL E_v (5.145) - within tolerance
-2025-09-22 21:28:02,196 - WARNING - W_R (5.2) slightly > HTL E_v (5.179) - within tolerance
-2025-09-22 21:28:02,268 - WARNING - W_R (5.2) slightly > HTL E_v (5.197) - within tolerance
-2025-09-22 21:28:02,335 - WARNING - W_R (5.2) slightly > HTL E_v (5.127) - within tolerance
-2025-09-22 21:28:02,405 - WARNING - W_R (5.2) slightly > HTL E_v (5.101) - within tolerance
-2025-09-22 21:28:02,473 - WARNING - W_R (5.2) slightly > HTL E_v (5.156) - within tolerance
-2025-09-22 21:28:02,548 - WARNING - W_R (5.2) slightly > HTL E_v (5.121) - within tolerance
-2025-09-22 21:28:02,615 - WARNING - W_R (5.2) slightly > HTL E_v (5.148) - within tolerance
-2025-09-22 21:28:02,686 - WARNING - W_R (5.2) slightly > HTL E_v (5.123) - within tolerance
-2025-09-22 21:28:02,753 - WARNING - W_R (5.2) slightly > HTL E_v (5.153) - within tolerance
-2025-09-22 21:28:02,822 - WARNING - W_R (5.2) slightly > HTL E_v (5.109) - within tolerance
-2025-09-22 21:28:02,888 - WARNING - W_R (5.2) slightly > HTL E_v (5.133) - within tolerance
-2025-09-22 21:28:02,957 - WARNING - W_R (5.2) slightly > HTL E_v (5.111) - within tolerance
-2025-09-22 21:28:03,026 - WARNING - W_R (5.2) slightly > HTL E_v (5.154) - within tolerance
-2025-09-22 21:28:03,089 - WARNING - W_R (5.2) slightly > HTL E_v (5.176) - within tolerance
-2025-09-22 21:28:03,158 - WARNING - W_R (5.2) slightly > HTL E_v (5.115) - within tolerance
-2025-09-22 21:28:03,224 - WARNING - W_R (5.2) slightly > HTL E_v (5.130) - within tolerance
-2025-09-22 21:28:03,281 - WARNING - W_R (5.2) slightly > HTL E_v (5.127) - within tolerance
-2025-09-22 21:28:03,352 - WARNING - W_R (5.2) slightly > HTL E_v (5.190) - within tolerance
-2025-09-22 21:28:03,411 - WARNING - W_R (5.2) slightly > HTL E_v (5.161) - within tolerance
-2025-09-22 21:28:03,479 - WARNING - W_R (5.2) slightly > HTL E_v (5.140) - within tolerance
-2025-09-22 21:28:03,549 - WARNING - W_R (5.2) slightly > HTL E_v (5.124) - within tolerance
-2025-09-22 21:28:03,619 - WARNING - W_R (5.2) slightly > HTL E_v (5.137) - within tolerance
-2025-09-22 21:28:03,682 - WARNING - W_R (5.2) slightly > HTL E_v (5.117) - within tolerance
-2025-09-22 21:28:03,754 - WARNING - W_R (5.2) slightly > HTL E_v (5.141) - within tolerance
-2025-09-22 21:28:03,822 - WARNING - W_R (5.2) slightly > HTL E_v (5.151) - within tolerance
-2025-09-22 21:28:03,890 - WARNING - W_R (5.2) slightly > HTL E_v (5.198) - within tolerance
-2025-09-22 21:28:03,949 - WARNING - W_R (5.2) slightly > HTL E_v (5.177) - within tolerance
-2025-09-22 21:28:04,019 - WARNING - W_R (5.2) slightly > HTL E_v (5.105) - within tolerance
-2025-09-22 21:28:04,078 - WARNING - W_R (5.2) slightly > HTL E_v (5.162) - within tolerance
-2025-09-22 21:28:04,139 - WARNING - W_R (5.2) slightly > HTL E_v (5.186) - within tolerance
-2025-09-22 21:28:04,198 - WARNING - W_R (5.2) slightly > HTL E_v (5.144) - within tolerance
-2025-09-22 21:28:04,264 - WARNING - W_R (5.2) slightly > HTL E_v (5.158) - within tolerance
-2025-09-22 21:28:04,326 - WARNING - W_R (5.2) slightly > HTL E_v (5.119) - within tolerance
-2025-09-22 21:28:04,388 - WARNING - W_R (5.2) slightly > HTL E_v (5.188) - within tolerance
-2025-09-22 21:28:04,455 - WARNING - W_R (5.2) slightly > HTL E_v (5.150) - within tolerance
-2025-09-22 21:28:04,519 - WARNING - W_R (5.2) slightly > HTL E_v (5.173) - within tolerance
-2025-09-22 21:28:04,578 - WARNING - W_R (5.2) slightly > HTL E_v (5.135) - within tolerance
-2025-09-22 21:28:04,645 - WARNING - W_R (5.2) slightly > HTL E_v (5.190) - within tolerance
-2025-09-22 21:28:04,713 - WARNING - W_R (5.2) slightly > HTL E_v (5.170) - within tolerance
-2025-09-22 21:28:04,779 - WARNING - W_R (5.2) slightly > HTL E_v (5.165) - within tolerance
-2025-09-22 21:28:04,848 - WARNING - W_R (5.2) slightly > HTL E_v (5.118) - within tolerance
-2025-09-22 21:28:04,915 - WARNING - W_R (5.2) slightly > HTL E_v (5.193) - within tolerance
-2025-09-22 21:28:04,986 - WARNING - W_R (5.2) slightly > HTL E_v (5.104) - within tolerance
-2025-09-22 21:28:05,119 - WARNING - W_R (5.2) slightly > HTL E_v (5.120) - within tolerance
-2025-09-22 21:28:05,202 - WARNING - W_R (5.2) slightly > HTL E_v (5.135) - within tolerance
-2025-09-22 21:28:05,273 - WARNING - W_R (5.2) slightly > HTL E_v (5.199) - within tolerance
-2025-09-22 21:28:05,344 - WARNING - W_R (5.2) slightly > HTL E_v (5.102) - within tolerance
-2025-09-22 21:28:05,421 - WARNING - W_R (5.2) slightly > HTL E_v (5.195) - within tolerance
-2025-09-22 21:28:05,489 - WARNING - W_R (5.2) slightly > HTL E_v (5.186) - within tolerance
-2025-09-22 21:28:05,555 - WARNING - W_R (5.2) slightly > HTL E_v (5.168) - within tolerance
-2025-09-22 21:28:05,622 - WARNING - W_R (5.2) slightly > HTL E_v (5.139) - within tolerance
-2025-09-22 21:28:05,691 - WARNING - W_R (5.2) slightly > HTL E_v (5.116) - within tolerance
-2025-09-22 21:28:05,761 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:28:05,837 - WARNING - W_R (5.2) slightly > HTL E_v (5.184) - within tolerance
-2025-09-22 21:28:05,906 - WARNING - W_R (5.2) slightly > HTL E_v (5.166) - within tolerance
-2025-09-22 21:28:05,973 - WARNING - W_R (5.2) slightly > HTL E_v (5.149) - within tolerance
-2025-09-22 21:28:06,040 - WARNING - W_R (5.2) slightly > HTL E_v (5.106) - within tolerance
-2025-09-22 21:28:06,105 - WARNING - W_R (5.2) slightly > HTL E_v (5.138) - within tolerance
-2025-09-22 21:28:06,165 - WARNING - W_R (5.2) slightly > HTL E_v (5.131) - within tolerance
-2025-09-22 21:28:06,235 - WARNING - W_R (5.2) slightly > HTL E_v (5.102) - within tolerance
-2025-09-22 21:28:06,304 - WARNING - W_R (5.2) slightly > HTL E_v (5.113) - within tolerance
-2025-09-22 21:28:06,364 - WARNING - W_R (5.2) slightly > HTL E_v (5.180) - within tolerance
-2025-09-22 21:28:06,432 - WARNING - W_R (5.2) slightly > HTL E_v (5.114) - within tolerance
-2025-09-22 21:28:06,494 - WARNING - W_R (5.2) slightly > HTL E_v (5.187) - within tolerance
-2025-09-22 21:28:06,564 - WARNING - W_R (5.2) slightly > HTL E_v (5.189) - within tolerance
-2025-09-22 21:28:06,635 - WARNING - W_R (5.2) slightly > HTL E_v (5.157) - within tolerance
-2025-09-22 21:28:06,703 - WARNING - W_R (5.2) slightly > HTL E_v (5.178) - within tolerance
-2025-09-22 21:28:06,774 - WARNING - W_R (5.2) slightly > HTL E_v (5.125) - within tolerance
-2025-09-22 21:28:06,844 - WARNING - W_R (5.2) slightly > HTL E_v (5.143) - within tolerance
-2025-09-22 21:28:06,910 - WARNING - W_R (5.2) slightly > HTL E_v (5.130) - within tolerance
-2025-09-22 21:28:06,980 - WARNING - W_R (5.2) slightly > HTL E_v (5.151) - within tolerance
-2025-09-22 21:28:07,056 - WARNING - W_R (5.2) slightly > HTL E_v (5.147) - within tolerance
-2025-09-22 21:28:07,125 - WARNING - W_R (5.2) slightly > HTL E_v (5.167) - within tolerance
-2025-09-22 21:28:07,193 - WARNING - W_R (5.2) slightly > HTL E_v (5.164) - within tolerance
-2025-09-22 21:28:07,265 - WARNING - W_R (5.2) slightly > HTL E_v (5.195) - within tolerance
-2025-09-22 21:28:07,338 - WARNING - W_R (5.2) slightly > HTL E_v (5.128) - within tolerance
-2025-09-22 21:28:07,405 - WARNING - W_R (5.2) slightly > HTL E_v (5.171) - within tolerance
-2025-09-22 21:28:07,473 - WARNING - W_R (5.2) slightly > HTL E_v (5.120) - within tolerance
-2025-09-22 21:28:07,542 - WARNING - W_R (5.2) slightly > HTL E_v (5.132) - within tolerance
-2025-09-22 21:28:07,606 - WARNING - W_R (5.2) slightly > HTL E_v (5.158) - within tolerance
-2025-09-22 21:28:07,675 - WARNING - W_R (5.2) slightly > HTL E_v (5.113) - within tolerance
-2025-09-22 21:28:07,737 - WARNING - W_R (5.2) slightly > HTL E_v (5.166) - within tolerance
-2025-09-22 21:28:07,805 - WARNING - W_R (5.2) slightly > HTL E_v (5.193) - within tolerance
-2025-09-22 21:28:07,871 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
-2025-09-22 21:28:07,939 - WARNING - W_R (5.2) slightly > HTL E_v (5.108) - within tolerance
-2025-09-22 21:28:08,002 - WARNING - W_R (5.2) slightly > HTL E_v (5.175) - within tolerance
-2025-09-22 21:28:08,070 - WARNING - W_R (5.2) slightly > HTL E_v (5.182) - within tolerance
-2025-09-22 21:28:08,138 - WARNING - W_R (5.2) slightly > HTL E_v (5.172) - within tolerance
-2025-09-22 21:28:08,204 - WARNING - W_R (5.2) slightly > HTL E_v (5.103) - within tolerance
-2025-09-22 21:28:08,263 - WARNING - W_R (5.2) slightly > HTL E_v (5.153) - within tolerance
-2025-09-22 21:28:08,328 - WARNING - W_R (5.2) slightly > HTL E_v (5.150) - within tolerance
-2025-09-22 21:28:08,393 - WARNING - W_R (5.2) slightly > HTL E_v (5.104) - within tolerance
-2025-09-22 21:28:08,463 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
-2025-09-22 21:28:08,536 - WARNING - W_R (5.2) slightly > HTL E_v (5.174) - within tolerance
-2025-09-22 21:28:08,603 - WARNING - W_R (5.2) slightly > HTL E_v (5.181) - within tolerance
-2025-09-22 21:28:08,673 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
-2025-09-22 21:28:08,738 - WARNING - W_R (5.2) slightly > HTL E_v (5.190) - within tolerance
-2025-09-22 21:28:08,806 - WARNING - W_R (5.2) slightly > HTL E_v (5.170) - within tolerance
-2025-09-22 21:28:08,874 - WARNING - W_R (5.2) slightly > HTL E_v (5.145) - within tolerance
-2025-09-22 21:28:08,945 - WARNING - W_R (5.2) slightly > HTL E_v (5.147) - within tolerance
-2025-09-22 21:28:09,008 - WARNING - W_R (5.2) slightly > HTL E_v (5.185) - within tolerance
-2025-09-22 21:28:09,082 - WARNING - W_R (5.2) slightly > HTL E_v (5.137) - within tolerance
-2025-09-22 21:28:09,148 - WARNING - W_R (5.2) slightly > HTL E_v (5.199) - within tolerance
-2025-09-22 21:28:09,218 - WARNING - W_R (5.2) slightly > HTL E_v (5.134) - within tolerance
-2025-09-22 21:28:09,288 - WARNING - W_R (5.2) slightly > HTL E_v (5.192) - within tolerance
-2025-09-22 21:28:09,360 - WARNING - W_R (5.2) slightly > HTL E_v (5.177) - within tolerance
-2025-09-22 21:28:09,423 - WARNING - W_R (5.2) slightly > HTL E_v (5.151) - within tolerance
-2025-09-22 21:28:09,492 - WARNING - W_R (5.2) slightly > HTL E_v (5.155) - within tolerance
-2025-09-22 21:28:09,561 - WARNING - W_R (5.2) slightly > HTL E_v (5.170) - within tolerance
-2025-09-22 21:28:09,624 - WARNING - W_R (5.2) slightly > HTL E_v (5.145) - within tolerance
-2025-09-22 21:28:09,696 - WARNING - W_R (5.2) slightly > HTL E_v (5.163) - within tolerance
-2025-09-22 21:28:09,765 - WARNING - W_R (5.2) slightly > HTL E_v (5.131) - within tolerance
-2025-09-22 21:28:09,838 - WARNING - W_R (5.2) slightly > HTL E_v (5.200) - within tolerance
-2025-09-22 21:28:09,905 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
-2025-09-22 21:28:09,973 - WARNING - W_R (5.2) slightly > HTL E_v (5.179) - within tolerance
-2025-09-22 21:28:10,040 - WARNING - W_R (5.2) slightly > HTL E_v (5.183) - within tolerance
-2025-09-22 21:28:10,109 - WARNING - W_R (5.2) slightly > HTL E_v (5.128) - within tolerance
-2025-09-22 21:28:10,174 - WARNING - W_R (5.2) slightly > HTL E_v (5.199) - within tolerance
-2025-09-22 21:28:10,235 - WARNING - W_R (5.2) slightly > HTL E_v (5.156) - within tolerance
-2025-09-22 21:28:10,303 - WARNING - W_R (5.2) slightly > HTL E_v (5.121) - within tolerance
-2025-09-22 21:28:10,373 - WARNING - W_R (5.2) slightly > HTL E_v (5.148) - within tolerance
-2025-09-22 21:28:10,440 - WARNING - W_R (5.2) slightly > HTL E_v (5.114) - within tolerance
-2025-09-22 21:28:10,511 - WARNING - W_R (5.2) slightly > HTL E_v (5.172) - within tolerance
-2025-09-22 21:28:10,584 - WARNING - W_R (5.2) slightly > HTL E_v (5.195) - within tolerance
-2025-09-22 21:28:10,654 - WARNING - W_R (5.2) slightly > HTL E_v (5.109) - within tolerance
-2025-09-22 21:28:10,724 - WARNING - W_R (5.2) slightly > HTL E_v (5.154) - within tolerance
-2025-09-22 21:28:10,794 - WARNING - W_R (5.2) slightly > HTL E_v (5.175) - within tolerance
-2025-09-22 21:28:10,866 - WARNING - W_R (5.2) slightly > HTL E_v (5.176) - within tolerance
-2025-09-22 21:28:10,938 - WARNING - W_R (5.2) slightly > HTL E_v (5.151) - within tolerance
-2025-09-22 21:28:11,006 - WARNING - W_R (5.2) slightly > HTL E_v (5.115) - within tolerance
-2025-09-22 21:28:11,075 - WARNING - W_R (5.2) slightly > HTL E_v (5.141) - within tolerance
-2025-09-22 21:28:11,145 - WARNING - W_R (5.2) slightly > HTL E_v (5.127) - within tolerance
-2025-09-22 21:28:11,219 - WARNING - W_R (5.2) slightly > HTL E_v (5.142) - within tolerance
-2025-09-22 21:28:11,281 - WARNING - W_R (5.2) slightly > HTL E_v (5.118) - within tolerance
-2025-09-22 21:28:11,352 - WARNING - W_R (5.2) slightly > HTL E_v (5.110) - within tolerance
-2025-09-22 21:28:11,422 - WARNING - W_R (5.2) slightly > HTL E_v (5.102) - within tolerance
-2025-09-22 21:28:11,489 - WARNING - W_R (5.2) slightly > HTL E_v (5.188) - within tolerance
-2025-09-22 21:28:11,559 - WARNING - W_R (5.2) slightly > HTL E_v (5.163) - within tolerance
-2025-09-22 21:28:11,634 - WARNING - W_R (5.2) slightly > HTL E_v (5.131) - within tolerance
-2025-09-22 21:28:11,708 - WARNING - W_R (5.2) slightly > HTL E_v (5.117) - within tolerance
-2025-09-22 21:28:11,781 - WARNING - W_R (5.2) slightly > HTL E_v (5.143) - within tolerance
-2025-09-22 21:28:11,858 - WARNING - W_R (5.2) slightly > HTL E_v (5.139) - within tolerance
-2025-09-22 21:28:11,931 - WARNING - W_R (5.2) slightly > HTL E_v (5.171) - within tolerance
-2025-09-22 21:28:12,005 - WARNING - W_R (5.2) slightly > HTL E_v (5.158) - within tolerance
-2025-09-22 21:28:12,078 - WARNING - W_R (5.2) slightly > HTL E_v (5.166) - within tolerance
-2025-09-22 21:28:12,153 - WARNING - W_R (5.2) slightly > HTL E_v (5.151) - within tolerance
-2025-09-22 21:28:12,223 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
-2025-09-22 21:28:12,289 - WARNING - W_R (5.2) slightly > HTL E_v (5.169) - within tolerance
-2025-09-22 21:28:12,361 - WARNING - W_R (5.2) slightly > HTL E_v (5.136) - within tolerance
-2025-09-22 21:28:12,433 - WARNING - W_R (5.2) slightly > HTL E_v (5.163) - within tolerance
-2025-09-22 21:28:12,502 - WARNING - W_R (5.2) slightly > HTL E_v (5.162) - within tolerance
-2025-09-22 21:28:12,569 - WARNING - W_R (5.2) slightly > HTL E_v (5.164) - within tolerance
-2025-09-22 21:28:12,636 - WARNING - W_R (5.2) slightly > HTL E_v (5.188) - within tolerance
-2025-09-22 21:28:12,707 - WARNING - W_R (5.2) slightly > HTL E_v (5.158) - within tolerance
-2025-09-22 21:28:12,778 - WARNING - W_R (5.2) slightly > HTL E_v (5.128) - within tolerance
-2025-09-22 21:28:12,853 - WARNING - W_R (5.2) slightly > HTL E_v (5.149) - within tolerance
-2025-09-22 21:28:12,936 - WARNING - W_R (5.2) slightly > HTL E_v (5.124) - within tolerance
-2025-09-22 21:28:13,080 - WARNING - W_R (5.2) slightly > HTL E_v (5.146) - within tolerance
-2025-09-22 21:28:13,155 - WARNING - W_R (5.2) slightly > HTL E_v (5.190) - within tolerance
-2025-09-22 21:28:13,227 - WARNING - W_R (5.2) slightly > HTL E_v (5.141) - within tolerance
-2025-09-22 21:28:13,300 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
-2025-09-22 21:28:13,372 - WARNING - W_R (5.2) slightly > HTL E_v (5.155) - within tolerance
-2025-09-22 21:28:13,493 - WARNING - W_R (5.2) slightly > HTL E_v (5.190) - within tolerance
-2025-09-22 21:28:13,560 - WARNING - W_R (5.2) slightly > HTL E_v (5.118) - within tolerance
-2025-09-22 21:28:13,630 - WARNING - W_R (5.2) slightly > HTL E_v (5.149) - within tolerance
-2025-09-22 21:28:13,709 - WARNING - W_R (5.2) slightly > HTL E_v (5.104) - within tolerance
-2025-09-22 21:28:13,781 - WARNING - W_R (5.2) slightly > HTL E_v (5.135) - within tolerance
-2025-09-22 21:28:13,855 - WARNING - W_R (5.2) slightly > HTL E_v (5.129) - within tolerance
-2025-09-22 21:28:13,922 - WARNING - W_R (5.2) slightly > HTL E_v (5.199) - within tolerance
-2025-09-22 21:28:13,991 - WARNING - W_R (5.2) slightly > HTL E_v (5.173) - within tolerance
-2025-09-22 21:28:14,067 - WARNING - W_R (5.2) slightly > HTL E_v (5.195) - within tolerance
-2025-09-22 21:28:14,138 - WARNING - W_R (5.2) slightly > HTL E_v (5.146) - within tolerance
-2025-09-22 21:28:14,208 - WARNING - W_R (5.2) slightly > HTL E_v (5.112) - within tolerance
-2025-09-22 21:28:14,283 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:28:14,356 - WARNING - W_R (5.2) slightly > HTL E_v (5.136) - within tolerance
-2025-09-22 21:28:14,422 - WARNING - W_R (5.2) slightly > HTL E_v (5.123) - within tolerance
-2025-09-22 21:28:14,484 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:28:14,553 - WARNING - W_R (5.2) slightly > HTL E_v (5.168) - within tolerance
-2025-09-22 21:28:14,623 - WARNING - W_R (5.2) slightly > HTL E_v (5.149) - within tolerance
-2025-09-22 21:28:14,695 - WARNING - W_R (5.2) slightly > HTL E_v (5.189) - within tolerance
-2025-09-22 21:28:14,770 - WARNING - W_R (5.2) slightly > HTL E_v (5.146) - within tolerance
-2025-09-22 21:28:14,843 - WARNING - W_R (5.2) slightly > HTL E_v (5.163) - within tolerance
-2025-09-22 21:28:14,914 - WARNING - W_R (5.2) slightly > HTL E_v (5.160) - within tolerance
-2025-09-22 21:28:14,979 - WARNING - W_R (5.2) slightly > HTL E_v (5.113) - within tolerance
-2025-09-22 21:28:15,053 - WARNING - W_R (5.2) slightly > HTL E_v (5.180) - within tolerance
-2025-09-22 21:28:15,126 - WARNING - W_R (5.2) slightly > HTL E_v (5.184) - within tolerance
-2025-09-22 21:28:15,198 - WARNING - W_R (5.2) slightly > HTL E_v (5.165) - within tolerance
-2025-09-22 21:28:15,269 - WARNING - W_R (5.2) slightly > HTL E_v (5.155) - within tolerance
-2025-09-22 21:28:15,339 - WARNING - W_R (5.2) slightly > HTL E_v (5.174) - within tolerance
-2025-09-22 21:28:15,413 - WARNING - W_R (5.2) slightly > HTL E_v (5.143) - within tolerance
-2025-09-22 21:28:15,487 - WARNING - W_R (5.2) slightly > HTL E_v (5.191) - within tolerance
-2025-09-22 21:28:15,554 - WARNING - W_R (5.2) slightly > HTL E_v (5.120) - within tolerance
-2025-09-22 21:28:15,624 - WARNING - W_R (5.2) slightly > HTL E_v (5.151) - within tolerance
-2025-09-22 21:28:15,694 - WARNING - W_R (5.2) slightly > HTL E_v (5.119) - within tolerance
-2025-09-22 21:28:15,765 - WARNING - W_R (5.2) slightly > HTL E_v (5.139) - within tolerance
-2025-09-22 21:28:15,831 - WARNING - W_R (5.2) slightly > HTL E_v (5.164) - within tolerance
-2025-09-22 21:28:15,893 - WARNING - W_R (5.2) slightly > HTL E_v (5.168) - within tolerance
-2025-09-22 21:28:15,966 - WARNING - W_R (5.2) slightly > HTL E_v (5.128) - within tolerance
-2025-09-22 21:28:16,038 - WARNING - W_R (5.2) slightly > HTL E_v (5.157) - within tolerance
-2025-09-22 21:28:16,109 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:28:16,180 - WARNING - W_R (5.2) slightly > HTL E_v (5.171) - within tolerance
-2025-09-22 21:28:16,252 - WARNING - W_R (5.2) slightly > HTL E_v (5.120) - within tolerance
-2025-09-22 21:28:16,318 - WARNING - W_R (5.2) slightly > HTL E_v (5.132) - within tolerance
-2025-09-22 21:28:16,389 - WARNING - W_R (5.2) slightly > HTL E_v (5.113) - within tolerance
-2025-09-22 21:28:16,457 - WARNING - W_R (5.2) slightly > HTL E_v (5.105) - within tolerance
-2025-09-22 21:28:16,522 - WARNING - W_R (5.2) slightly > HTL E_v (5.193) - within tolerance
-2025-09-22 21:28:16,584 - WARNING - W_R (5.2) slightly > HTL E_v (5.181) - within tolerance
-2025-09-22 21:28:16,654 - WARNING - W_R (5.2) slightly > HTL E_v (5.160) - within tolerance
-2025-09-22 21:28:16,720 - WARNING - W_R (5.2) slightly > HTL E_v (5.125) - within tolerance
-2025-09-22 21:28:16,789 - WARNING - W_R (5.2) slightly > HTL E_v (5.129) - within tolerance
-2025-09-22 21:28:16,863 - WARNING - W_R (5.2) slightly > HTL E_v (5.167) - within tolerance
-2025-09-22 21:28:16,936 - WARNING - W_R (5.2) slightly > HTL E_v (5.103) - within tolerance
-2025-09-22 21:28:17,006 - WARNING - W_R (5.2) slightly > HTL E_v (5.136) - within tolerance
-2025-09-22 21:28:17,076 - WARNING - W_R (5.2) slightly > HTL E_v (5.124) - within tolerance
-2025-09-22 21:28:17,147 - WARNING - W_R (5.2) slightly > HTL E_v (5.172) - within tolerance
-2025-09-22 21:28:17,221 - WARNING - W_R (5.2) slightly > HTL E_v (5.145) - within tolerance
-2025-09-22 21:28:17,290 - WARNING - W_R (5.2) slightly > HTL E_v (5.103) - within tolerance
-2025-09-22 21:28:17,363 - WARNING - W_R (5.2) slightly > HTL E_v (5.181) - within tolerance
-2025-09-22 21:28:17,433 - WARNING - W_R (5.2) slightly > HTL E_v (5.169) - within tolerance
-2025-09-22 21:28:17,506 - WARNING - W_R (5.2) slightly > HTL E_v (5.156) - within tolerance
-2025-09-22 21:28:17,568 - WARNING - W_R (5.2) slightly > HTL E_v (5.118) - within tolerance
-2025-09-22 21:28:17,639 - WARNING - W_R (5.2) slightly > HTL E_v (5.122) - within tolerance
-2025-09-22 21:28:17,706 - WARNING - W_R (5.2) slightly > HTL E_v (5.160) - within tolerance
-2025-09-22 21:28:17,773 - WARNING - W_R (5.2) slightly > HTL E_v (5.138) - within tolerance
-2025-09-22 21:28:17,843 - WARNING - W_R (5.2) slightly > HTL E_v (5.103) - within tolerance
-2025-09-22 21:28:17,915 - WARNING - W_R (5.2) slightly > HTL E_v (5.164) - within tolerance
-2025-09-22 21:28:17,984 - WARNING - W_R (5.2) slightly > HTL E_v (5.139) - within tolerance
-2025-09-22 21:28:18,057 - WARNING - W_R (5.2) slightly > HTL E_v (5.141) - within tolerance
-2025-09-22 21:28:18,121 - WARNING - W_R (5.2) slightly > HTL E_v (5.190) - within tolerance
-2025-09-22 21:28:18,193 - WARNING - W_R (5.2) slightly > HTL E_v (5.104) - within tolerance
-2025-09-22 21:28:18,256 - WARNING - W_R (5.2) slightly > HTL E_v (5.167) - within tolerance
-2025-09-22 21:28:18,326 - WARNING - W_R (5.2) slightly > HTL E_v (5.147) - within tolerance
-2025-09-22 21:28:18,397 - WARNING - W_R (5.2) slightly > HTL E_v (5.185) - within tolerance
-2025-09-22 21:28:18,472 - WARNING - W_R (5.2) slightly > HTL E_v (5.119) - within tolerance
-2025-09-22 21:28:18,544 - WARNING - W_R (5.2) slightly > HTL E_v (5.199) - within tolerance
-2025-09-22 21:28:18,619 - WARNING - W_R (5.2) slightly > HTL E_v (5.142) - within tolerance
-2025-09-22 21:28:18,686 - WARNING - W_R (5.2) slightly > HTL E_v (5.192) - within tolerance
-2025-09-22 21:28:18,757 - WARNING - W_R (5.2) slightly > HTL E_v (5.153) - within tolerance
-2025-09-22 21:28:18,826 - WARNING - W_R (5.2) slightly > HTL E_v (5.141) - within tolerance
-2025-09-22 21:28:18,896 - WARNING - W_R (5.2) slightly > HTL E_v (5.176) - within tolerance
-2025-09-22 21:28:18,965 - WARNING - W_R (5.2) slightly > HTL E_v (5.144) - within tolerance
-2025-09-22 21:28:19,029 - WARNING - W_R (5.2) slightly > HTL E_v (5.170) - within tolerance
-2025-09-22 21:28:19,104 - WARNING - W_R (5.2) slightly > HTL E_v (5.141) - within tolerance
-2025-09-22 21:28:19,171 - WARNING - W_R (5.2) slightly > HTL E_v (5.196) - within tolerance
-2025-09-22 21:28:19,246 - WARNING - W_R (5.2) slightly > HTL E_v (5.131) - within tolerance
-2025-09-22 21:28:19,321 - WARNING - W_R (5.2) slightly > HTL E_v (5.108) - within tolerance
-2025-09-22 21:28:19,392 - WARNING - W_R (5.2) slightly > HTL E_v (5.197) - within tolerance
-2025-09-22 21:28:19,456 - WARNING - W_R (5.2) slightly > HTL E_v (5.145) - within tolerance
-2025-09-22 21:28:19,525 - WARNING - HARD ITERATION LIMIT REACHED: 500 >= 500
-2025-09-22 21:28:19,525 - WARNING - STOPPING OPTIMIZATION (prevents runaway execution)
-2025-09-22 21:28:20,158 - WARNING - Global optimization failed or poor result: Maximum number of iterations has been exceeded.
-2025-09-22 21:28:20,158 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
-2025-09-22 21:28:20,208 - INFO - 
+2025-09-23 03:57:43,855 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:43,856 - INFO - Calculating derived features (Script 7 compatible)...
+2025-09-23 03:57:43,881 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
+2025-09-23 03:57:43,920 - INFO - PCE prediction (0.98%) is within S-Q limit (33.7%) [VALID]
+2025-09-23 03:57:43,923 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:43,924 - INFO - Calculating derived features (Script 7 compatible)...
+2025-09-23 03:57:43,940 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
+2025-09-23 03:57:43,978 - INFO - PCE prediction (1.00%) is within S-Q limit (33.7%) [VALID]
+2025-09-23 03:57:43,980 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:43,982 - INFO - Calculating derived features (Script 7 compatible)...
+2025-09-23 03:57:43,998 - INFO - Calculated derived features (Script 7 compatible). Total features: 39
+2025-09-23 03:57:44,053 - INFO - PCE prediction (0.98%) is within S-Q limit (33.7%) [VALID]
+2025-09-23 03:57:44,056 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:44,115 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:44,174 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:44,232 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:44,291 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:44,364 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:44,431 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:44,490 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:44,548 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:44,601 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:44,685 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:44,753 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:44,830 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:44,904 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:44,965 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:45,021 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:45,074 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:45,132 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:45,198 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:45,262 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:45,316 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:45,379 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:45,431 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:45,503 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:45,570 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:45,651 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:45,763 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:45,834 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:45,902 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:45,976 - INFO - Local optimization successful. Objective: -144.085220
+2025-09-23 03:57:45,977 - WARNING - W_R (5.2) slightly > HTL E_v (5.159) - within tolerance
+2025-09-23 03:57:46,033 - INFO - 
 === Optimization Results ===
-2025-09-22 21:28:20,208 - INFO - Optimized Performance - MPP: 145.0912 W/cm�, PCE: 14.51%
-2025-09-22 21:28:20,209 - INFO - Optimized Recombination: 1.51e+30
-2025-09-22 21:28:20,209 - INFO - Physics Validation: All physics constraints satisfied
-2025-09-22 21:28:20,209 - INFO - Improvements - MPP: +1380.29%, PCE: +1380.29%, Recombination: -8.21%
-2025-09-22 21:28:20,209 - INFO - 
+2025-09-23 03:57:46,033 - INFO - Optimized Performance - MPP: 145.0912 W/cm�, PCE: 14.51%
+2025-09-23 03:57:46,035 - INFO - Optimized Recombination: 1.51e+30
+2025-09-23 03:57:46,035 - INFO - Physics Validation: All physics constraints satisfied
+2025-09-23 03:57:46,035 - INFO - Improvements - MPP: +1380.29%, PCE: +1380.29%, Recombination: -8.21%
+2025-09-23 03:57:46,035 - INFO - 
 === Step 5: Creating Optimization Visualizations ===
-2025-09-22 21:28:24,840 - INFO - Created optimization table: results/8_optimize_device/6_optimization_table.png
-2025-09-22 21:28:24,840 - INFO - Created optimization visualizations in results/8_optimize_device/
-2025-09-22 21:28:24,841 - INFO - 
+2025-09-23 03:57:50,918 - INFO - Created optimization table: results/8_optimize_device/6_optimization_table.png
+2025-09-23 03:57:50,919 - INFO - Created optimization visualizations in results/8_optimize_device/
+2025-09-23 03:57:50,919 - INFO - 
 === Step 6: Saving Optimization Results ===
-2025-09-22 21:28:24,844 - INFO - Created ready-to-use format: example_device_parameters_optimized.json
-2025-09-22 21:28:24,844 - INFO - To test: cp results/8_optimize_device/example_device_parameters_optimized.json example_device_parameters.json
-2025-09-22 21:28:24,845 - INFO - Optimization results saved to results/8_optimize_device/
-2025-09-22 21:28:24,845 - INFO - Optimized parameters: optimized_device_parameters.json
-2025-09-22 21:28:24,845 - INFO - Detailed report: optimization_report.json
-2025-09-22 21:28:24,845 - INFO - Ready-to-use format: example_device_parameters_optimized.json
-2025-09-22 21:28:24,845 - INFO - 
+2025-09-23 03:57:50,922 - INFO - Created ready-to-use format: example_device_parameters_optimized.json
+2025-09-23 03:57:50,922 - INFO - To test: cp results/8_optimize_device/example_device_parameters_optimized.json example_device_parameters.json
+2025-09-23 03:57:50,923 - INFO - Optimization results saved to results/8_optimize_device/
+2025-09-23 03:57:50,923 - INFO - Optimized parameters: optimized_device_parameters.json
+2025-09-23 03:57:50,923 - INFO - Detailed report: optimization_report.json
+2025-09-23 03:57:50,923 - INFO - Ready-to-use format: example_device_parameters_optimized.json
+2025-09-23 03:57:50,923 - INFO - 
 === OPTIMIZATION COMPLETE ===
-2025-09-22 21:28:24,846 - INFO - Results saved to: results/8_optimize_device/
-2025-09-22 21:28:24,846 - INFO - Optimized Parameters: optimized_device_parameters.json
-2025-09-22 21:28:24,846 - INFO - Optimization Report: optimization_report.json
-2025-09-22 21:28:24,846 - INFO - Performance Comparison: 1_optimization_comparison.png
-2025-09-22 21:28:24,846 - INFO - Thickness Optimization: 2_thickness_optimization.png
-2025-09-22 21:28:24,847 - INFO - Energy Optimization: 3_energy_optimization.png
-2025-09-22 21:28:24,847 - INFO - Doping Optimization: 4_doping_optimization.png
-2025-09-22 21:28:24,847 - INFO - Improvements Summary: 5_performance_improvements.png
-2025-09-22 21:28:24,847 - INFO - Comprehensive Table: 6_optimization_table.png
-2025-09-22 21:28:24,847 - INFO - 
+2025-09-23 03:57:50,924 - INFO - Results saved to: results/8_optimize_device/
+2025-09-23 03:57:50,924 - INFO - Optimized Parameters: optimized_device_parameters.json
+2025-09-23 03:57:50,924 - INFO - Optimization Report: optimization_report.json
+2025-09-23 03:57:50,924 - INFO - Performance Comparison: 1_optimization_comparison.png
+2025-09-23 03:57:50,924 - INFO - Thickness Optimization: 2_thickness_optimization.png
+2025-09-23 03:57:50,925 - INFO - Energy Optimization: 3_energy_optimization.png
+2025-09-23 03:57:50,925 - INFO - Doping Optimization: 4_doping_optimization.png
+2025-09-23 03:57:50,925 - INFO - Improvements Summary: 5_performance_improvements.png
+2025-09-23 03:57:50,925 - INFO - Comprehensive Table: 6_optimization_table.png
+2025-09-23 03:57:50,925 - INFO - 
 === PERFORMANCE IMPROVEMENTS ===
-2025-09-22 21:28:24,848 - INFO - MPP: +1380.29%
-2025-09-22 21:28:24,848 - INFO - PCE: +1380.29%
-2025-09-22 21:28:24,848 - INFO - Recombination: -8.21%
-2025-09-22 21:28:24,848 - INFO - Status: Device optimization successful and manufacturable!
+2025-09-23 03:57:50,925 - INFO - MPP: +1380.29%
+2025-09-23 03:57:50,925 - INFO - PCE: +1380.29%
+2025-09-23 03:57:50,925 - INFO - Recombination: -8.21%
+2025-09-23 03:57:50,925 - INFO - Status: Device optimization successful and manufacturable!
