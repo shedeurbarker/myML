@@ -1,0 +1,54 @@
+{
+    "description": "Optimized device parameters (Improved by +8.88%)",
+    "device_type": "Perovskite Solar Cell (PCBM/MAPI/PEDOT) (Optimized)",
+    "last_updated": "2025-09-24",
+    "parameters": {
+        "L1_L": 3.743394217956639e-08,
+        "L1_E_c": 3.916226281197109,
+        "L1_E_v": 5.9,
+        "L1_N_D": 1e+21,
+        "L1_N_A": 4.999999999999999e+19,
+        "L2_L": 2.686416031620235e-07,
+        "L2_E_c": 3.8,
+        "L2_E_v": 5.4,
+        "L2_N_D": 3.162277660168379e+16,
+        "L2_N_A": 3.162277660168379e+16,
+        "L3_L": 3.743394217956639e-08,
+        "L3_E_c": 3.0,
+        "L3_E_v": 5.2,
+        "L3_N_D": 2.2360679774997897e+19,
+        "L3_N_A": 7.071067811865475e+20
+    },
+    "layer_descriptions": {
+        "L1": "ETL - Electron Transport Layer (PCBM)",
+        "L2": "Active - Perovskite Absorber Layer (MAPI)",
+        "L3": "HTL - Hole Transport Layer (PEDOT)"
+    },
+    "parameter_descriptions": {
+        "L_L": "Layer thickness (m)",
+        "E_c": "Conduction band energy (eV)",
+        "E_v": "Valence band energy (eV)",
+        "N_D": "Donor concentration (cm^-3)",
+        "N_A": "Acceptor concentration (cm^-3)"
+    },
+    "physics_notes": {
+        "energy_alignment": "ETL E_c >= Active E_c, Active E_v >= HTL E_v",
+        "electrode_compatibility": "W_L=4.05eV >= ETL E_c, W_R=5.2eV <= HTL E_v",
+        "doping_types": "ETL: n-type, Active: intrinsic, HTL: p-type"
+    },
+    "optimization_info": {
+        "optimized_from": "example_device_parameters.json",
+        "optimization_date": "2025-09-24T19:09:05.863855",
+        "method": "both",
+        "improvements": {
+            "MPP_improvement_percent": 8.883538082565417,
+            "PCE_improvement_percent": 8.88353808256542,
+            "recombination_change_percent": 0.14560979004701152
+        },
+        "predicted_performance": {
+            "MPP_W_per_m2": 216.85836084579378,
+            "PCE_percent": 21.68583608457938,
+            "recombination": 30.33449518699143
+        }
+    }
+}

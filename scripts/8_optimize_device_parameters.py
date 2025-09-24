@@ -22,7 +22,9 @@ REQUIREMENTS:
 OUTPUT:
 - results/8_optimize_device/
   ├── optimization_log.txt                    # Detailed execution log
-  ├── 1_optimization_comparison.png           # Before vs after performance comparison
+  ├── 1a_mpp_comparison.png                   # MPP performance comparison
+  ├── 1b_pce_comparison.png                   # PCE performance comparison
+  ├── 1c_recombination_comparison.png          # Recombination rate comparison
   ├── 2_parameter_improvements.png            # Parameter changes visualization
   ├── 3_physics_validation.png                # Constraint validation for both versions
   ├── 4_efficiency_optimization.png           # Detailed efficiency improvement analysis
@@ -48,9 +50,14 @@ from datetime import datetime
 from scipy.optimize import minimize, differential_evolution
 import joblib
 import pandas as pd
+import matplotlib
+import matplotlib.pyplot as plt
 
 # Suppress sklearn warnings
 warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
+
+# Constants
+RESULTS_DIR = 'results/8_optimize_device'
 
 # ===== CONFIGURATION SETTINGS =====
 # Progress Counter Configuration (Edit these values as needed)
@@ -62,7 +69,7 @@ HARD_ITERATION_LIMIT = 50         # HARD LIMIT: Force stop after this many itera
 def setup_logging():
     """Setup logging configuration."""
     # Create results directory
-    results_dir = 'results/8_optimize_device'
+    results_dir = RESULTS_DIR
     os.makedirs(results_dir, exist_ok=True)
     
     # Clear any existing handlers
@@ -197,63 +204,6 @@ def validate_physics_constraints(parameters):
     except Exception as e:
         return False, f"Error validating constraints: {e}"
 
-def calculate_derived_features(parameters):
-    """Calculate derived features from primary parameters."""
-    try:
-        features = parameters.copy()
-        
-        # Enhanced Physics Features (matching Script 4)
-        # 1. Energy gaps
-        features['L1_energy_gap'] = abs(parameters['L1_E_v'] - parameters['L1_E_c'])
-        features['L2_energy_gap'] = abs(parameters['L2_E_v'] - parameters['L2_E_c'])
-        features['L3_energy_gap'] = abs(parameters['L3_E_v'] - parameters['L3_E_c'])
-        
-        # 2. Band offsets
-        features['ETL_Active_Ec_offset'] = parameters['L1_E_c'] - parameters['L2_E_c']
-        features['Active_HTL_Ec_offset'] = parameters['L2_E_c'] - parameters['L3_E_c']
-        features['ETL_Active_Ev_offset'] = parameters['L1_E_v'] - parameters['L2_E_v']
-        features['Active_HTL_Ev_offset'] = parameters['L2_E_v'] - parameters['L3_E_v']
-        
-        # 3. Overall band alignment
-        features['overall_Ec_drop'] = parameters['L1_E_c'] - parameters['L3_E_c']
-        features['overall_Ev_rise'] = parameters['L3_E_v'] - parameters['L1_E_v']
-        
-        # 4. Layer thickness ratios
-        total_thickness = parameters['L1_L'] + parameters['L2_L'] + parameters['L3_L']
-        features['L1_thickness_ratio'] = parameters['L1_L'] / total_thickness
-        features['L2_thickness_ratio'] = parameters['L2_L'] / total_thickness
-        features['L3_thickness_ratio'] = parameters['L3_L'] / total_thickness
-        features['total_device_thickness'] = total_thickness
-        
-        # 5. Doping characteristics
-        features['L1_net_doping'] = parameters['L1_N_D'] - parameters['L1_N_A']
-        features['L2_net_doping'] = parameters['L2_N_D'] - parameters['L2_N_A']
-        features['L3_net_doping'] = parameters['L3_N_D'] - parameters['L3_N_A']
-        
-        features['total_donor_concentration'] = parameters['L1_N_D'] + parameters['L2_N_D'] + parameters['L3_N_D']
-        features['total_acceptor_concentration'] = parameters['L1_N_A'] + parameters['L2_N_A'] + parameters['L3_N_A']
-        
-        # 6. Doping ratios (with small epsilon to avoid division by zero)
-        eps = 1e-30
-        features['L1_doping_ratio'] = parameters['L1_N_D'] / (parameters['L1_N_A'] + eps)
-        features['L2_doping_ratio'] = parameters['L2_N_D'] / (parameters['L2_N_A'] + eps)
-        features['L3_doping_ratio'] = parameters['L3_N_D'] / (parameters['L3_N_A'] + eps)
-        
-        # 7. Interface quality indicators
-        features['ETL_Active_interface_quality'] = 1.0 / (1.0 + abs(features['ETL_Active_Ec_offset']) + abs(features['ETL_Active_Ev_offset']))
-        features['Active_HTL_interface_quality'] = 1.0 / (1.0 + abs(features['Active_HTL_Ec_offset']) + abs(features['Active_HTL_Ev_offset']))
-        
-        # 8. Enhanced physics features (use default values for prediction targets)
-        features['recombination_efficiency_ratio'] = 0.5  # Default for optimization
-        features['interface_quality_index'] = (features['ETL_Active_interface_quality'] + features['Active_HTL_interface_quality']) / 2
-        
-        logging.debug(f"Calculated derived features. Total features: {len(features)}")
-        
-        return features
-    
-    except Exception as e:
-        logging.error(f"Error calculating derived features: {e}")
-        raise
 
 def calculate_derived_features_script7_compatible(df):
     """Calculate derived features EXACTLY like Script 7 for consistency."""
@@ -682,8 +632,6 @@ def optimize_parameters(original_params, models_data, method='both', maxiter=100
 def create_optimization_visualizations(optimization_results, results_dir):
     """Create comprehensive optimization visualizations."""
     try:
-        import matplotlib.pyplot as plt
-        import matplotlib
         matplotlib.use('Agg')
         
         if not optimization_results:
@@ -696,77 +644,70 @@ def create_optimization_visualizations(optimization_results, results_dir):
         optimized_pred = optimization_results['optimized_predictions']
         improvements = optimization_results['improvements']
         
-        # 1. Performance Comparison
-        fig, axes = plt.subplots(1, 3, figsize=(15, 5))
-        fig.suptitle('Device Performance Optimization Results', fontsize=16, fontweight='bold')
+        # 1. Individual Performance Comparison Charts
         
-        # MPP comparison
-        ax = axes[0]
+        # 1a. MPP Comparison Chart
+        fig, ax = plt.subplots(1, 1, figsize=(8, 6))
         categories = ['Original', 'Optimized']
         mpp_values = [original_pred['MPP'], optimized_pred['MPP']]
         bars = ax.bar(categories, mpp_values, color=['lightblue', 'darkblue'], alpha=0.7)
         ax.set_ylabel('MPP (W/cm²)')
-        ax.set_title('Maximum Power Point')
+        ax.set_title('Maximum Power Point Comparison')
         
         for bar, value in zip(bars, mpp_values):
             ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + max(mpp_values) * 0.02,
-                    f'{value:.3f}', ha='center', va='bottom', fontweight='bold', fontsize=10)
+                    f'{value:.3f}', ha='center', va='bottom', fontweight='bold', fontsize=12)
         ax.set_ylim(0, max(mpp_values) * 1.15)
         ax.grid(True, alpha=0.3)
+        plt.subplots_adjust(bottom=0.15, top=0.85)
+        plt.savefig(f'{results_dir}/1a_mpp_comparison.png', dpi=300, bbox_inches='tight')
+        plt.close()
         
-        # PCE comparison
-        ax = axes[1]
+        # 1b. PCE Comparison Chart
+        fig, ax = plt.subplots(1, 1, figsize=(8, 6))
         pce_values = [original_pred['PCE'], optimized_pred['PCE']]
         bars = ax.bar(categories, pce_values, color=['lightgreen', 'darkgreen'], alpha=0.7)
         ax.set_ylabel('PCE (%)')
-        ax.set_title('Power Conversion Efficiency')
+        ax.set_title('Power Conversion Efficiency Comparison')
         
         for bar, value in zip(bars, pce_values):
             ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + max(pce_values) * 0.02,
-                    f'{value:.2f}%', ha='center', va='bottom', fontweight='bold', fontsize=10)
+                    f'{value:.2f}%', ha='center', va='bottom', fontweight='bold', fontsize=12)
         ax.set_ylim(0, max(pce_values) * 1.15)
         ax.grid(True, alpha=0.3)
+        plt.subplots_adjust(bottom=0.15, top=0.85)
+        plt.savefig(f'{results_dir}/1b_pce_comparison.png', dpi=300, bbox_inches='tight')
+        plt.close()
         
-        # Recombination comparison (handle negative values)
-        ax = axes[2]
+        # 1c. Recombination Comparison Chart
+        fig, ax = plt.subplots(1, 1, figsize=(8, 6))
         original_recomb = original_pred['IntSRHn_mean']
         optimized_recomb = optimized_pred['IntSRHn_mean']
         
-        # Handle negative recombination values by using absolute values for log scale
-        original_abs = abs(original_recomb) if original_recomb != 0 else 1e-30
-        optimized_abs = abs(optimized_recomb) if optimized_recomb != 0 else 1e-30
-        
-        recomb_values = [np.log10(original_abs), np.log10(optimized_abs)]
+        # Simplified recombination plot - use direct values instead of log scale
+        recomb_values = [original_recomb, optimized_recomb]
         colors = ['lightcoral', 'darkgreen' if optimized_recomb < original_recomb else 'darkred']
         
         bars = ax.bar(categories, recomb_values, color=colors, alpha=0.7)
-        ax.set_ylabel('log₁₀(|Recombination Rate|)')
-        ax.set_title('Recombination Rate (Lower is Better)')
+        ax.set_ylabel('Recombination Rate')
+        ax.set_title('Recombination Rate Comparison (Lower is Better)')
         
-        # Add labels with proper signs and scientific notation
-        for bar, value, actual_val in zip(bars, recomb_values, [original_recomb, optimized_recomb]):
-            sign = '-' if actual_val < 0 else ''
-            if abs(actual_val) < 1e-10:
-                label = f'{sign}≈0'
-            else:
-                label = f'{sign}1e{value:.1f}'
-            
-            ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + abs(max(recomb_values)) * 0.02,
-                    label, ha='center', va='bottom', fontweight='bold', fontsize=10)
+        # Add simple labels with actual values
+        for bar, value in zip(bars, recomb_values):
+            label = f'{value:.2e}'
+            ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + abs(value) * 0.05,
+                    label, ha='center', va='bottom', fontweight='bold', fontsize=12)
         
-        # Adjust y-limits to show both bars properly
-        if len(recomb_values) > 1 and min(recomb_values) != max(recomb_values):
-            y_range = max(recomb_values) - min(recomb_values)
-            ax.set_ylim(min(recomb_values) - y_range * 0.1, max(recomb_values) + y_range * 0.15)
-        else:
-            # Handle case where values are very similar or one is zero
-            max_val = max(recomb_values)
-            ax.set_ylim(max_val - 1, max_val + 1)
+        # Set y-limits with adequate space for labels - start from 0 for better visualization
+        max_val = max(recomb_values)
+        min_val = 0  # Start from 0 for better visualization
+        y_range = max_val - min_val
+        # Add 20% space above the maximum for labels
+        ax.set_ylim(min_val, max_val * 1.2)
         
         ax.grid(True, alpha=0.3)
-        
-        plt.tight_layout()
-        plt.savefig(f'{results_dir}/1_optimization_comparison.png', dpi=300, bbox_inches='tight')
+        plt.subplots_adjust(bottom=0.15, top=0.85)
+        plt.savefig(f'{results_dir}/1c_recombination_comparison.png', dpi=300, bbox_inches='tight')
         plt.close()
         
         # 2. Individual Parameter Change Charts
@@ -799,7 +740,8 @@ def create_optimization_visualizations(optimization_results, results_dir):
         # Add extra space at the top for labels
         ax.set_ylim(0, max(original_thick + optimized_thick) * 1.15)
         
-        plt.tight_layout()
+        # Use subplots_adjust instead of tight_layout to avoid warnings
+        plt.subplots_adjust(bottom=0.15, top=0.85)
         plt.savefig(f'{results_dir}/2_thickness_optimization.png', dpi=300, bbox_inches='tight')
         plt.close()
         
@@ -831,7 +773,8 @@ def create_optimization_visualizations(optimization_results, results_dir):
         # Add extra space at the top for labels
         ax.set_ylim(0, max(original_energy + optimized_energy) * 1.15)
         
-        plt.tight_layout()
+        # Use subplots_adjust instead of tight_layout to avoid warnings
+        plt.subplots_adjust(bottom=0.15, top=0.85)
         plt.savefig(f'{results_dir}/3_energy_optimization.png', dpi=300, bbox_inches='tight')
         plt.close()
         
@@ -863,7 +806,8 @@ def create_optimization_visualizations(optimization_results, results_dir):
         # Add extra space at the top for labels
         ax.set_ylim(min(original_doping + optimized_doping) - 1, max(original_doping + optimized_doping) * 1.15)
         
-        plt.tight_layout()
+        # Use subplots_adjust instead of tight_layout to avoid warnings
+        plt.subplots_adjust(bottom=0.15, top=0.85)
         plt.savefig(f'{results_dir}/4_doping_optimization.png', dpi=300, bbox_inches='tight')
         plt.close()
         
@@ -893,7 +837,8 @@ def create_optimization_visualizations(optimization_results, results_dir):
         max_abs = max(abs(min(improvements_data)), abs(max(improvements_data)))
         ax.set_ylim(min(improvements_data) - max_abs * 0.15, max(improvements_data) + max_abs * 0.15)
         
-        plt.tight_layout()
+        # Use subplots_adjust instead of tight_layout to avoid warnings
+        plt.subplots_adjust(bottom=0.15, top=0.85)
         plt.savefig(f'{results_dir}/5_performance_improvements.png', dpi=300, bbox_inches='tight')
         plt.close()
         
@@ -908,8 +853,6 @@ def create_optimization_visualizations(optimization_results, results_dir):
 def create_optimization_table(original_params, optimized_params, original_pred, optimized_pred, improvements, results_dir):
     """Create a comprehensive table showing all original vs optimized values."""
     try:
-        import matplotlib.pyplot as plt
-        import matplotlib
         matplotlib.use('Agg')
         
         # Create figure with larger size for the table
@@ -924,7 +867,7 @@ def create_optimization_table(original_params, optimized_params, original_pred, 
         table_data.append(['Parameter', 'Original', 'Optimized', 'Change', 'Unit', 'Description'])
         
         # Performance Metrics
-        table_data.append(['=== PERFORMANCE METRICS ===', '', '', '', '', ''])
+        table_data.append(['PERFORMANCE METRICS', '', '', '', '', ''])
         
         # MPP
         mpp_change = f"{improvements['MPP_improvement_percent']:+.2f}%"
@@ -936,14 +879,17 @@ def create_optimization_table(original_params, optimized_params, original_pred, 
         table_data.append(['PCE', f"{original_pred['PCE']:.2f}", f"{optimized_pred['PCE']:.2f}", 
                           pce_change, '%', 'Power Conversion Efficiency'])
         
-        # SRH Recombination
+        # SRH Recombination (convert from log scale to original values)
+        # The model predictions are in log scale, so convert back to original values
+        original_recomb_original = 10 ** original_pred['IntSRHn_mean']
+        optimized_recomb_original = 10 ** optimized_pred['IntSRHn_mean']
         srh_change = f"{improvements['recombination_change_percent']:+.2f}%"
-        table_data.append(['IntSRHn_mean', f"{original_pred['IntSRHn_mean']:.2e}", f"{optimized_pred['IntSRHn_mean']:.2e}", 
+        table_data.append(['IntSRHn_mean', f"{original_recomb_original:.2e}", f"{optimized_recomb_original:.2e}", 
                           srh_change, 'cm⁻³s⁻¹', 'SRH Recombination Rate'])
         
         # Layer Parameters
         table_data.append(['', '', '', '', '', ''])
-        table_data.append(['=== LAYER THICKNESS ===', '', '', '', '', ''])
+        table_data.append(['LAYER THICKNESS', '', '', '', '', ''])
         
         thickness_params = [
             ('L1_L', 'ETL Thickness'),
@@ -960,7 +906,7 @@ def create_optimization_table(original_params, optimized_params, original_pred, 
         
         # Energy Levels
         table_data.append(['', '', '', '', '', ''])
-        table_data.append(['=== ENERGY LEVELS ===', '', '', '', '', ''])
+        table_data.append(['ENERGY LEVELS', '', '', '', '', ''])
         
         energy_params = [
             ('L1_E_c', 'ETL Conduction Band'),
@@ -980,7 +926,7 @@ def create_optimization_table(original_params, optimized_params, original_pred, 
         
         # Doping Concentrations
         table_data.append(['', '', '', '', '', ''])
-        table_data.append(['=== DOPING CONCENTRATIONS ===', '', '', '', '', ''])
+        table_data.append(['DOPING CONCENTRATIONS', '', '', '', '', ''])
         
         doping_params = [
             ('L1_N_D', 'ETL Donor Concentration'),
@@ -1017,11 +963,11 @@ def create_optimization_table(original_params, optimized_params, original_pred, 
         
         # Create the table (positioned lower to avoid title overlap)
         table = ax.table(cellText=table_data, cellLoc='left', loc='upper center', 
-                        colWidths=[0.15, 0.15, 0.15, 0.12, 0.08, 0.35])
+                        colWidths=[0.3, 0.15, 0.15, 0.12, 0.08, 0.2])
         
         # Style the table
         table.auto_set_font_size(False)
-        table.set_fontsize(9)
+        table.set_fontsize(10)
         table.scale(1, 2.5)  # Make rows taller
         
         # Style header row
@@ -1030,7 +976,7 @@ def create_optimization_table(original_params, optimized_params, original_pred, 
             table[(0, i)].set_text_props(weight='bold', color='white')
         
         # Style section headers
-        section_rows = [1, 7, 14]  # Performance, Thickness, Energy, Doping section headers
+        section_rows = [1, 6, 11, 19]  # Performance, Thickness, Energy, Doping section headers
         for row in section_rows:
             if row < len(table_data):
                 for i in range(len(table_data[0])):
@@ -1060,8 +1006,9 @@ def create_optimization_table(original_params, optimized_params, original_pred, 
                   f"SRH {improvements['recombination_change_percent']:+.1f}%"
         plt.figtext(0.5, 0.93, subtitle, ha='center', fontsize=12, style='italic')
         
-        plt.tight_layout()
-        plt.subplots_adjust(top=0.90)  # Make more room for title and subtitle
+        # Use subplots_adjust instead of tight_layout to avoid warnings
+        plt.subplots_adjust(bottom=0.15, top=0.85)
+        plt.subplots_adjust(top=0.92)  # Make more room for title and subtitle
         plt.savefig(f'{results_dir}/6_optimization_table.png', dpi=300, bbox_inches='tight')
         plt.close()
         
@@ -1303,7 +1250,9 @@ def main():
         logging.info(f"Results saved to: {results_dir}/")
         logging.info(f"Optimized Parameters: optimized_device_parameters.json")
         logging.info(f"Optimization Report: optimization_report.json")
-        logging.info(f"Performance Comparison: 1_optimization_comparison.png")
+        logging.info(f"MPP Comparison: 1a_mpp_comparison.png")
+        logging.info(f"PCE Comparison: 1b_pce_comparison.png")
+        logging.info(f"Recombination Comparison: 1c_recombination_comparison.png")
         logging.info(f"Thickness Optimization: 2_thickness_optimization.png")
         logging.info(f"Energy Optimization: 3_energy_optimization.png")
         logging.info(f"Doping Optimization: 4_doping_optimization.png")

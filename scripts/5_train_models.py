@@ -224,9 +224,14 @@ def prepare_optimization_data(df):
     
     return X, y_efficiency, y_recombination, all_features
 
-def evaluate_model_comprehensive(model, X_test, y_test, target_name):
+def evaluate_model_comprehensive(model, X_test, y_test, target_name, y_pred=None):
     """Evaluate model with multiple metrics."""
-    y_pred = model.predict(X_test)
+    if y_pred is not None:
+        # Use provided predictions (for inverse-transformed predictions)
+        y_pred = y_pred
+    else:
+        # Use model predictions (for scaled predictions)
+        y_pred = model.predict(X_test)
     
     # NOTE: For log-transformed models, no clipping is needed as 10^x is always positive
     # This clipping is only for non-log-transformed models (efficiency models)
@@ -379,10 +384,9 @@ def train_efficiency_predictor_improved(X, y_efficiency, all_features):
             # Evaluate on test set (inverse transform predictions for proper evaluation)
             y_pred_scaled = model.predict(X_test_scaled)
             y_pred_original = target_scaler.inverse_transform(y_pred_scaled.reshape(-1, 1)).flatten()
-            metrics = evaluate_model_comprehensive(model, X_test_scaled, y_test[target].values, target)
-            # Override with correct R² calculation
-            metrics['r2'] = r2_score(y_test[target].values, y_pred_original)
-            #metrics = evaluate_model_comprehensive(model, X_test_scaled, y_test_scaled[target], target)
+            
+            # Evaluate with original predictions (cleaner approach)
+            metrics = evaluate_model_comprehensive(model, X_test_scaled, y_test[target].values, target, y_pred=y_pred_original)
             
             models[model_name] = model
             model_scores[model_name] = {
@@ -840,7 +844,7 @@ def create_training_visualizations(efficiency_metadata, recombination_metadata):
     # Add value labels
     for bar, error in zip(bars1, mpp_errors):
         height = bar.get_height()
-        ax1.text(bar.get_x() + bar.get_width()/2., height + 0.5,
+        ax1.text(bar.get_x() + bar.get_width()/2., height + height * 0.02,
                 f'{error:.1f}%', ha='center', va='bottom', fontweight='bold')
     
     # Recombination error breakdown
@@ -857,7 +861,7 @@ def create_training_visualizations(efficiency_metadata, recombination_metadata):
     # Add value labels
     for bar, error in zip(bars2, rec_errors):
         height = bar.get_height()
-        ax2.text(bar.get_x() + bar.get_width()/2., height + 1,
+        ax2.text(bar.get_x() + bar.get_width()/2., height + height * 0.02,
                 f'{error:.1f}%', ha='center', va='bottom', fontweight='bold')
     
     plt.tight_layout()

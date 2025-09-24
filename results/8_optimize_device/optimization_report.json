@@ -1,0 +1,72 @@
+{
+  "optimization_summary": {
+    "success": true,
+    "method": "both",
+    "optimization_date": "2025-09-24T19:09:05.862726",
+    "original_device": "Perovskite Solar Cell (PCBM/MAPI/PEDOT)"
+  },
+  "performance_comparison": {
+    "original": {
+      "MPP": 199.16542451196986,
+      "PCE": 19.916542451196985,
+      "IntSRHn_mean": 30.290389414560465
+    },
+    "optimized": {
+      "MPP": 216.85836084579378,
+      "PCE": 21.68583608457938,
+      "IntSRHn_mean": 30.33449518699143
+    },
+    "improvements": {
+      "MPP_improvement_percent": 8.883538082565417,
+      "PCE_improvement_percent": 8.88353808256542,
+      "recombination_change_percent": 0.14560979004701152
+    }
+  },
+  "parameter_changes": {
+    "original": {
+      "L1_L": 2.0000000000000004e-08,
+      "L1_E_c": 3.8,
+      "L1_E_v": 5.9,
+      "L1_N_D": 1e+21,
+      "L1_N_A": 4.999999999999999e+19,
+      "L2_L": 3.5e-07,
+      "L2_E_c": 3.8,
+      "L2_E_v": 5.4,
+      "L2_N_D": 3.162277660168379e+16,
+      "L2_N_A": 3.162277660168379e+16,
+      "L3_L": 2.0000000000000004e-08,
+      "L3_E_c": 3.0,
+      "L3_E_v": 5.2,
+      "L3_N_D": 2.2360679774997897e+19,
+      "L3_N_A": 7.071067811865475e+20
+    },
+    "optimized": {
+      "L1_L": 3.743394217956639e-08,
+      "L1_E_c": 3.916226281197109,
+      "L1_E_v": 5.9,
+      "L1_N_D": 1e+21,
+      "L1_N_A": 4.999999999999999e+19,
+      "L2_L": 2.686416031620235e-07,
+      "L2_E_c": 3.8,
+      "L2_E_v": 5.4,
+      "L2_N_D": 3.162277660168379e+16,
+      "L2_N_A": 3.162277660168379e+16,
+      "L3_L": 3.743394217956639e-08,
+      "L3_E_c": 3.0,
+      "L3_E_v": 5.2,
+      "L3_N_D": 2.2360679774997897e+19,
+      "L3_N_A": 7.071067811865475e+20
+    }
+  },
+  "physics_validation": {
+    "status": "VALID",
+    "message": "All physics constraints satisfied"
+  },
+  "recommendations": [
+    "Efficiency improved by +8.88%",
+    "MPP increased by +8.88%",
+    "Recombination rate changed by +0.15%",
+    "All physics constraints maintained",
+    "Device remains manufacturable with optimized parameters"
+  ]
+}

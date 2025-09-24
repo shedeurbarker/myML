@@ -40,11 +40,16 @@ import warnings
 from datetime import datetime
 import numpy as np
 import pandas as pd
+import matplotlib
+import matplotlib.pyplot as plt
+
+# Constants
+RESULTS_DIR = 'results/7_experimental_predictions'
 
 def setup_logging():
     """Set up logging configuration."""
     # Create results directory
-    results_dir = 'results/7_experimental_predictions'
+    results_dir = RESULTS_DIR
     os.makedirs(results_dir, exist_ok=True)
     
     # Clear any existing handlers
@@ -383,9 +388,7 @@ def validate_experimental_parameters(parameters):
 def create_prediction_visualizations(parameters, predictions, device_config, validation_results):
     """Create comprehensive prediction visualizations."""
     try:
-        import matplotlib
-        matplotlib.use('Agg')
-        import matplotlib.pyplot as plt
+        matplotlib.use('Agg')  # Use non-interactive backend
         import seaborn as sns
         plt.style.use('default')
         sns.set_palette("husl")
@@ -393,7 +396,7 @@ def create_prediction_visualizations(parameters, predictions, device_config, val
         logging.error("Matplotlib not available. Skipping visualizations.")
         return
     
-    results_dir = 'results/7_experimental_predictions'
+    results_dir = RESULTS_DIR
     
     # 1. Individual Performance Summary Files
     create_performance_summary_charts(parameters, predictions, device_config, validation_results, results_dir)
@@ -411,7 +414,6 @@ def create_prediction_visualizations(parameters, predictions, device_config, val
 
 def create_performance_summary_charts(parameters, predictions, device_config, validation_results, results_dir):
     """Create separate performance summary charts."""
-    import matplotlib.pyplot as plt
     import seaborn as sns
     
     # 1. Performance Metrics Summary
@@ -427,7 +429,6 @@ def create_performance_summary_charts(parameters, predictions, device_config, va
 
 def create_performance_metrics_summary(predictions, validation_results, device_config, results_dir):
     """Create performance metrics summary chart."""
-    import matplotlib.pyplot as plt
     
     fig, ax = plt.subplots(1, 1, figsize=(10, 6))
     fig.suptitle(f'Device Performance Predictions\n{device_config.get("device_type", "Unknown Device")}', 
@@ -492,7 +493,6 @@ def create_performance_metrics_summary(predictions, validation_results, device_c
 
 def create_individual_parameter_charts(parameters, results_dir):
     """Create separate charts for each parameter type."""
-    import matplotlib.pyplot as plt
     
     # Thickness Parameters Chart
     fig, ax = plt.subplots(1, 1, figsize=(8, 6))
@@ -573,7 +573,6 @@ def create_individual_parameter_charts(parameters, results_dir):
 
 def create_physics_validation_summary(validation_results, results_dir):
     """Create physics validation summary chart."""
-    import matplotlib.pyplot as plt
     
     fig, ax = plt.subplots(1, 1, figsize=(10, 6))
     
@@ -714,50 +713,9 @@ def create_parameter_overview(parameters, ax, param_type):
     ax.tick_params(axis='x', rotation=45)
     ax.grid(True, alpha=0.3)
 
-def create_physics_validation_chart(validation_results, ax):
-    """Create physics validation status chart."""
-    constraints = validation_results['constraints']
-    
-    # Collect all constraint results
-    constraint_names = []
-    constraint_status = []
-    
-    if 'energy_alignment' in constraints:
-        for name, status in constraints['energy_alignment'].items():
-            constraint_names.append(name.replace('_', ' '))
-            constraint_status.append(1 if status else 0)
-    
-    if 'electrode_compatibility' in constraints:
-        for name, status in constraints['electrode_compatibility'].items():
-            constraint_names.append(name.replace('_', ' '))
-            constraint_status.append(1 if status else 0)
-    
-    if constraint_names:
-        colors = ['green' if status else 'red' for status in constraint_status]
-        bars = ax.bar(constraint_names, constraint_status, color=colors, alpha=0.7)
-        
-        ax.set_ylabel('Constraint Status')
-        ax.set_title('Physics Constraint Validation')
-        ax.set_ylim(0, 1.2)
-        ax.set_yticks([0, 1])
-        ax.set_yticklabels(['FAIL', 'PASS'])
-        
-        # Add status labels
-        for bar, status in zip(bars, constraint_status):
-            label = 'PASS' if status else 'FAIL'
-            ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.05,
-                    label, ha='center', va='bottom', fontweight='bold', 
-                    color='white', fontsize=10)
-        
-        ax.tick_params(axis='x', rotation=45)
-        ax.grid(True, alpha=0.3)
-    else:
-        ax.text(0.5, 0.5, 'No constraint data available', ha='center', va='center', transform=ax.transAxes)
-        ax.set_title('Physics Constraint Validation')
 
 def create_efficiency_chart(predictions, results_dir):
     """Create detailed efficiency predictions chart."""
-    import matplotlib.pyplot as plt
     
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
     fig.suptitle('Efficiency Predictions', fontsize=14, fontweight='bold')
@@ -794,7 +752,6 @@ def create_efficiency_chart(predictions, results_dir):
 
 def create_recombination_chart(predictions, results_dir):
     """Create recombination predictions chart."""
-    import matplotlib.pyplot as plt
     import numpy as np
     
     if 'IntSRHn_mean' not in predictions:
@@ -834,7 +791,6 @@ def create_recombination_chart(predictions, results_dir):
 
 def create_parameter_analysis(parameters, results_dir):
     """Create detailed parameter analysis chart."""
-    import matplotlib.pyplot as plt
     import numpy as np
     
     fig, axes = plt.subplots(2, 2, figsize=(14, 10))
@@ -964,7 +920,7 @@ def create_physics_validation_chart(validation_results, ax):
 
 def save_prediction_report(parameters, predictions, device_config, validation_results):
     """Save detailed prediction report."""
-    results_dir = 'results/7_experimental_predictions'
+    results_dir = RESULTS_DIR
     
     report = {
         "prediction_date": datetime.now().isoformat(),
@@ -1047,7 +1003,7 @@ def main():
         
         # Final summary
         logging.info("\n=== PREDICTION ANALYSIS COMPLETE ===")
-        logging.info(f"Results saved to: results/7_experimental_predictions/")
+        logging.info(f"Results saved to: {RESULTS_DIR}/")
         logging.info(f"Performance Metrics: 1_performance_metrics_summary.png")
         logging.info(f"Thickness: 2_thickness_parameters.png")
         logging.info(f"Energy: 3_energy_parameters.png")
