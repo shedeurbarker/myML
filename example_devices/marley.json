@@ -1,0 +1,47 @@
+{
+    "description": "High-performance solar cell device parameters (MPP: 470.0 W/cm\u00b2)",
+    "device_type": "Optimized Perovskite Solar Cell",
+    "expected_performance": {
+        "MPP_W_per_cm2": 470.0,
+        "estimated_PCE_percent": 470.0
+    },
+    "last_updated": "2025-09-21",
+    "parameters": {
+        "L1_L": 90.0e-9,
+        "L2_L": 200e-9,
+        "L3_L": 100.0e-9,
+
+        "L1_E_c": 2.9,
+        "L2_E_c": 2.35,
+        "L3_E_c": 1.8,
+
+        "L1_E_v": 5.0,
+        "L2_E_v": 5.45,
+        "L3_E_v": 5.0,
+
+        "L1_N_A": 1.0e1,
+        "L2_N_A": 1.0e15,
+        "L3_N_A": 2.0e19,
+
+        "L1_N_D": 1.0e18,
+        "L2_N_D": 1.0e10,
+        "L3_N_D": 1.0e1
+    },
+    "layer_descriptions": {
+        "L1": "ETL - Electron Transport Layer",
+        "L2": "Active - Perovskite Absorber Layer",
+        "L3": "HTL - Hole Transport Layer"
+    },
+    "parameter_descriptions": {
+        "L_L": "Layer thickness (m)",
+        "E_c": "Conduction band energy (eV)",
+        "E_v": "Valence band energy (eV)",
+        "N_D": "Donor concentration (cm^-3)",
+        "N_A": "Acceptor concentration (cm^-3)"
+    },
+    "physics_notes": {
+        "energy_alignment": "ETL E_c >= Active E_c, Active E_v >= HTL E_v",
+        "electrode_compatibility": "W_L=4.05eV >= ETL E_c, W_R=5.2eV <= HTL E_v",
+        "doping_types": "ETL: n-type, Active: intrinsic, HTL: p-type"
+    }
+}

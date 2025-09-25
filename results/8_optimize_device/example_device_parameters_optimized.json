@@ -1,7 +1,7 @@
 {
     "description": "Optimized device parameters (Improved by +8.88%)",
     "device_type": "Perovskite Solar Cell (PCBM/MAPI/PEDOT) (Optimized)",
-    "last_updated": "2025-09-24",
+    "last_updated": "2025-09-25",
     "parameters": {
         "L1_L": 3.743394217956639e-08,
         "L1_E_c": 3.916226281197109,
@@ -38,7 +38,7 @@
     },
     "optimization_info": {
         "optimized_from": "example_device_parameters.json",
-        "optimization_date": "2025-09-24T19:09:05.863855",
+        "optimization_date": "2025-09-25T02:59:55.208361",
         "method": "both",
         "improvements": {
             "MPP_improvement_percent": 8.883538082565417,
