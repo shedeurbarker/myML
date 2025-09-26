@@ -1,27 +1,27 @@
 {
-  "prediction_date": "2025-09-25T02:59:08.906446",
+  "prediction_date": "2025-09-25T03:07:54.877920",
   "device_type": "Perovskite Solar Cell (PCBM/MAPI/PEDOT)",
   "experimental_parameters": {
-    "L1_L": 2.0000000000000004e-08,
-    "L1_E_c": 3.8,
+    "L1_L": 3.743394217956639e-08,
+    "L1_E_c": 3.916226281197109,
     "L1_E_v": 5.9,
     "L1_N_D": 1e+21,
     "L1_N_A": 4.999999999999999e+19,
-    "L2_L": 3.5e-07,
+    "L2_L": 2.686416031620235e-07,
     "L2_E_c": 3.8,
     "L2_E_v": 5.4,
     "L2_N_D": 3.162277660168379e+16,
     "L2_N_A": 3.162277660168379e+16,
-    "L3_L": 2.0000000000000004e-08,
+    "L3_L": 3.743394217956639e-08,
     "L3_E_c": 3.0,
     "L3_E_v": 5.2,
     "L3_N_D": 2.2360679774997897e+19,
     "L3_N_A": 7.071067811865475e+20
   },
   "predictions": {
-    "MPP": 199.16542451196986,
-    "PCE": 19.916542451196985,
-    "IntSRHn_mean": 30.290389414560465
+    "MPP": 216.85836084579378,
+    "PCE": 21.68583608457938,
+    "IntSRHn_mean": 30.33449518699143
   },
   "physics_validation": {
     "valid": true,
@@ -32,7 +32,7 @@
         "Active_Ev_ge_HTL_Ev": true
       },
       "energy_gaps": {
-        "L1": 2.1000000000000005,
+        "L1": 1.9837737188028912,
         "L2": 1.6000000000000005,
         "L3": 2.2
       },
@@ -44,12 +44,12 @@
   },
   "performance_summary": {
     "efficiency": {
-      "MPP_W_per_cm2": 199.16542451196986,
-      "PCE_percent": 19.916542451196985,
+      "MPP_W_per_cm2": 216.85836084579378,
+      "PCE_percent": 21.68583608457938,
       "efficiency_category": "High"
     },
     "recombination": {
-      "IntSRHn_mean": 30.290389414560465,
+      "IntSRHn_mean": 30.33449518699143,
       "recombination_category": "Low"
     }
   },
