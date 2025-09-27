@@ -306,10 +306,15 @@ def predict_device_performance(parameters, models_data):
         # Inverse transform the scaled prediction back to original scale
         recomb_pred = target_scaler.inverse_transform([[recomb_pred_scaled]])[0][0]
         
-        predictions['IntSRHn_mean'] = recomb_pred
+        # Convert from log scale to original scale (10^x)
+        recomb_pred_original = 10 ** recomb_pred
+        
+        predictions['IntSRHn_mean'] = recomb_pred_original
+        predictions['IntSRHn_mean_log'] = recomb_pred  # Keep log value for reference
         
         logging.info(f"Recombination Predictions:")
-        logging.info(f"  IntSRHn_mean: {recomb_pred:.2e}")
+        logging.info(f"  IntSRHn_mean (original): {recomb_pred_original:.2e}")
+        logging.info(f"  IntSRHn_mean (log): {recomb_pred:.2f}")
     
     return predictions
 
@@ -942,7 +947,8 @@ def save_prediction_report(parameters, predictions, device_config, validation_re
     
     if 'IntSRHn_mean' in predictions:
         report["performance_summary"]["recombination"] = {
-            "IntSRHn_mean": predictions['IntSRHn_mean'],
+            "IntSRHn_mean_original": predictions['IntSRHn_mean'],
+            "IntSRHn_mean_log": predictions.get('IntSRHn_mean_log', 0),
             "recombination_category": "Low" if predictions['IntSRHn_mean'] < 1e29 else "Moderate" if predictions['IntSRHn_mean'] < 1e30 else "High"
         }
     
@@ -1022,7 +1028,9 @@ def main():
             if 'PCE' in predictions:
                 logging.info(f"PCE: {predictions['PCE']:.2f}%")
             if 'IntSRHn_mean' in predictions:
-                logging.info(f"Recombination: {predictions['IntSRHn_mean']:.2e}")
+                logging.info(f"Recombination (original): {predictions['IntSRHn_mean']:.2e}")
+                if 'IntSRHn_mean_log' in predictions:
+                    logging.info(f"Recombination (log): {predictions['IntSRHn_mean_log']:.2f}")
         
         # Print validation status
         if validation_results['valid']:
