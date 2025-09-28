@@ -8,47 +8,6 @@ This script generates parameter combinations with physics validation, creates si
 and runs physics-based simulations for solar cell optimization. It includes validation to prevent 
 unphysical parameter combinations that lead to unrealistic results.
 
-WHAT THIS SCRIPT DOES:
-1. Reads parameter ranges from sim/parameters.txt
-2. Generates parameter combinations for each device layer
-3. VALIDATES PHYSICS CONSTRAINTS (energy gaps, thicknesses, doping, band alignment)
-4. Rejects unphysical combinations (negative energy gaps, extreme values)
-5. Creates simulation directories only for valid parameter sets
-6. Runs physics simulations (simss.exe) for validated parameter combinations
-7. Logs validation statistics and simulation results
-
-PHYSICS VALIDATION CHECKS:
-- Energy gaps must be positive (accounting for SimSalabim's negative energy convention)
-- Layer thicknesses must be reasonable (>1 nm)
-- Doping concentrations must be realistic (<1e22 m^-3)
-- Doping imbalances must be moderate (<100:1 ratio)
-- Energy gaps must be in semiconductor range (0.5-4.0 eV)
-- Layer thickness ratios must be reasonable (active layer >> transport layers)
-- Transport layer thickness balance (<10:1 ratio)
-
-BENEFITS:
-- Prevents numerical instabilities that cause extreme MPP values (>1000 W/cm²)
-- Eliminates failed device configurations (negative MPP)
-- Ensures realistic solar cell parameter combinations
-- Improves simulation stability and data quality
-- Reduces computational waste on unphysical/unstable simulations
-
-IMPORTANT:
-- This script DOES NOT extract or combine simulation results.
-- To extract MPP and IntSRHn_mean data, run scripts/3_extract_simulation_data.py after simulations complete.
-
-INPUT FILES:
-- sim/parameters.txt (parameter ranges)
-- sim/simulation_setup.txt, L1_parameters.txt, L2_parameters.txt, L3_parameters.txt (simulation setup)
-- sim/Data/ (material property files)
-- sim/simss.exe (simulation executable)
-
-OUTPUT FILES:
-- sim/simulations/sim_XXXX/ (simulation output folders)
-
-USAGE:
-python scripts/2_generate_simulations_enhanced.py
-
 AUTHOR: [ANTHONY BAKER]
 DATE: 2025
 ===============================================================================

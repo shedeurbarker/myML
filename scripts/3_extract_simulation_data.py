@@ -7,24 +7,6 @@ PURPOSE:
 This script extracts device parameters and the two target variables (MPP and IntSRHn_mean) 
 from simulation results for ML workflows, based on the definitions in script 1.
 
-WHAT THIS SCRIPT DOES:
-1. Reads device parameters from parameters.json
-2. Calculates MPP (Maximum Power Point) from the J-V curve in output_JV.dat
-3. Extracts IntSRHn_mean (mean electron interfacial recombination rate) from output_Var.dat
-4. Writes combined results to a CSV for ML
-
-TARGET VARIABLES (as defined in script 1):
-- MPP: Maximum Power Point (W/cm²) - efficiency target
-- IntSRHn_mean: Mean electron interfacial recombination rate - recombination target
-
-INPUT FILES:
-- output_JV.dat (for MPP calculation)
-- output_Var.dat (for IntSRHn_mean extraction)
-- parameters.json (for device parameters)
-
-USAGE:
-python scripts/3_extract_simulation_data.py
-
 AUTHOR: Anthony Barker
 DATE: 2025
 """

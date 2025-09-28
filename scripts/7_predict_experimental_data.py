@@ -1,35 +1,11 @@
 """
 Script 7: Predict Experimental Device Performance
 
-This script takes experimental device parameters from example_device_parameters.json
+This script takes experimental/computational device parameters from example_device_parameters.json
 and generates comprehensive prediction results using trained ML models.
 
-WORKFLOW:
-1. Load experimental device parameters from example_device_parameters.json
-2. Calculate all derived features to match training data
-3. Use trained models to predict MPP, PCE, and recombination rates
-4. Generate comprehensive prediction visualizations and analysis
-5. Create detailed prediction reports with confidence intervals
-6. Save results and recommendations
-
-USAGE: python scripts/7_predict_experimental_data.py
-
-REQUIREMENTS:
-- Trained models from Script 5 (results/train_optimization_models/)
-- Experimental device parameters (example_device_parameters.json)
-
-OUTPUT:
-- results/7_experimental_predictions/
-  ├── prediction_log.txt                    # Detailed execution log
-  ├── 1_performance_metrics_summary.png     # Overall performance predictions summary
-  ├── 2_thickness_parameters.png            # Layer thickness analysis
-  ├── 3_energy_parameters.png               # Energy level distribution
-  ├── 4_doping_parameters.png               # Doping concentration analysis
-  ├── 5_physics_validation.png              # Physics constraint validation
-  ├── 6_efficiency_predictions.png            # Detailed MPP and PCE charts
-  ├── 7_recombination_predictions.png         # Detailed recombination rate predictions
-  ├── 8_parameter_analysis.png                # Combined parameter analysis
-  └── prediction_report.json                # Detailed prediction results and recommendations
+AUTHOR: Anthony Barker
+DATE: 2025
 """
 
 import os

@@ -8,49 +8,6 @@ This script trains machine learning models for solar cell optimization focused o
 two target variables defined in the workflow: MPP and IntSRHn_mean. Matches the 
 workflow from scripts 1-4.
 
-WHAT THIS SCRIPT DOES:
-1. Loads ML-ready data from script 4 (4_prepare_ml_data.py)
-2. Trains models to predict MPP (Maximum Power Point) from device parameters
-3. Trains models to predict IntSRHn_mean (mean electron interfacial recombination rate)
-4. Uses robust scaling and cross-validation for reliable model performance
-5. Saves trained models and scalers for optimization use
-
-TARGET VARIABLES (matching scripts 1-4):
-- MPP: Maximum Power Point (W/cm²) - efficiency target
-- IntSRHn_mean: Mean electron interfacial recombination rate - recombination target
-
-ALGORITHMS:
-- Random Forest Regressor (ensemble, robust to outliers)
-- XGBoost Regressor (gradient boosting, if available)
-- Gradient Boosting Regressor (fallback if XGBoost unavailable)
-
-IMPROVEMENTS:
-- RobustScaler for both features and targets (handles outliers)
-- 5-fold cross-validation for model selection
-- Comprehensive evaluation metrics (R², MAE, RMSE)
-- Proper model and scaler persistence
-
-INPUT FILES:
-- results/4_prepare_ml_data/X_full.csv (features from script 4)
-- results/4_prepare_ml_data/y_efficiency_full.csv (MPP targets)
-- results/4_prepare_ml_data/y_recombination_full.csv (IntSRHn_mean targets)
-
-OUTPUT FILES:
-- results/5_train_optimization_models/models/efficiency_MPP_*.joblib (MPP prediction models)
-- results/5_train_optimization_models/models/recombination_IntSRHn_mean_*.joblib (recombination models)
-- results/5_train_optimization_models/scalers/ (feature and target scalers)
-- results/5_train_optimization_models/training_metadata.json (training statistics)
-- results/5_train_optimization_models/training.log (detailed log)
-
-USAGE:
-python scripts/5_train_models.py
-
-PREREQUISITES:
-1. Run scripts/1_create_feature_names.py
-2. Run scripts/2_generate_simulations.py  
-3. Run scripts/3_extract_simulation_data.py
-4. Run scripts/4_prepare_ml_data.py
-
 AUTHOR: Anthony Barker
 DATE: 2025
 """

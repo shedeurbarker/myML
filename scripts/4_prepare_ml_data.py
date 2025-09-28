@@ -9,58 +9,6 @@ derived features, handling data quality issues, and preparing train/test splits 
 machine learning model training and optimization. Enhanced for solar cell optimization
 with focus on interfacial SRH recombination and efficiency prediction.
 
-WHAT THIS SCRIPT DOES:
-1. Loads extracted data from results/3_extract_simulation_data/extracted_simulation_data.csv
-2. Creates enhanced derived features from 15 primary parameters (thickness ratios, energy gaps, etc.)
-3. Handles missing values using median/mode imputation
-4. Removes outliers from efficiency and recombination targets using IQR method
-5. Creates separate datasets for efficiency prediction and recombination prediction
-6. Prepares data for inverse optimization (training models on high-efficiency devices only)
-7. Splits data into train/test sets (80/20 split)
-8. Saves ML-ready datasets to results/4_prepare_ml_data/
-
-ENHANCED DERIVED FEATURES CREATED:
-- Thickness features: total_thickness, thickness_ratio_L2, thickness_ratio_ETL, thickness_ratio_HTL
-- Energy gap features: energy_gap_L1, energy_gap_L2, energy_gap_L3
-- Band alignment features: band_offset_L1_L2, band_offset_L2_L3, conduction_band_offset, valence_band_offset
-- Doping features: doping_ratio_L1, doping_ratio_L2, doping_ratio_L3, total_donor_concentration, total_acceptor_concentration
-- Material property features: average_energy_gap, energy_gap_variance, thickness_variance, doping_variance
-- NEW: Physics-based features: recombination_efficiency_ratio, interface_quality_index, carrier_transport_efficiency
-- NEW: Optimization features: efficiency_recombination_tradeoff, optimal_parameter_indicators
-
-INPUT FILES:
-- results/3_extract_simulation_data/extracted_simulation_data.csv (from script 3)
-- results/1_feature/feature_definitions.json (from script 1)
-
-OUTPUT FILES:
-- results/4_prepare_ml_data/X_train_efficiency.csv (training features for efficiency prediction)
-- results/4_prepare_ml_data/X_test_efficiency.csv (test features for efficiency prediction)
-- results/4_prepare_ml_data/y_train_efficiency.csv (training targets for efficiency prediction)
-- results/4_prepare_ml_data/y_test_efficiency.csv (test targets for efficiency prediction)
-- results/4_prepare_ml_data/X_train_recombination.csv (training features for recombination prediction)
-- results/4_prepare_ml_data/X_test_recombination.csv (test features for recombination prediction)
-- results/4_prepare_ml_data/y_train_recombination.csv (training targets for recombination prediction)
-- results/4_prepare_ml_data/y_test_recombination.csv (test targets for recombination prediction)
-- results/4_prepare_ml_data/X_full.csv (full feature dataset for optimization)
-- results/4_prepare_ml_data/y_efficiency_full.csv (full efficiency targets)
-- results/4_prepare_ml_data/y_recombination_full.csv (full recombination targets)
-- results/4_prepare_ml_data/X_inverse_optimization.csv (features for inverse optimization)
-- results/4_prepare_ml_data/y_inverse_optimization.csv (targets for inverse optimization)
-- results/4_prepare_ml_data/dataset_metadata.json (enhanced dataset information and statistics)
-
-DATASETS CREATED:
-1. Efficiency Prediction Dataset: Features → MPP
-2. Recombination Prediction Dataset: Features → IntSRHn_mean
-3. Full Dataset: Complete dataset for optimization algorithms
-4. NEW: Inverse Optimization Dataset: High-efficiency configurations for focused model training
-
-PREREQUISITES:
-- Run 1_create_feature_names.py to define feature structure
-- Run 3_extract_simulation_data.py to extract simulation data
-
-USAGE:
-python scripts/4_prepare_ml_data.py [--remove-outliers] [--enhanced-features]
-
 AUTHOR: Anthony Barker
 DATE: 2025
 """

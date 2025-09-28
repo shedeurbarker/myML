@@ -4,30 +4,8 @@ Script 6: Model Performance Visualization
 This script creates comprehensive visualizations of trained ML model performance,
 validation metrics, prediction accuracy, and training analysis.
 
-WORKFLOW:
-1. Load trained models and metadata from Script 5
-2. Validate model predictions against simulation dataset
-3. Create comprehensive performance visualizations
-4. Generate model comparison charts and accuracy analysis
-5. Build interactive dashboard of model performance
-6. Save visualization reports and performance summaries
-
-USAGE: python scripts/6_model_performance_visualization.py
-
-REQUIREMENTS:
-- Trained models from Script 5 (results/5_train_optimization_models/)
-- Simulation data from Script 3 (results/3_extract_simulation_data/)
-
-OUTPUT:
-- results/6_model_performance/
-  ├── model_performance_log.txt          # Detailed execution log
-  ├── comprehensive_dashboard.png        # Complete performance dashboard
-  ├── model_comparison.png               # Algorithm comparison charts
-  ├── prediction_accuracy.png            # Prediction vs actual scatter plots
-  ├── error_analysis.png                 # Error distribution and residual analysis
-  ├── training_performance.png           # Training metrics from Script 5
-  ├── cross_validation_analysis.png      # CV stability and variance analysis
-  └── performance_summary.json           # Complete performance metrics
+AUTHOR: Anthony Barker
+DATE: 2025
 """
 
 import os

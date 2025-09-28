@@ -6,37 +6,8 @@ DESCRIPTION:
 This script optimizes device parameters from example_device_parameters.json to maximize 
 efficiency (MPP/PCE) while maintaining physics constraints and reasonable recombination rates.
 
-FEATURES:
-- Loads example device parameters as starting point
-- Uses trained ML models to predict performance during optimization
-- Implements constrained optimization (L-BFGS-B and Differential Evolution)
-- Maintains physics constraints (energy alignment, electrode compatibility)
-- Provides comprehensive before/after comparison
-- Generates optimization report with improvement summary
-
-REQUIREMENTS:
-- Trained models from Script 5 (results/5_train_optimization_models/)
-- Example device parameters (example_device_parameters.json)
-- Feature definitions from Script 1 (results/1_feature/)
-
-OUTPUT:
-- results/8_optimize_device/
-  ├── optimization_log.txt                    # Detailed execution log
-  ├── 1a_mpp_comparison.png                   # MPP performance comparison
-  ├── 1b_pce_comparison.png                   # PCE performance comparison
-  ├── 1c_recombination_comparison.png          # Recombination rate comparison
-  ├── 2_parameter_improvements.png            # Parameter changes visualization
-  ├── 3_physics_validation.png                # Constraint validation for both versions
-  ├── 4_efficiency_optimization.png           # Detailed efficiency improvement analysis
-  ├── optimized_device_parameters.json        # New optimized parameters
-  └── optimization_report.json                # Detailed optimization results and recommendations
-
-USAGE:
-python scripts/8_optimize_device_parameters.py [--method local|global|both] [--maxiter 100]
-
-OPTIONS:
---method: Optimization method (local=L-BFGS-B, global=Differential Evolution, both=try both)
---maxiter: Maximum iterations for optimization (default: 100)
+AUTHOR: Anthony Barker
+DATE: 2025
 """
 
 import os
