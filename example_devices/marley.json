@@ -2,8 +2,8 @@
     "description": "High-performance solar cell device parameters (MPP: 470.0 W/cm\u00b2)",
     "device_type": "Optimized Perovskite Solar Cell",
     "expected_performance": {
-        "MPP_W_per_cm2": 470.0,
-        "estimated_PCE_percent": 470.0
+        "MPP_W_per_cm2": 183.7,
+        "estimated_PCE_percent": 18.37
     },
     "last_updated": "2025-09-21",
     "parameters": {
